@@ -1,2 +1,4 @@
-package com.eksamengr2.alpha;public class TestCLass {
+package com.eksamengr2.alpha;
+
+public class TestCLass {
 }
