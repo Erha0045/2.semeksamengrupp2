@@ -1,4 +1,4 @@
-package com.eksamengr2.alpha.controllers;
+package com.eksamengr2.alpha.controller;
 
 
 import org.springframework.stereotype.Controller;
