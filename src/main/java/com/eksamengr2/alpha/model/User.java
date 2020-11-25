@@ -1,22 +1,12 @@
 package com.eksamengr2.alpha.model;
 
 public class User {
-    private String userName;
     private String password;
     private String email;
 
-    public User(String userName, String password, String email) {
-        this.userName = userName;
+    public User(String password, String email) {
         this.password = password;
         this.email = email;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public String getPassword() {
@@ -33,5 +23,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

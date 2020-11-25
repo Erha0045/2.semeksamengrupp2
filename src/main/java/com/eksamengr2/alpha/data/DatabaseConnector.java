@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 public class DatabaseConnector {
 
+
     private static final String URL = "";
     private static final String USER = "";
     private static final String PASSWORD = "";
