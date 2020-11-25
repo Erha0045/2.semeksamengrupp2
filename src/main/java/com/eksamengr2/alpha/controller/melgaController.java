@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,12 +19,12 @@ import java.util.List;
 public class melgaController {
     List<Task> tasks = new ArrayList();
     EditProjectMapper editProjectMapper = new EditProjectMapper();
-    List<String> listTitler = Arrays.asList("Konge", "Prins", "Bonde"); //TODO skal skiftes med en søgning på projekt nummer + No overtask
+    List<Task> listTitler;
     Task task1 = new Task();
 
     @GetMapping("add_task")
-    public String add_task(Model model){
-
+    public String add_task(Model model) throws SQLException {
+        listTitler = editProjectMapper.getTasksForAddTaskDropbox(1); //TODO skal skiftes med en søgning på projekt nummer + No overtask
 
         //Person person = new Person();
         model.addAttribute("task", task1); //overføre model klasse
@@ -35,20 +36,19 @@ public class melgaController {
     }
 
     @PostMapping("/add_task") // "/dropbox" skal være det samme som i <form method="post" action="/dropbox" <---
-    public String dropBoxFecthValue(@ModelAttribute("task") Task task, Model model)
-    {
+    public String dropBoxFecthValue(@ModelAttribute("task") Task task, Model model) throws SQLException {
+        listTitler = editProjectMapper.getTasksForAddTaskDropbox(1); //TODO skal skiftes med en søgning på projekt nummer + No overtask
         //System.out.println("printer person "+person.getTitel());
-        if ( task.getName().equals("Konge"))
-        {
-            System.out.println("Der er valgt konge");
-        }
-        else if (task.getName().equals("Prins"))
-        {
-            System.out.println("Der er valgt Prins");
-        }
+        List<Task> dtoTaskList = new ArrayList<>();
+
+        //LocalDate startdate = LocalDate.parse(task.getStartDate())
+
+        dtoTaskList.add(new Task(task.getName(),task.getStartDate(),task.getFinishDate(),task.getDuration(),1,task.getIsSubTask(),task.getTaskNo(),0,task.getNewTaskName()));
+        System.out.println(dtoTaskList);
+
         model.addAttribute("listTitler", listTitler); //overføre liste til dropbox
 
-        return "add_task";
+        return "add_task"; //TODO skal returnere til edit_project siden eller????
     }
 
 

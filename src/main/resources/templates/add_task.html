@@ -9,9 +9,25 @@
 <label>Profession:</label>
 <form method="post" action="/add_task" th:object="${task}">
     <select th:field="*{name}">
-        <option th:each="p : ${listTitler}" th:value="${p}" th:text="${p}" />
+        <option th:each="p : ${listTitler}" th:value="${p.getName()}" th:text="${p.getName()}" />
     </select>
 
+    <br><br>
+    <label>Task no/Sub task no:</label>
+    <input type="text" th:field="*{taskNo}" />
+    <br><br>
+    <label>New task name:</label>
+    <input type="text" th:field="*{newTaskName}" />
+    <br><br>
+    <label>Start date:</label>
+    <input type="date" th:field="*{startDate}" />
+    <br><br>
+    <label>Finish date:</label>
+    <input type="date" th:field="*{finishDate}" />
+    <br><br>
+    <label>Duration:</label>
+    <input type="text" th:field="*{duration}" />
+    <br><br>
     <input type="submit" value="videre">
 
 </form>

@@ -1,18 +1,35 @@
 package com.eksamengr2.alpha.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 
 public class Task {
     private String name;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate finishDate;
     private int duration;
     private int projectId;
     private String isSubTask;
     private float taskNo;
     private int lineCounter;
+    private String NewTaskName;
 
+    public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask, float taskNo, int lineCounter, String NewTaskName) {
+        this.name = name;
+        this.startDate = startDate;
+        this.finishDate = finishDate;
+        this.duration = duration;
+        this.projectId = projectId;
+        this.isSubTask = isSubTask;
+        this.taskNo = taskNo;
+        this.lineCounter = lineCounter;
+        this.NewTaskName = NewTaskName;
+    }
 
+    //bruges til måske edit_project
     public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask, float taskNo, int lineCounter) {
         this.name = name;
         this.startDate = startDate;
@@ -22,6 +39,10 @@ public class Task {
         this.isSubTask = isSubTask;
         this.taskNo = taskNo;
         this.lineCounter=lineCounter;
+    }
+
+    public Task(String name) {
+        this.name = name;
     }
 
     public Task() {
@@ -37,6 +58,8 @@ public class Task {
                 ", projectId=" + projectId +
                 ", isSubTask='" + isSubTask + '\'' +
                 ", taskNo=" + taskNo +
+                ", lineCounter=" + lineCounter +
+                ", NewTaskName='" + NewTaskName + '\'' +
                 '}';
     }
 
@@ -98,5 +121,13 @@ public class Task {
 
     public int getLineCounter() {
         return lineCounter;
+    }
+
+    public String getNewTaskName() {
+        return NewTaskName;
+    }
+
+    public void setNewTaskName(String newTaskName) {
+        NewTaskName = newTaskName;
     }
 }
