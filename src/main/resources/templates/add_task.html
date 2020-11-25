@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>add_task</title>
+</head>
+<body>
+<h1>add_task</h1>
+<label>Profession:</label>
+<form method="post" action="/add_task" th:object="${task}">
+    <select th:field="*{name}">
+        <option th:each="p : ${listTitler}" th:value="${p}" th:text="${p}" />
+    </select>
+
+    <input type="submit" value="videre">
+
+</form>
+
+
+
+</body>
+</html>

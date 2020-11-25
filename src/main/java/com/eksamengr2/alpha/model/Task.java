@@ -9,14 +9,22 @@ public class Task {
     private int duration;
     private int projectId;
     private String isSubTask;
+    private float taskNo;
+    private int lineCounter;
 
-    public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask) {
+
+    public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask, float taskNo, int lineCounter) {
         this.name = name;
         this.startDate = startDate;
         this.finishDate = finishDate;
         this.duration = duration;
         this.projectId = projectId;
         this.isSubTask = isSubTask;
+        this.taskNo = taskNo;
+        this.lineCounter=lineCounter;
+    }
+
+    public Task() {
     }
 
     @Override
@@ -27,7 +35,8 @@ public class Task {
                 ", finishDate=" + finishDate +
                 ", duration=" + duration +
                 ", projectId=" + projectId +
-                ", isSubTask=" + isSubTask +
+                ", isSubTask='" + isSubTask + '\'' +
+                ", taskNo=" + taskNo +
                 '}';
     }
 
@@ -77,5 +86,17 @@ public class Task {
 
     public void setIsSubTask(String isSubTask) {
         this.isSubTask = isSubTask;
+    }
+
+    public float getTaskNo() {
+        return taskNo;
+    }
+
+    public void setTaskNo(float taskNo) {
+        this.taskNo = taskNo;
+    }
+
+    public int getLineCounter() {
+        return lineCounter;
     }
 }
