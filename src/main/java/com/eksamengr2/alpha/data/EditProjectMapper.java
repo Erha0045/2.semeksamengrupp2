@@ -1,4 +1,4 @@
-package com.eksamengr2.alpha.mapper;
+package com.eksamengr2.alpha.data;
 
 import com.eksamengr2.alpha.model.Task;
 

@@ -1,7 +1,7 @@
-package com.eksamengr2.alpha.controller;
+package com.eksamengr2.alpha.springController;
 
 
-import com.eksamengr2.alpha.mapper.EditProjectMapper;
+import com.eksamengr2.alpha.data.EditProjectMapper;
 import com.eksamengr2.alpha.model.Task;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Controller

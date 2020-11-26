@@ -3,8 +3,9 @@ package com.eksamengr2.alpha.data;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.temporal.ChronoUnit;
 
-public class DatabaseConnector {
+public class DatabaseConnector{
 
 
     private static final String URL = "";

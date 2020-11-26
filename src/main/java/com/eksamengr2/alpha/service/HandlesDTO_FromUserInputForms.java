@@ -15,13 +15,14 @@ public class HandlesDTO_FromUserInputForms{
         ArrayList<Task> listForMySQLUpdate = new ArrayList<>();
         String name = inputListAddTask.get(0).getNewTaskName();
         LocalDate startDate = inputListAddTask.get(0).getStartDate();
+        int projectId = inputListAddTask.get(0).getProjectId();
+        float taskNo = inputListAddTask.get(0).getTaskNo();
+        String NewTaskName=inputListAddTask.get(0).getNewTaskName();
         LocalDate finishDate;
         int duration;
-        int projectId = inputListAddTask.get(0).getProjectId();
         String isSubTask;
-        float taskNo = inputListAddTask.get(0).getTaskNo();
         int lineCounter=0;
-        String NewTaskName=inputListAddTask.get(0).getNewTaskName();
+
 
         //Finds value for isSubTask
         if (inputListAddTask.get(0).getName().equals("No overtask")){

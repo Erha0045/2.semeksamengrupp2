@@ -1,4 +1,4 @@
-package com.eksamengr2.alpha.domain;
+package com.eksamengr2.alpha.model;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
