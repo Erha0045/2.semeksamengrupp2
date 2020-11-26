@@ -11,11 +11,11 @@ public class AlphaApplication {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(AlphaApplication.class, args);
 
-//        RegistrationsMapper reg = new RegistrationsMapper();
-//        User user = new User("Mercurio", "Melga");
+        RegistrationsMapper reg = new RegistrationsMapper();
 
-
-//        reg.registerUser(user);
+        //Dummy data
+        User user2 = new User("limbo", "jal@mail.com");
+        reg.registerUser(user2);
     }
 
 
