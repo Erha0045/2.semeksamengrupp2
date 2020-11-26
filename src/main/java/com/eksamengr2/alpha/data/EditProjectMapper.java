@@ -1,12 +1,54 @@
 package com.eksamengr2.alpha.data;
 
 import com.eksamengr2.alpha.model.Task;
-
+import java.time.LocalDate;
+import java.util.Date;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EditProjectMapper {
+
+    public void insertNewTaskInDB(ArrayList<Task> arr) throws SQLException {
+            Connection conn=DatabaseConnector.getConnection();
+
+            PreparedStatement preparedStatement = null; //stored procedure
+
+            try {
+            //1) Create a string that holds the query with ? as user input
+            String sqlString = "INSERT INTO task(projectid, taskno, name, startdate, finishdate, duration, isSubTask) VALUES(?,?,?,?,?,?,?);";
+
+            //2) prepare the query
+            preparedStatement = conn.prepareStatement(sqlString);
+
+            //Convert Localdate to mysql date
+            java.sql.Date sqlStartDate = java.sql.Date.valueOf(arr.get(0).getStartDate());
+            java.sql.Date sqlFinishDate = java.sql.Date.valueOf(arr.get(0).getFinishDate());
+
+            //3) Bind the values to the parameteres
+            preparedStatement.setString(3, arr.get(0).getName());
+            preparedStatement.setDate(4, sqlStartDate);
+            preparedStatement.setDate(5, sqlFinishDate);
+            preparedStatement.setInt(6, arr.get(0).getDuration());
+            preparedStatement.setInt(1, arr.get(0).getProjectId());
+            preparedStatement.setString(7, arr.get(0).getIsSubTask());
+            preparedStatement.setFloat(2, arr.get(0).getTaskNo());
+
+            preparedStatement.executeUpdate();
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getMessage());
+        }
+//        finally //kode der skal køres selvom den bugger (lukke connection)
+//        {
+//            if (preparedStatement !=null )
+//                preparedStatement.close();
+//
+//            if (conn !=null)
+//                conn.close();
+//        }
+    }//Method
 
     public List<Task> getTasksForAddTaskDropbox(int projectId) throws SQLException {
         Task task=new Task("No overtask");
@@ -67,7 +109,7 @@ public class EditProjectMapper {
         //for(Task a : arrDaters ) { System.out.println(a.getName()); }
 
         return arrDaters;
-    }//metode
+    }//Method
 
     public List<Task> getTaskForEditProject(int projectId) throws SQLException {
         Task search1=null;
@@ -130,5 +172,5 @@ public class EditProjectMapper {
         //for (Task a : arrDaters ) { System.out.println(a.getName() +" taskno: "+a.getTaskNo()) ; }
 
         return arrDaters;
-    }//metode
+    }//Method
 }

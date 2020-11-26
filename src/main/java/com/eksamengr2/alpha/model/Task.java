@@ -1,12 +1,12 @@
 package com.eksamengr2.alpha.model;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
+import java.sql.Date;
 import java.time.LocalDate;
 
 public class Task {
     private String name;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd") //for at matche formattering fra bruger flade
     private LocalDate startDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate finishDate;
