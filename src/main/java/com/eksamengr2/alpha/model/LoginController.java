@@ -1,14 +1,17 @@
 package com.eksamengr2.alpha.model;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-
-@Controller
 public class LoginController {
 
-        @GetMapping("login")
-        public String editProject(){
+    // facade to datasource layer
+    private DataFacade facade = null;
 
-            return "login";
-        }
+    public LoginController(DataFacade facade) {
+        this.facade = facade;
+    }
+
+    public User login(String email, String password) throws LoginSampleException {
+        return facade.login(email, password);
+    }
+
+
 }

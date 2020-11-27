@@ -14,8 +14,8 @@ public class AlphaApplication {
         RegistrationsMapper reg = new RegistrationsMapper();
 
         //Dummy data
-        User user2 = new User("dhdhdhss", "kkdkdkd@mail.com");
-        reg.registerUser(user2);
+        User user1 = new User("pascal", "qwas@mail.com");
+        reg.registerUser(user1);
     }
 
 
