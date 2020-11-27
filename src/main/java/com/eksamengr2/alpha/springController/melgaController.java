@@ -22,6 +22,55 @@ public class melgaController {
     List<Task> listTitler;
     Task task1 = new Task();
 
+
+
+
+    @GetMapping("edit_task")
+    public String edittask(Model model) throws SQLException {
+        editProjectMapper.getTaskForEditTask(1, (float) 2.20);
+
+
+        Task task = new Task("Gunner"); //TODO TIL TEST TEST
+        int projectId =1; //TODO TEST SKAL HENTES FRA LINKVALG PÅ PROJECT OVERVIEW
+
+        //Transferr data to table
+        tasks = editProjectMapper.getTaskForEditProject(projectId);
+        model.addAttribute("tasks", tasks);
+
+        //Transfers data to Project header
+        model.addAttribute("projectname","Projectname: "+projectId );
+
+        //Transfers pojo info to textfields
+        model.addAttribute("task", task1);
+
+        //DUMMY DATA
+        model.addAttribute("test1", "Hejsa");
+
+        return "edit_task";
+    }
+
+    @PostMapping("/edit_task")
+    public String editTask(@ModelAttribute("task") Task task, Model model) throws SQLException {
+       // listTitler = editProjectMapper.getTasksForAddTaskDropbox(1); //TODO skal skiftes med en søgning på projekt nummer + No overtask
+        //System.out.println("printer person "+person.getTitel());
+        ArrayList<Task> taskList = new ArrayList<>();
+
+        //TODO PROJEKTID ER HARD CODET IND
+        taskList.add(new Task(task.getName(),task.getStartDate(),task.getFinishDate(),task.getDuration(),1,task.getIsSubTask(),task.getTaskNo(),0,task.getNewTaskName()));
+
+        //System.out.println(taskList);
+
+        //preparere input data så det kan indsættes i DB
+        ArrayList<Task> a =  taskController.UserInput_FromAddTaskPreparedToMySQL(taskList);
+
+        //Indsætter bearbejdet data fra dialogbox i DB
+        editProjectMapper.insertNewTaskInDB(a);
+
+        //model.addAttribute("listTitler", listTitler); //overføre liste til dropbox
+
+        return "edit_task"; //TODO skal returnere til edit_project siden eller????
+    }
+
     @GetMapping("add_task")
     public String add_task(Model model) throws SQLException {
         listTitler = editProjectMapper.getTasksForAddTaskDropbox(1); //TODO skal skiftes med en søgning på projekt nummer + No overtask
@@ -56,11 +105,6 @@ public class melgaController {
 
         return "add_task"; //TODO skal returnere til edit_project siden eller????
     }
-
-
-
-
-
 
     @GetMapping("edit_project")
     public String editProject(Model model) throws SQLException {
