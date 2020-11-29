@@ -9,13 +9,13 @@ import java.util.List;
 
 public class EditProjectMapper {
 
-    public List<Task> getTaskForEditTask(int projectId, float taskNo) throws SQLException {
+    public ArrayList<Task> getTaskLine(int projectId, float taskNo) throws SQLException {
         Task search1=null;
         Task task = new Task();
 
         Connection conn = null; //forbindelse
         ResultSet resultSet = null; //dataflow 1 linie ad gangen
-        List<Task> arrDaters = new ArrayList<>();
+        ArrayList<Task> arrDaters = new ArrayList<>();
         PreparedStatement preparedStatement=null;
 
 
@@ -73,12 +73,12 @@ public class EditProjectMapper {
         return arrDaters;
     }//Method
 
-    /**Modtager data fra addTask og tilpasser data så den kan indsættes i Task tabellen i DB
+    /**Modtager data fra addTask og indsætter i tabellen "task"
      *
      * @param arr ArrayList udfyld af UI
      * @throws SQLException
      */
-    public void insertNewTaskInDB(ArrayList<Task> arr) throws SQLException {
+    public void insertNewTaskIn_TaskTabel(ArrayList<Task> arr) throws SQLException {
             Connection conn=DatabaseConnector.getConnection();
 
             PreparedStatement preparedStatement = null; //stored procedure
@@ -119,6 +119,7 @@ public class EditProjectMapper {
 //        }
     }//Method
 
+    //TODO har to mapper med samme formål
     public List<Task> getTasksForAddTaskDropbox(int projectId) throws SQLException {
         Task task=new Task("No overtask");
 
@@ -180,6 +181,7 @@ public class EditProjectMapper {
         return arrDaters;
     }//Method
 
+    //TODO har to mapper med samme formål
     public List<Task> getTaskForEditProject(int projectId) throws SQLException {
         Task search1=null;
         Task task = new Task();

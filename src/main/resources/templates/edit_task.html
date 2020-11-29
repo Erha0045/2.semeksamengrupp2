@@ -9,8 +9,8 @@
 
 <form th:action="@{/edit_task}" method="post">
     <label>Write task No:</label>
-    <input type="text"  name="textFieldName" >
-    <input type="submit"  value="Hent task/subtask" name="knapnavn" >
+    <input type="text"  name="textFieldSubtaskNo" >
+    <input type="submit"  value="Get task/subtask" name="HentTaskSubTask" >
 </form>
 
 <form method="post" action="/edit_task" th:object="${task}">
@@ -18,35 +18,37 @@
     <br><br>
     <div style="display:inline-block;margin-right:20px;">
     <label>Task no/Sub task no:</label>
-    <input type="text"  th:field="*{taskNo}" />
-    <p th:text="${test1}">edit_task1</p>
+    <!--Textfield-->
+    <input type="text" th:field="*{taskNo}">
+    <!--    Data from one Task existing-->
+    <p th:text="${taskLine.get(0).taskNo}">taskNo</p>
     </div>
 
     <div style="display:inline-block;margin-right:20px;">
     <label>Task name:</label>
-    <input type="text" name="test" th:field="*{newTaskName}" />
-        <p th:text="${test1}">edit_task1</p>
+    <input type="text" th:field="*{name}" >
+        <p th:text="${taskLine.get(0).name}">oldTaskName</p>
     </div>
 
     <div style="display:inline-block;margin-right:20px;">
     <label>Start date:</label>
-    <input type="date" th:field="*{startDate}" />
-        <p th:text="${test1}">edit_task1</p>
+    <input type="date" th:field="*{startDate}"  >
+        <p th:text="${taskLine.get(0).startDate}">newStartDate</p>
     </div>
 
     <div style="display:inline-block;margin-right:20px;">
     <label>Finish date:</label>
-    <input type="date" th:field="*{finishDate}" />
-        <p th:text="${test1}">edit_task1</p>
+    <input type="date" th:field="*{finishDate}" >
+        <p th:text="${taskLine.get(0).finishDate}">oldFinishedDate</p>
     </div>
 
     <div style="display:inline-block;margin-right:20px;">
     <label>Duration:</label>
-    <input type="text" th:field="*{duration}" />
-        <p th:text="${test1}">edit_task1</p>
+    <input type="text" th:field="*{duration}">
+        <p th:text="${taskLine.get(0).duration}">oldDuration</p>
     </div>
     <div style="display:inline-block;margin-right:20px;">
-    <input type="submit" name="addtask" value="Gem task">
+    <input type="submit" name="updateTask" value="Update task">
         <p> </p>
     </div>
     <br><br><br><br>
