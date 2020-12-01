@@ -2,12 +2,10 @@ package com.eksamengr2.alpha.service;
 
 import com.eksamengr2.alpha.data.EditProjectMapper;
 import com.eksamengr2.alpha.model.Task;
-import org.springframework.http.converter.json.GsonBuilderUtils;
 
 import java.time.temporal.ChronoUnit;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 public class TaskHandler1 {
 
@@ -15,8 +13,6 @@ public class TaskHandler1 {
     public ArrayList<Task> UserInput_FromEditTask_PreparingObject_ForUpdateDB(ArrayList<Task> modifiedTask, ArrayList<Task> oldTask){
 
         ArrayList<Task> newList =new ArrayList<>();
-
-        //The tree values for a task, startDate, finishDate and duration interact with eachother
 
         //The values the user did not change (old)
         LocalDate startOld = oldTask.get(0).getStartDate();
@@ -33,9 +29,10 @@ public class TaskHandler1 {
         LocalDate finishNew=null;// = returnList.get(0).getFinishDate();
         int durationNew=0; //  = returnList.get(0).getDuration();
 
-
-        //initialiser med værdier da get eller ikke kan bruges
+        //initialiser med værdier da get ellers ikke kan bruges
         newList.add(new Task("",LocalDate.of(1900,1,1),LocalDate.of(1900,1,1),0,0,"maybe",(float) 0.0,0));
+
+        //The tree values for a task, startDate, finishDate and duration interact with eachother
 
         //1) startDate is changed-> durationNew = startMod - finishOld
         if( startMod !=null && finishMod==null && durationMod==0){
@@ -113,64 +110,67 @@ public class TaskHandler1 {
         newList.get(0).setLineCounter(oldTask.get(0).getLineCounter()); //lineCounter
         newList.get(0).setNewTaskName(oldTask.get(0).getNewTaskName()); //NewTaskName
 
+        System.out.println("new List Before method: "+newList);
+        //Change of taskNumber og alle eventuelt tilhørende subtask numre TODO
+        createsSqlStringForUpdatingTaskNo(1, (float)2.0, (float)3.0, "yes");
 
-//        //Change of taskNumber og alle eventuelt tilhørende subtask numre TODO
-        changeTaskNo(1, (float)2.0, (float)3.0, "yes");
-        //TODO DUMMY
-        newList.get(0).setTaskNo((float)9.99);
+        newList.get(0).setTaskNo((float)9.99); //TODO DUMMY
 
-        System.out.println("new List"+newList);
+        System.out.println("new List after method:  "+newList);
+
+        //TODO fjern return og kør mappers direkte
         return newList;
-    }
-    //TODO
-    private void changeTaskNo(int projectId, float oldTaskNo, float newTaskNo, String isSubTask) {
-        ArrayList<Task> list = new ArrayList<>();
+    }//method
+
+
+    //TODO kan vel fjerne if'erne og vel kun en repeatString da for løkke automatisk kun udskifter de valgte????
+    public String createsSqlStringForUpdatingTaskNo(int projectId, float oldTaskNo, float newTaskNo, String isSubTask) {
+
         EditProjectMapper editProjectMapper = new EditProjectMapper();
+        ArrayList<Task> listOld = editProjectMapper.get_idtasks_TaskNos(projectId,oldTaskNo); //Get a 2 colum list with idtask and OLDtaskno from DB
+        ArrayList<Task> listNew = listOld;
 
-        String subString1="INSERT INTO task (idtask, taskno) VALUES ";
-        String subString2="";
-        String subString3="";
-        String subString4 = "ON DUPLICATE KEY UPDATE taskno = VALUES(taskno);";
-
-        if(isSubTask.equals("no")){
-            //hent idtask + taskno
-            list = editProjectMapper.get_idtask_TaskNo(projectId,oldTaskNo);
-            /* DETTE ER STRENG DER SKAL LAVES
-            INSERT INTO task
-                    (idtask, taskno)
-            VALUES
-                    (19, 2.27),
-                    (20, 2.27)
-            ON DUPLICATE KEY UPDATE
-            taskno = VALUES(taskno);
+        /*  BEGIN WORK;START TRANSACTION;
+            UPDATE alfasolutionsdb.task SET taskno = 99.1 WHERE idtask=19;
+            UPDATE alfasolutionsdb.task SET taskno = 99.2 WHERE idtask=20;
+            COMMIT;
             */
+        //Strings variables to be used to create a sql-string for mapper
+        String startString="BEGIN WORK; START TRANSACTION; ";
+        StringBuilder repeatString= new StringBuilder();
+        String endString=" COMMIT;";
+        String sqlString="";
 
+        //Difference between new and old taskNo
+        float diffBetweenOldAndNewTaskNo = newTaskNo - oldTaskNo;
 
-            for (Task a: list ) {
+        System.out.println("Before add: " + listNew );
+        //Add the difference between oldTaskNo and newtaskNo to all new taskNo values
+        for (Task lineElement: listNew) {
+            lineElement.setTaskNo(lineElement.getTaskNo()+diffBetweenOldAndNewTaskNo);
+        }
+        System.out.println("After add: " + listNew );
 
-            subString2 += "(" + a.getIdtask() +","+ a.getTaskNo()+ "),"; //BEMÆRK KOMMA SKAL IKKE VÆRE PÅ SIDSTE KAN FJERNE DET EFTER???
-
-
+        //Fills taskNo to the sqlString-substring with new values
+        if(isSubTask.equals("no")){ //task with subtasks
+//            UPDATE alfasolutionsdb.task SET taskno = 99.1 WHERE idtask=19;
+            for (Task lineElment: listNew ) { //TODO den fordobler vist string ved hver iteration??
+                repeatString.append(" UPDATE alfasolutionsdb.task SET taskno =").append(lineElment.getTaskNo()).append(" WHERE idtask=").append(lineElment.getIdtask()).append(";");
             }
-            //create SQL string med forløkke
-            //uddate alle relevante i mapper
         }
 
-        if(isSubTask.equals("yes")){
-
-
-
+        //composing repeatString for subtask
+        if(isSubTask.equals("yes")){ //subtask
+            repeatString.append("UPDATE alfasolutionsdb.task SET taskno =").append(listNew.get(0).getTaskNo()).append("WHERE idtask=").append(listNew.get(0).getIdtask()).append(";");
         }
 
 
+        System.out.println(sqlString);
 
-
-
+        return sqlString=startString+repeatString+endString;
     }
 
 
-    //TODO tager en arraylist som input måske et object istedet??
-    //TODO behøver vel ikke smide dem ind enkeltvis, kun dem der skal findes
     public ArrayList<Task> UserInput_FromAddTaskPreparedToMySQL(ArrayList<Task> inputListAddTask){
         ArrayList<Task> listForMySQLUpdate = new ArrayList<>();
 

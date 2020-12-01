@@ -12,7 +12,32 @@ import java.util.List;
 
 public class EditProjectMapper {
 
-    public ArrayList<Task> get_idtask_TaskNo(int projectId, float taskNo) {
+    public void updateTaskNos(String updateString) throws SQLException {
+        Connection conn=DatabaseConnector.getConnection();
+        conn.setAutoCommit(false);
+
+//        PreparedStatement preparedStatement = null; //stored procedure
+            //Statement statement = null;
+        try {
+            //1) Create a string that holds the query with ? as user input
+            String sqlString = updateString;
+            //sqlString ="INSERT INTO alfasolutionsdb.task (idtask, taskno) VALUES (19, 2.10), (20, 2.11) ON DUPLICATE KEY UPDATE taskno = VALUES(taskno);";
+            //sqlString = "BEGIN WORK; START TRANSACTION; UPDATE alfasolutionsdb.task SET taskno = 99.1 WHERE idtask=19; UPDATE alfasolutionsdb.task SET taskno = 99.2 WHERE idtask=20;COMMIT;";
+            //2) prepare the query
+//            preparedStatement = conn.prepareStatement(sqlString);
+            Statement statement = conn.createStatement();
+            statement.executeUpdate(sqlString);
+//            preparedStatement.execute(); //?????
+            conn.commit();
+        }
+        catch (Exception e)
+        {
+            conn.rollback();
+            System.err.println(e.getMessage());
+        }
+    }//Method
+
+    public ArrayList<Task> get_idtasks_TaskNos(int projectId, float taskNo) {
         ArrayList<Task> list = new ArrayList<>();
         Task task;
         try {

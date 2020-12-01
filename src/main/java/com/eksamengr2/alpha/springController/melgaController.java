@@ -57,6 +57,14 @@ public class melgaController {
 
 
 
+        TaskHandler1 taskHandler1 = new TaskHandler1();
+
+        //Bliver kald når
+        String sqlstring = taskHandler1.createsSqlStringForUpdatingTaskNo(1, (float)2.0, (float)3.0, "no");
+        //System.out.println("SQL_String: " + sqlstring);
+
+        editProjectMapper.updateTaskNos(sqlstring);
+
         return "edit_task";
     }
 
