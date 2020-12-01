@@ -16,6 +16,26 @@ public class Task {
     private float taskNo;
     private int lineCounter;
     private String NewTaskName;
+    private int idtask;
+
+    //bruges ikke
+    public Task(float taskNo, int idtask) {
+        this.taskNo = taskNo;
+        this.idtask = idtask;
+    }
+
+    public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask, float taskNo, int lineCounter, String newTaskName, int idtask) {
+        this.name = name;
+        this.startDate = startDate;
+        this.finishDate = finishDate;
+        this.duration = duration;
+        this.projectId = projectId;
+        this.isSubTask = isSubTask;
+        this.taskNo = taskNo;
+        this.lineCounter = lineCounter;
+        NewTaskName = newTaskName;
+        this.idtask = idtask;
+    }
 
     public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask, float taskNo, int lineCounter, String NewTaskName) {
         this.name = name;
@@ -40,6 +60,8 @@ public class Task {
         this.taskNo = taskNo;
         this.lineCounter=lineCounter;
     }
+
+
 
     public Task(String name) {
         this.name = name;
@@ -129,6 +151,18 @@ public class Task {
 
     public void setNewTaskName(String newTaskName) {
         NewTaskName = newTaskName;
+    }
+
+    public void setLineCounter(int lineCounter) {
+        this.lineCounter = lineCounter;
+    }
+
+    public int getIdtask() {
+        return idtask;
+    }
+
+    public void setIdtask(int idtask) {
+        this.idtask = idtask;
     }
 
 

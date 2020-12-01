@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @DisplayName("Hejsa")
-class TaskController1Test {
+class TaskHandler1Test {
 
 
     @Test

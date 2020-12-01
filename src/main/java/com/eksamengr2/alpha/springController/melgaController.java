@@ -3,7 +3,7 @@ package com.eksamengr2.alpha.springController;
 
 import com.eksamengr2.alpha.data.EditProjectMapper;
 import com.eksamengr2.alpha.model.Task;
-import com.eksamengr2.alpha.service.TaskController1;
+import com.eksamengr2.alpha.service.TaskHandler1;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +18,7 @@ import java.util.List;
 public class melgaController {
     List<Task> tasks = new ArrayList();
     EditProjectMapper editProjectMapper = new EditProjectMapper();
-    TaskController1 taskController = new TaskController1();
+    TaskHandler1 taskController = new TaskHandler1();
     List<Task> listTitler;
     List<Task> taskLine = new ArrayList<>();
     private String projectName="Xxxxxxxx"; //TODO TEST SKAL HENTES FRA LINKVALG PÅ PROJECT OVERVIEW
@@ -54,6 +54,8 @@ public class melgaController {
 
         //TEST TEST DUMMY DATA
         model.addAttribute("test1", "Hejsa");
+
+
 
         return "edit_task";
     }
@@ -115,8 +117,8 @@ public class melgaController {
         oldTaskdata= editProjectMapper.getTaskLine(1,transferTaskNo);
 
         //Overføre arraylist til TaskController1
-        TaskController1 taskController1 = new TaskController1();
-        taskController1.UserInput_FromEditTask_PreparingObject_ForUpdateDB(modifiedTaskList,oldTaskdata);
+        TaskHandler1 taskHandler1 = new TaskHandler1();
+        taskHandler1.UserInput_FromEditTask_PreparingObject_ForUpdateDB(modifiedTaskList,oldTaskdata);
 
 
         return "redirect:/edit_task";

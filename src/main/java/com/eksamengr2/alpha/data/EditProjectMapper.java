@@ -1,6 +1,9 @@
 package com.eksamengr2.alpha.data;
 
+import com.eksamengr2.alpha.model.LoginSampleException;
 import com.eksamengr2.alpha.model.Task;
+import com.eksamengr2.alpha.model.User;
+
 import java.time.LocalDate;
 import java.util.Date;
 import java.sql.*;
@@ -8,6 +11,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EditProjectMapper {
+
+    public ArrayList<Task> get_idtask_TaskNo(int projectId, float taskNo) {
+        ArrayList<Task> list = new ArrayList<>();
+        Task task;
+        try {
+            Connection con = DatabaseConnector.getConnection();
+
+            String SQL = "SELECT idtask, taskno FROM task WHERE projectid=? AND taskno>=? and taskno<?+1;";
+
+            PreparedStatement ps = con.prepareStatement(SQL);
+
+            ps.setInt(1, projectId);
+            ps.setFloat(2, taskNo);
+            ps.setFloat(3, taskNo);
+
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) //true så længe der er mere data i sql tabel
+            {
+                //laver et object med en resultat række
+
+
+                task = new Task(resultSet.getFloat("taskno"),
+                        resultSet.getInt("idtask"));
+
+                //7) fylder ArrayList med data
+                //System.out.println("taskid: "+task.getIdtask());
+
+                list.add(new Task(task.getTaskNo(),task.getIdtask()));
+            }
+        } catch (SQLException ex) {
+            System.out.println("get_idtask_TaskNo: " + ex);
+        }
+//        for (Task a: list) {
+//            System.out.println(a);
+//
+//        }
+
+        return list;
+    }
 
     public ArrayList<Task> getTaskLine(int projectId, float taskNo) throws SQLException {
         Task search1=null;
