@@ -1,23 +1,29 @@
 package com.eksamengr2.alpha.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 
 public class Project {
 
     private int projectId ;
-    private String name;
+    private String projectName;
     private String ownerName;
+    @DateTimeFormat(pattern = "yyyy-MM-dd") //for at matche formattering fra bruger flade
     private LocalDate startDate;
 
-    public Project(String name, String ownerName, LocalDate startDate) {
-        this.name = name;
+    public Project() {
+    }
+
+    public Project(String projectName, String ownerName, LocalDate startDate) {
+        this.projectName = projectName;
         this.ownerName = ownerName;
         this.startDate = startDate;
     }
 
-    public Project(int projectId, String name, String ownerName, LocalDate startDate) {
+    public Project(int projectId, String projectName, String ownerName, LocalDate startDate) {
         this.projectId = projectId;
-        this.name = name;
+        this.projectName = projectName;
         this.ownerName = ownerName;
         this.startDate = startDate;
     }
@@ -30,12 +36,12 @@ public class Project {
         this.projectId = projectId;
     }
 
-    public String getName() {
-        return name;
+    public String getProjectName() {
+        return projectName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
     public String getOwnerName() {
@@ -54,13 +60,11 @@ public class Project {
         this.startDate = startDate;
     }
 
-    public Project() {
-    }
-
     @Override
     public String toString() {
         return "Project{" +
-                "name='" + name + '\'' +
+                "projectId=" + projectId +
+                ", projectName='" + projectName + '\'' +
                 ", ownerName='" + ownerName + '\'' +
                 ", startDate=" + startDate +
                 '}';

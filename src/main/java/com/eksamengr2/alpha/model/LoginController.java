@@ -9,8 +9,8 @@ public class LoginController {
         this.facade = facade;
     }
 
-    public User login(String email, String password) throws LoginSampleException {
-        return facade.login(email, password);
+    public User login(String userName, String password) throws LoginSampleException {
+        return facade.login(userName, password);
     }
 
 
