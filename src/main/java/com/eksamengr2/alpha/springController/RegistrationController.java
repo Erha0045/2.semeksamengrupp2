@@ -24,15 +24,15 @@ public class RegistrationController {
         RegistrationsMapper registrationsMapper = new RegistrationsMapper();
         String password1 = request.getParameter("password1");
         String password2 = request.getParameter("password2");
-        String email = request.getParameter("email");
+        String userName = request.getParameter("username");
 
         if (password1.equals(password2)) {
-            user = new User(password1, email);
+            user = new User(password1, userName);
 
             setSessionInfo(request, user );
             registrationsMapper.registerUser(user);
 
-            return "/edit_project";
+            return "/project_overview";
 
         } else { // If passwords don't match, an exception is thrown
             throw new Exception("Adgangskode skal være éns.");

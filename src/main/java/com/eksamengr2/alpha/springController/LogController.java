@@ -23,14 +23,14 @@ public class LogController {
         @PostMapping("/login")
         public String login(WebRequest request) throws SQLException, LoginSampleException {
             //henter userName og password fra loginpage textfelter
-            String email = request.getParameter("email");
+            String username = request.getParameter("username");
             String password = request.getParameter("password");
 
             //delegate work + data to login controller
-            User user = loginController.login(email, password);
+            User user = loginController.login(username, password);
             setSessionInfo(request, user);
 
-            return "";
+            return "project_overview";
 //            return "login" + user;
         }
 

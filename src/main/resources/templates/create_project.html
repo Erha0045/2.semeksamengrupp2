@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Create project</title>
+</head>
+<body>
+
+
+    <form method="post" action="/create_project" th:object="${pojotransfer}">
+
+    <!--    textfield String type-->
+    <label>Type a projectname:</label>
+    <input type="text" th:field="*{projectName}" placeholder="projectname"/>
+    <br>
+
+    <!--    textfield String type-->
+    <label>Type a ownername:</label>
+    <input type="text" th:field="*{ownerName}"placeholder="ownername"/>
+    <br>
+
+    <!--    textfield Date type-->
+    <label>Type in startDate:</label>
+    <input type="date" th:field="*{startDate}" placeholder="yyyy-MM-dd"/>
+    <br>
+    <br>
+    <!--    Button-->
+    <input type="submit"  value="Create project" name="getvalue" >
+
+</form>
+
+
+</body>
+</html>
