@@ -30,7 +30,7 @@ public class LogController {
             User user = loginController.login(email, password);
             setSessionInfo(request, user);
 
-            return "owerview";
+            return "";
 //            return "login" + user;
         }
 

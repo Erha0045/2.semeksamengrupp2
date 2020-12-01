@@ -1,0 +1,48 @@
+* {
+    box-sizing: border-box;
+    font-family: "Calibri", Courier, monospace;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align:center;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+.container {
+    margin: auto;
+    padding: 20px;
+    position: relative;
+    width: 100%;
+}
+
+[contenteditable] {
+    /*font-size: 26px;*/
+    padding: .25em 0em;
+    margin: 1em 0;
+    transition: padding .3s ease-in-out;
+}
+
+[contenteditable]:hover,
+[contenteditable]:focus {
+    padding: .25em;
+}
+
+[contenteditable]:hover {
+    background: #fafafa;
+    outline: 2px solid #eee;
+}
+
+[contenteditable]:focus {
+    background: #efefef;
+    outline: 2px solid blue;
+}
