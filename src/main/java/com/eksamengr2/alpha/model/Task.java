@@ -17,13 +17,15 @@ public class Task {
     private int lineCounter;
     private String NewTaskName;
     private int idtask;
+    private double taskNumber;
+
 
     //bruges ikke
+
     public Task(float taskNo, int idtask) {
         this.taskNo = taskNo;
         this.idtask = idtask;
     }
-
     public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask, float taskNo, int lineCounter, String newTaskName, int idtask) {
         this.name = name;
         this.startDate = startDate;
@@ -61,13 +63,15 @@ public class Task {
         this.lineCounter=lineCounter;
     }
 
-
-
     public Task(String name) {
         this.name = name;
     }
 
     public Task() {
+    }
+    //luff constructor
+    public Task(double taskNumber){
+        this.taskNumber=taskNumber;
     }
 
     @Override
@@ -129,6 +133,11 @@ public class Task {
         return isSubTask;
     }
 
+
+    public boolean isSubTask() {
+        return isSubTask.equals("yes");
+    }
+
     public void setIsSubTask(String isSubTask) {
         this.isSubTask = isSubTask;
     }
@@ -153,6 +162,9 @@ public class Task {
         NewTaskName = newTaskName;
     }
 
+    public double getTaskNumber() {
+        return taskNumber;
+    }
     public void setLineCounter(int lineCounter) {
         this.lineCounter = lineCounter;
     }

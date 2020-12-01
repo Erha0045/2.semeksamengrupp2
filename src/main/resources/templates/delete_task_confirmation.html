@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    are you sure you want to delete task number:  <span th:text="${task.getTaskNumber}"></span> and all its associated subtasks?
+
+
+    <form name="delete_task" action="/delete_task_confirmation" method=POST>
+
+        <br>
+        <input type="submit" value="Delete Task.  ">
+    </form>
+    <form name="cancel" action="/delete_task" method=GET>
+
+        <br>
+        <input type="submit" value="cancel.  ">
+    </form>
+
+</head>
+<body>
+
+</body>
+</html>
