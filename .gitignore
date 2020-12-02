@@ -32,3 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 
+### Mercui Test Pages ###
+/src/main/resources/templates/mercuriproject_overview.html
+/src/main/java/com/eksamengr2/alpha/model/MercuriProjectService.java
+/src/main/java/com/eksamengr2/alpha/data/MercuriController.java

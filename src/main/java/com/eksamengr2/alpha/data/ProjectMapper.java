@@ -10,7 +10,7 @@ public class ProjectMapper {
         public void createProject(Project project) throws Exception {
             try {
                 Connection con = DatabaseConnector.getConnection();
-                String SQL = "INSERT INTO Project (name, ownername, startdate) VALUES (?, ?, ?)";
+                String SQL = "INSERT INTO Project (projectname, ownername, startdate) VALUES (?, ?, ?)";
 
 //                java.sql.Date sqlStartDate = java.sql.Date.valueOf(project.getStartDate());
                 Date sqlStartDate = Date.valueOf(project.getStartDate());

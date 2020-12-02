@@ -29,8 +29,9 @@ public class LogController {
             //delegate work + data to login controller
             User user = loginController.login(username, password);
             setSessionInfo(request, user);
-
-            return "project_overview";
+            User user1 = (User) request.getAttribute("username", WebRequest.SCOPE_SESSION);
+            System.out.println("Helloooooo" + user1.getUserName());
+            return "dashboard";
 //            return "login" + user;
         }
 

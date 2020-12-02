@@ -9,17 +9,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserMapper {
-    public User login(String email, String password) throws LoginSampleException {
+    public User login(String username, String password) throws LoginSampleException {
         try {
             Connection con = DatabaseConnector.getConnection();
-            String SQL = "SELECT iduserinfo FROM userinfo "
-                    + "WHERE email=? AND password=?";
+            String SQL = "SELECT username FROM userinfo "
+                    + "WHERE username=? AND password=?";
             PreparedStatement ps = con.prepareStatement(SQL);
-            ps.setString(1, email);
+            ps.setString(1, username);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                User user = new User(email,password);
+                User user = new User(username,password);
                 return user;
             } else {
                 throw new LoginSampleException("Could not validate user");

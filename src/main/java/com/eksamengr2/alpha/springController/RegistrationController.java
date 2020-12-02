@@ -32,7 +32,7 @@ public class RegistrationController {
             setSessionInfo(request, user );
             registrationsMapper.registerUser(user);
 
-            return "/project_overview";
+            return "dashboard";
 
         } else { // If passwords don't match, an exception is thrown
             throw new Exception("Adgangskode skal være éns.");
