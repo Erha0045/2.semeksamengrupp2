@@ -228,11 +228,15 @@ public class melgaController {
         return "add_task";
     }
 
-    @PostMapping("/add_task") // "/dropbox" skal være det samme som i <form method="post" action="/dropbox" <---
+    //@PostMapping("/add_task")
+    //task saved
+    @RequestMapping(value="/add_task", method= RequestMethod.POST, params="addtask")
     public String dropBoxFecthValue(@ModelAttribute("task") Task task, Model model) throws SQLException {
-        listTitler = editProjectMapper.getTasksForAddTaskDropbox(1); //TODO skal skiftes med en søgning på projekt nummer + No overtask
-        //System.out.println("printer person "+person.getTitel());
+
         ArrayList<Task> taskList = new ArrayList<>();
+
+        listTitler = editProjectMapper.getTasksForAddTaskDropbox(1); //TODO skal skiftes med en søgning på projekt nummer + No overtask
+
 
         //TODO PROJEKTID ER HARD CODET IND
         //Henter data fra textfields på brugerflade
@@ -249,6 +253,16 @@ public class melgaController {
         model.addAttribute("listTitler", listTitler); //overføre liste til dropbox
 
         return "add_task"; //TODO skal returnere til edit_project siden eller????
+    }
+
+    @RequestMapping(value="/add_task", method= RequestMethod.POST, params="cancel")
+    public String cancelAddTask(Model model) throws SQLException {
+        int projectId =1; //TODO TEST SKAL HENTES FRA LINKVALG PÅ PROJECT OVERVIEW
+        tasks = editProjectMapper.getTaskForEditProject(projectId);
+        model.addAttribute("tasks",tasks);
+
+
+        return "edit_project";
     }
 
     @GetMapping("edit_project")
