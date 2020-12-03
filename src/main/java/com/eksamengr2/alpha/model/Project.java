@@ -28,6 +28,10 @@ public class Project {
         this.startDate = startDate;
     }
 
+    public Project(int projectId){
+        this.projectId=projectId;
+    }
+
     public int getProjectId() {
         return projectId;
     }

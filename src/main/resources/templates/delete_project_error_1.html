@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>delete_task</title>
+
+
+    <form name="delete_project" action="/delete_project" method=POST>
+        The project number you've entered have not been found, try again.
+        <br>
+        Write project number, that you would like to remove.<br>
+        <input type="number" id="Project_number" min="0" step="1" name="Project_number">
+
+        <br>
+        <!--        Write Project from which you would like to delete task.-->
+        <!--        <input type="number" id="Project_ID" step="1" name="Project_ID">-->
+        <br>
+        <input type="submit" value="Delete project.  ">
+    </form>
+</head>
+<body>
+
+</body>
+</html>

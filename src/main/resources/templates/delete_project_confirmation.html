@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    are you sure you want to delete project number:  <span th:text="${project.getProjectId()}"></span> and all its associated tasks?
+
+
+    <form name="delete_project" action="/delete_project_confirmation" method=POST>
+
+        <br>
+        <input type="submit" value="Delete Project.  ">
+    </form>
+    <form name="cancel" action="/delete_project" method=GET>
+
+        <br>
+        <input type="submit" value="cancel.  ">
+    </form>
+
+</head>
+<body>
+
+</body>
+</html>
