@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<link rel="stylesheet" href="../static/alfa.css">
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+
+</head>
+<body>
+<div class="container">
+    <div class="row">
+<h1>Project Overview</h1>
+<br>
+<h2></h2>
+
+
+<!--<form th:action="@{/project_overview}" method="post">-->
+<!--    <fieldset>-->
+        <h2>Project Name</h2>
+            <form name="gotocreation" action ="/create_project" method="get">
+                <button >Create new project</button>
+            </form>
+
+<!--        <form>-->
+<!--    <input type="text"  value="Go to project No:" name="knapnavn" id="project">-->
+<!--        <h2>Project Id</h2>-->
+<!--        <input type="number"  value="Go to project No:" name="" id="id">-->
+
+
+<!--        <button type="button" th:action="/delete_task" method id="delete">Delete Project-->
+<!--        </button>-->
+        <form name="gotodeleteproject" action ="/delete_task" method="get">
+            <button>delete project</button>
+        </form>
+        <form name="refreshprojectlist" action ="/dashboard" method="get">
+            <button>refresh list</button>
+        </form>
+<!--    </fieldset>-->
+<!--</form>-->
+
+
+<div id="container" class="container">
+    <div th:if="${not #lists.isEmpty(projects)}">
+
+    <table class="table" style="width:100%" align="Center">
+        <thead>
+
+            <th>Id</th>
+            <th>Name</th>
+            <th>Owner</th>
+            <th >StartDate</th>
+
+
+        </thead>
+
+        <tbody align="center">
+        <tr th:each="projects : ${projects}">
+            <td><a th:href="${'localhost:8080/edit_project?projectId='+ projects.projectId}" th:text="'edit your project'"> Link </a></td>
+            <td ><span th:text="${projects.projectName}">Name</span></td>
+            <td ><span th:text="${projects.ownerName}">Owner Name</span></td>
+            <td ><span th:text="${projects.startDate}">StartDate</span></td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+</div>
+</div>
+
+
+</body>
+</html>

@@ -12,14 +12,15 @@ public class UserMapper {
     public User login(String username, String password) throws LoginSampleException {
         try {
             Connection con = DatabaseConnector.getConnection();
-            String SQL = "SELECT username FROM userinfo "
+            String SQL = "SELECT username, usertype FROM userinfo "
                     + "WHERE username=? AND password=?";
             PreparedStatement ps = con.prepareStatement(SQL);
             ps.setString(1, username);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                User user = new User(username,password);
+                String userType = rs.getString("usertype");
+                User user = new User(password, username, userType);
                 return user;
             } else {
                 throw new LoginSampleException("Could not validate user");

@@ -3,8 +3,10 @@ package com.eksamengr2.alpha.springController;
 import com.eksamengr2.alpha.data.DataFacadeImpl;
 import com.eksamengr2.alpha.model.LoginController;
 import com.eksamengr2.alpha.model.LoginSampleException;
+import com.eksamengr2.alpha.model.Project;
 import com.eksamengr2.alpha.model.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.context.request.WebRequest;
@@ -21,7 +23,7 @@ public class LogController {
         }
 
         @PostMapping("/login")
-        public String login(WebRequest request) throws SQLException, LoginSampleException {
+        public String login(WebRequest request, Model model) throws SQLException, LoginSampleException {
             //henter userName og password fra loginpage textfelter
             String username = request.getParameter("username");
             String password = request.getParameter("password");
@@ -29,15 +31,22 @@ public class LogController {
             //delegate work + data to login controller
             User user = loginController.login(username, password);
             setSessionInfo(request, user);
-            User user1 = (User) request.getAttribute("username", WebRequest.SCOPE_SESSION);
-            System.out.println("Helloooooo" + user1.getUserName());
-            return "dashboard";
-//            return "login" + user;
+
+            System.out.println("usertype: "+user.getUserType());
+
+            System.out.println("username, password: " + username + password);
+            System.out.println(user);
+            return user.getUserType() + "/"+ user.getUserType() + "dashboard1";
+
+//            Project projectz = new Project();
+//            model.addAttribute("pojotransfer",projectz);
+//            return user.getUserType() + "/"+ user.getUserType() + "create_project1";
+
+
         }
 
         @GetMapping("/logout")
         public String logout(WebRequest request) {
-
             // nok lidt dårlig måde at "stoppe" en session på
             Object o = new Object();
             request.setAttribute("user", o, WebRequest.SCOPE_SESSION);

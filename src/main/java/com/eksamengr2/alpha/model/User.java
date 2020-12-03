@@ -3,14 +3,25 @@ package com.eksamengr2.alpha.model;
 public class User {
     private String password;
     private String userName;
+    private String userType;
 
     public User(String password, String userName) {
         this.password = password;
         this.userName = userName;
     }
 
+    public User(String password, String userName, String userType) {
+        this.password = password;
+        this.userName = userName;
+        this.userType = userType;
+    }
+
     public User(String userName) {
         this.userName = userName;
+    }
+
+    public String getUserType() {
+        return userType;
     }
 
     public String getPassword() {
