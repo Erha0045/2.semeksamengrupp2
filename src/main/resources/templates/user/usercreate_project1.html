@@ -7,7 +7,7 @@
 <body>
 
 
-    <form method="post" action="/create_project" th:object="${pojotransfer}">
+<form method="post" action="/create_project" th:object="${pojotransfer}">
 
     <!--    textfield String type-->
     <label>Type a projectname:</label>
@@ -15,17 +15,23 @@
     <br>
 
     <!--    textfield String type-->
-<!--    <label>Type a ownername:</label>-->
-<!--    <input type="text" th:field="*{ownerName}"placeholder="ownername"/>-->
+    <!--    <label>Type a ownername:</label>-->
+    <!--    <input type="text" th:field="*{ownerName}"placeholder="ownername"/>-->
     <br>
 
     <!--    textfield Date type-->
-    <label>Type in startDate:</label>
+    <label>Type in a startDate:</label>
     <input type="date" th:field="*{startDate}" placeholder="yyyy-MM-dd"/>
     <br>
     <br>
+
+    <!--    textfield Date type-->
+    <label>Type in a deadlineDate:</label>
+    <input type="date" th:field="*{deadlineDate}" placeholder="yyyy-MM-dd"/>
+    <br>
+    <br>
     <!--    Button-->
-    <input type="submit"  value="Create project" name="getvalue" >
+    <input type="submit" value="Create project" name="getvalue">
 
 </form>
 

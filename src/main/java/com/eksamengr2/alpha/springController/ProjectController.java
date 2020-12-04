@@ -29,18 +29,21 @@ public class ProjectController {
     @PostMapping("/create_project")
     public String createNewUser2(Model model, WebRequest request,
                                  @RequestParam("projectName") String projectname,
-                                 @RequestParam("startDate")
-                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startdato) throws Exception {
+                                 @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startdate,
+                                 @RequestParam("deadlineDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate deadlinedate) throws Exception {
         model.addAttribute("pojotransfer", projectz);
 
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
 
         System.out.println("String fra felt " + projectname);
-        System.out.println("LocalDate fra felt " + startdato);
+        System.out.println("LocalDate fra felt " + startdate);
+        System.out.println("LocalDate fra felt " + deadlinedate);
+
 //            System.out.println("String fra felt " + username );
 
         ProjectMapper pm = new ProjectMapper();
-        Project project1 = new Project(projectname, user.getUserName(), startdato);
+//        Project project = new Project
+        Project project1 = new Project(projectname, user.getUserName(), startdate,deadlinedate);
         pm.createProject(project1);
 
         return "create_project";

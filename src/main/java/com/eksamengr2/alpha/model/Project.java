@@ -11,6 +11,9 @@ public class Project {
     private String ownerName;
     @DateTimeFormat(pattern = "yyyy-MM-dd") //for at matche formattering fra bruger flade
     private LocalDate startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd") //for at matche formattering fra bruger flade
+    private LocalDate deadlineDate;
+
 
     public Project() {
     }
@@ -26,6 +29,21 @@ public class Project {
         this.projectName = projectName;
         this.ownerName = ownerName;
         this.startDate = startDate;
+    }
+
+    public Project(String projectName, String ownerName, LocalDate startDate, LocalDate deadlineDate) {
+        this.projectName = projectName;
+        this.ownerName = ownerName;
+        this.startDate = startDate;
+        this.deadlineDate = deadlineDate;
+    }
+
+    public LocalDate getDeadlineDate() {
+        return deadlineDate;
+    }
+
+    public void setDeadlineDate(LocalDate deadlineDate) {
+        this.deadlineDate = deadlineDate;
     }
 
     public Project(int projectId){
