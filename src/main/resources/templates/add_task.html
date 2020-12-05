@@ -6,9 +6,10 @@
 </head>
 <body>
 <h1>add_task</h1>
-<label>Profession:</label>
+
 <form method="post" action="/add_task" th:object="${task}">
     <select th:field="*{name}">
+        <label>Choose if any Task above:</label>
         <option th:each="p : ${listTitler}" th:value="${p.getName()}" th:text="${p.getName()}" />
     </select>
 
@@ -29,7 +30,7 @@
     <input type="text" th:field="*{duration}" />
     <br><br>
     <input type="submit" name="addtask" value="Gem task">
-    <input type="submit" name="cancel" value="Cancel">
+    <input type="submit" name="cancel" value="Close">
 
 </form>
 

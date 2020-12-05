@@ -1,7 +1,7 @@
 package com.eksamengr2.alpha.model;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import java.sql.Date;
+
 import java.time.LocalDate;
 
 public class Task {
@@ -13,7 +13,7 @@ public class Task {
     private int duration;
     private int projectId;
     private String isSubTask;
-    private float taskNo;
+    private double taskNo;
     private int lineCounter;
     private String NewTaskName;
     private int idtask;
@@ -22,11 +22,11 @@ public class Task {
 
     //bruges ikke
 
-    public Task(float taskNo, int idtask) {
+    public Task(double taskNo, int idtask) {
         this.taskNo = taskNo;
         this.idtask = idtask;
     }
-    public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask, float taskNo, int lineCounter, String newTaskName, int idtask) {
+    public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask, double taskNo, int lineCounter, String newTaskName, int idtask) {
         this.name = name;
         this.startDate = startDate;
         this.finishDate = finishDate;
@@ -39,7 +39,7 @@ public class Task {
         this.idtask = idtask;
     }
 
-    public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask, float taskNo, int lineCounter, String NewTaskName) {
+    public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask, double taskNo, int lineCounter, String NewTaskName) {
         this.name = name;
         this.startDate = startDate;
         this.finishDate = finishDate;
@@ -52,7 +52,7 @@ public class Task {
     }
 
     //bruges til måske edit_project
-    public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask, float taskNo, int lineCounter) {
+    public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask, double taskNo, int lineCounter) {
         this.name = name;
         this.startDate = startDate;
         this.finishDate = finishDate;
@@ -88,6 +88,45 @@ public class Task {
                 ", NewTaskName='" + NewTaskName + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Task task = (Task) o;
+
+        if (duration != task.duration) return false;
+        if (projectId != task.projectId) return false;
+        if (Double.compare(task.taskNo, taskNo) != 0) return false;
+        if (lineCounter != task.lineCounter) return false;
+        if (idtask != task.idtask) return false;
+        if (Double.compare(task.taskNumber, taskNumber) != 0) return false;
+        if (name != null ? !name.equals(task.name) : task.name != null) return false;
+        if (startDate != null ? !startDate.equals(task.startDate) : task.startDate != null) return false;
+        if (finishDate != null ? !finishDate.equals(task.finishDate) : task.finishDate != null) return false;
+        if (isSubTask != null ? !isSubTask.equals(task.isSubTask) : task.isSubTask != null) return false;
+        return NewTaskName != null ? NewTaskName.equals(task.NewTaskName) : task.NewTaskName == null;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result;
+//        long temp;
+//        result = name != null ? name.hashCode() : 0;
+//        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
+//        result = 31 * result + (finishDate != null ? finishDate.hashCode() : 0);
+//        result = 31 * result + duration;
+//        result = 31 * result + projectId;
+//        result = 31 * result + (isSubTask != null ? isSubTask.hashCode() : 0);
+//        result = 31 * result + (taskNo != +0.0f ? Float.floatToIntBits(taskNo) : 0);
+//        result = 31 * result + lineCounter;
+//        result = 31 * result + (NewTaskName != null ? NewTaskName.hashCode() : 0);
+//        result = 31 * result + idtask;
+//        temp = Double.doubleToLongBits(taskNumber);
+//        result = 31 * result + (int) (temp ^ (temp >>> 32));
+//        return result;
+//    }
 
     public String getName() {
         return name;
@@ -142,11 +181,11 @@ public class Task {
         this.isSubTask = isSubTask;
     }
 
-    public float getTaskNo() {
+    public double getTaskNo() {
         return taskNo;
     }
 
-    public void setTaskNo(float taskNo) {
+    public void setTaskNo(double taskNo) {
         this.taskNo = taskNo;
     }
 
@@ -163,8 +202,9 @@ public class Task {
     }
 
     public double getTaskNumber() {
-        return taskNumber;
+        return Math.round(taskNumber*100)/100d;
     }
+
     public void setLineCounter(int lineCounter) {
         this.lineCounter = lineCounter;
     }

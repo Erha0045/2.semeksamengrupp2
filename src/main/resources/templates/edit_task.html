@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8">
-    <title>edit_task1</title>
+    <title>edit_task</title>
 </head>
 <body>
-<h1 th:text="${projectname}">edit_task1</h1>
+<h1 th:text="${projectname}">edit_task</h1>
 
 <form th:action="@{/edit_task}" method="post">
     <label>Write task No:</label>
@@ -20,7 +20,7 @@
     <label>Task no/Sub task no:</label>
     <!--Textfield-->
     <input type="text" th:field="*{taskNo}">
-    <!--    Data from one Task existing-->
+    <!--    Data from Dummy or Task existing-->
     <p th:text="${taskLine.get(0).taskNo}">taskNo</p>
     </div>
 

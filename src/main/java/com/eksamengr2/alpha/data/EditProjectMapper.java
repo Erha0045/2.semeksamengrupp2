@@ -1,33 +1,56 @@
 package com.eksamengr2.alpha.data;
 
-import com.eksamengr2.alpha.model.LoginSampleException;
 import com.eksamengr2.alpha.model.Task;
-import com.eksamengr2.alpha.model.User;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EditProjectMapper {
 
-    public void updateTaskNos(String updateString) throws SQLException {
+    public void updateTask(ArrayList<Task> taskArrayList) throws SQLException {
+        Connection conn=DatabaseConnector.getConnection();
+
+        PreparedStatement preparedStatement = null; //stored procedure
+
+        try {
+            //1) Create a string that holds the query with ? as user input
+            String sqlString = "UPDATE alfasolutionsdb.task SET projectid=? ,taskno =? ,name=?, startdate=?, finishdate=?, duration=?, isSubTask=? WHERE idtask=?;";
+
+            //2) prepare the query
+            preparedStatement = conn.prepareStatement(sqlString);
+
+            //Convert Localdate to mysql date
+            java.sql.Date sqlStartDate = java.sql.Date.valueOf(taskArrayList.get(0).getStartDate());
+            java.sql.Date sqlFinishDate = java.sql.Date.valueOf(taskArrayList.get(0).getFinishDate());
+
+            //3) Bind the values to the parameteres
+            preparedStatement.setString(3, taskArrayList.get(0).getName());
+            preparedStatement.setDate(4, sqlStartDate);
+            preparedStatement.setDate(5, sqlFinishDate);
+            preparedStatement.setInt(6, taskArrayList.get(0).getDuration());
+            preparedStatement.setInt(1, taskArrayList.get(0).getProjectId());
+            preparedStatement.setString(7, taskArrayList.get(0).getIsSubTask());
+            preparedStatement.setDouble(2, taskArrayList.get(0).getTaskNo());
+            preparedStatement.setInt(8, taskArrayList.get(0).getIdtask());
+
+            preparedStatement.executeUpdate();
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getMessage());
+        }
+    }//Method
+
+    public void updateTaskNos(String SqlUpdateString) throws SQLException {
         Connection conn=DatabaseConnector.getConnection();
         conn.setAutoCommit(false);
 
-//        PreparedStatement preparedStatement = null; //stored procedure
-            //Statement statement = null;
         try {
-            //1) Create a string that holds the query with ? as user input
-            String sqlString = updateString;
-            //sqlString ="INSERT INTO alfasolutionsdb.task (idtask, taskno) VALUES (19, 2.10), (20, 2.11) ON DUPLICATE KEY UPDATE taskno = VALUES(taskno);";
-            //sqlString = "BEGIN WORK; START TRANSACTION; UPDATE alfasolutionsdb.task SET taskno = 99.1 WHERE idtask=19; UPDATE alfasolutionsdb.task SET taskno = 99.2 WHERE idtask=20;COMMIT;";
-            //2) prepare the query
-//            preparedStatement = conn.prepareStatement(sqlString);
+            //1) prepare the query
             Statement statement = conn.createStatement();
-            statement.executeUpdate(sqlString);
-//            preparedStatement.execute(); //?????
+            statement.executeUpdate(SqlUpdateString);
+
             conn.commit();
         }
         catch (Exception e)
@@ -37,19 +60,19 @@ public class EditProjectMapper {
         }
     }//Method
 
-    public ArrayList<Task> get_idtasks_TaskNos(int projectId, float taskNo) {
+    public ArrayList<Task> getIdtasks_subTaskNo_FromTask(int projectId, double taskNo) {
         ArrayList<Task> list = new ArrayList<>();
         Task task;
         try {
             Connection con = DatabaseConnector.getConnection();
 
-            String SQL = "SELECT idtask, taskno FROM task WHERE projectid=? AND taskno>=? and taskno<?+1;";
+            String SQL = "SELECT idtask, taskno FROM task WHERE projectid=? AND taskno=?;";
 
             PreparedStatement ps = con.prepareStatement(SQL);
 
             ps.setInt(1, projectId);
-            ps.setFloat(2, taskNo);
-            ps.setFloat(3, taskNo);
+            ps.setDouble(2, taskNo);
+
 
             ResultSet resultSet = ps.executeQuery();
 
@@ -58,7 +81,7 @@ public class EditProjectMapper {
                 //laver et object med en resultat række
 
 
-                task = new Task(resultSet.getFloat("taskno"),
+                task = new Task(Math.round((resultSet.getFloat("taskno")*100.0)/100.0),
                         resultSet.getInt("idtask"));
 
                 //7) fylder ArrayList med data
@@ -77,7 +100,47 @@ public class EditProjectMapper {
         return list;
     }
 
-    public ArrayList<Task> getTaskLine(int projectId, float taskNo) throws SQLException {
+    public ArrayList<Task> get_idtasks_TaskNos(int projectId, double taskNo) {
+        ArrayList<Task> list = new ArrayList<>();
+        Task task;
+        try {
+            Connection con = DatabaseConnector.getConnection();
+
+            String SQL = "SELECT idtask, taskno FROM task WHERE projectid=? AND taskno>=? and taskno<?+1;";
+
+            PreparedStatement ps = con.prepareStatement(SQL);
+
+            ps.setInt(1, projectId);
+            ps.setDouble(2, taskNo);
+            ps.setDouble(3, taskNo);
+
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) //true så længe der er mere data i sql tabel
+            {
+                //laver et object med en resultat række
+
+
+                task = new Task(Math.round((resultSet.getDouble("taskno")*100.0)/100.0),
+                        resultSet.getInt("idtask"));
+
+                //7) fylder ArrayList med data
+                //System.out.println("taskid: "+task.getIdtask());
+
+                list.add(new Task(task.getTaskNo(),task.getIdtask()));
+            }
+        } catch (SQLException ex) {
+            System.out.println("get_idtask_TaskNo: " + ex);
+        }
+//        for (Task a: list) {
+//            System.out.println(a);
+//
+//        }
+
+        return list;
+    }
+
+    public ArrayList<Task> getTaskLine(int projectId, double taskNo) throws SQLException {
         Task search1=null;
         Task task = new Task();
 
@@ -99,7 +162,7 @@ public class EditProjectMapper {
 
             //4 Indsætter værdier i placeholders '?'
             preparedStatement.setInt(1, projectId);
-            preparedStatement.setFloat(2, taskNo);
+            preparedStatement.setDouble(2, Math.round(taskNo*100)/100d);
 
             //5) excecuter sql statement
             resultSet = preparedStatement.executeQuery();
@@ -116,7 +179,7 @@ public class EditProjectMapper {
                         resultSet.getInt("duration"),
                         resultSet.getInt("projectid"),
                         resultSet.getString("isSubTask"),
-                        resultSet.getFloat("taskno"),
+                        Math.round((resultSet.getDouble("taskno")*100)/100d),
                         lineCounter);
 
                 //7) fylder ArrayList med data
@@ -169,7 +232,7 @@ public class EditProjectMapper {
             preparedStatement.setInt(6, arr.get(0).getDuration());
             preparedStatement.setInt(1, arr.get(0).getProjectId());
             preparedStatement.setString(7, arr.get(0).getIsSubTask());
-            preparedStatement.setFloat(2, arr.get(0).getTaskNo());
+            preparedStatement.setDouble(2, arr.get(0).getTaskNo());
 
             preparedStatement.executeUpdate();
         }
@@ -187,8 +250,15 @@ public class EditProjectMapper {
 //        }
     }//Method
 
-    //TODO har to mapper med samme formål
-    public List<Task> getTasksForAddTaskDropbox(int projectId) throws SQLException {
+    //TODO har to med samme
+
+    /**Gets names from all Tasks belonging to projectId
+     *
+     * @param projectId
+     * @return
+     * @throws SQLException
+     */
+    public List<Task> getTasksForAddTaskDropbox(int projectId) throws SQLException  {
         Task task=new Task("No overtask");
 
 
