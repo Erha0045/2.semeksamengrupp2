@@ -8,7 +8,8 @@
 <h1>add_task</h1>
 
 <form method="post" action="/add_task" th:object="${task}">
-    <select th:field="*{name}">
+    <!--    dropdown-->
+    <select th:field="*{subTaskToName}">
         <label>Choose if any Task above:</label>
         <option th:each="p : ${listTitler}" th:value="${p.getName()}" th:text="${p.getName()}" />
     </select>
@@ -23,13 +24,23 @@
     <label>Start date:</label>
     <input type="date" th:field="*{startDate}" />
     <br><br>
+    <label>Time consumption(h):</label>
+    <input type="text" th:field="*{taskTimeconsumption}" />
+    <br><br><br><br>
     <label>Finish date:</label>
     <input type="date" th:field="*{finishDate}" />
     <br><br>
     <label>Duration:</label>
     <input type="text" th:field="*{duration}" />
+    <br><br><br><br>
+    <label>Persons on subtask:</label>
+    <input type="text" th:field="*{noOfPersons}" />
     <br><br>
-    <input type="submit" name="addtask" value="Gem task">
+    <label>Working hours/day/person:</label>
+    <input type="text" th:field="*{workingHoursDay}" />
+    <br><br><br>
+
+    <input type="submit" name="addtask" value="Save task">
     <input type="submit" name="cancel" value="Close">
 
 </form>

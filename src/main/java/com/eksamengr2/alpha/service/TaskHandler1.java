@@ -23,14 +23,14 @@ public class TaskHandler1 {
         //*********************************************************
 
         //The values the user did not change, keeping (old)
-        if (oldTask.get(0).getStartDate()!=null && oldTask.get(0).getFinishDate()!=null ) {
+       // if (oldTask.get(0).getStartDate()!=null && oldTask.get(0).getFinishDate()!=null ) {
             startOld = oldTask.get(0).getStartDate();
             finishOld = oldTask.get(0).getFinishDate();
-        }
-        else {
-            startOld = null;
-            finishOld = null;
-        }
+        //}
+       // else {
+       //     startOld = null;
+       //     finishOld = null;
+        //}
         int durationOld = oldTask.get(0).getDuration();
 
         //The values the user have changed (modified)->(mod)
@@ -206,49 +206,49 @@ public class TaskHandler1 {
         return startString+repeatString+endString;
     }
 
+    /**Method prepares input data from Add_task page to be inserted to database
+     *
+     * @param newTaskFromInput
+     * @return
+     */
+    public Task UserInput_FromAddTaskPreparedToMySQL(Task newTaskFromInput) throws SQLException {
 
-    public ArrayList<Task> UserInput_FromAddTaskPreparedToMySQL(ArrayList<Task> inputListAddTask){
-        ArrayList<Task> listForMySQLUpdate = new ArrayList<>();
+         //Variables used to ease redaability of code
+         LocalDate startDate = newTaskFromInput.getStartDate();
+         LocalDate finishDate= newTaskFromInput.getFinishDate();
+         int duration = newTaskFromInput.getDuration();
 
-        //initialsier variable
-        String name = inputListAddTask.get(0).getNewTaskName();
-        LocalDate startDate = inputListAddTask.get(0).getStartDate();
-        int projectId = inputListAddTask.get(0).getProjectId();
-        double taskNo = inputListAddTask.get(0).getTaskNo();
-        String NewTaskName=inputListAddTask.get(0).getNewTaskName();
-        int lineCounter=0;
-
-        //Deklarer variable
-        LocalDate finishDate=null;
-        int duration=-1;
-        String isSubTask="";
-
-
+         //Inserts new name
+        newTaskFromInput.setName(newTaskFromInput.getNewTaskName());
 
         //Finds value for isSubTask
-        if (inputListAddTask.get(0).getName().equals("No overtask")){
-            isSubTask = "no";
+        if (newTaskFromInput.getSubTaskToName().equals("No overtask")){
+            newTaskFromInput.setIsSubTask("no");
         }
         else {
-            isSubTask = "yes";
+            newTaskFromInput.setIsSubTask("yes");
         }
 
-        if (inputListAddTask.get(0).getFinishDate()==null){
-            //så skal finishdate beregnes med duration
-            finishDate = startDate.plusDays(inputListAddTask.get(0).getDuration());
-            duration = inputListAddTask.get(0).getDuration();
+        if (newTaskFromInput.getFinishDate()==null){
+            //finish date is calculated
+            newTaskFromInput.setFinishDate(startDate.plusDays(duration-1));
+
         }
         else {
-            //if finnishdate was filled, duration is calculated
-            finishDate = inputListAddTask.get(0).getFinishDate();
-            duration = (int) ChronoUnit.DAYS.between(startDate,finishDate)+1;
+            //duration is calculated
+            newTaskFromInput.setDuration((int) ChronoUnit.DAYS.between(startDate,finishDate)+1);
         }
 
+        if (newTaskFromInput.getDuration() == 0){
+            newTaskFromInput.setDuration((int) ChronoUnit.DAYS.between(startDate, finishDate)+1);
 
-        //TODO projectId bliver hardcodet ind
-        listForMySQLUpdate.add(new Task(name,startDate,finishDate,duration,1,isSubTask,taskNo,0,"")); //skal indsætte her
-        System.out.println("Dette er print fra TaskController: "+listForMySQLUpdate);
+        }
 
-        return listForMySQLUpdate;
+        System.out.println("Dette er print fra TaskController: "+newTaskFromInput);
+
+        //Inserts prepared data from dialogbox to DB
+        editProjectMapper.insertNewTaskIn_TaskTabel(newTaskFromInput);
+
+        return newTaskFromInput; //Kun til test
     }
 }

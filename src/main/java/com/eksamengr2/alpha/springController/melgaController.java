@@ -115,37 +115,70 @@ public class melgaController {
 
 
     //Button "Get task/subTask"
-    @RequestMapping(value="/edit_task", method= RequestMethod.POST, params="HentTaskSubTask")
+    @RequestMapping(value="/edit_task", method= RequestMethod.POST, params="getTaskSubTask")
     public String getTask(Model model, @RequestParam("textFieldSubtaskNo") double taskOrSubTaskNo) throws SQLException {
 
-        //Transfers ArrayList-data to table
-        tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
-
-        //Afrunder double SKAL NED I MAPPER TODO eller??
-        for (int i=0; i<tasksForProjectId.size(); i++ ) {
-            tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100)/100d);
-        }
-
-        model.addAttribute("tasks", tasksForProjectId);
-
-        //Transfers pojo info to textfields form
-        model.addAttribute("task", POJO_Task);
-
-        //Transfers data from input to class attribute for sharing between @PostMappings
-        transferTaskNo = Math.round(taskOrSubTaskNo*100)/100d;
-
-        
-        //TEST henter taskLine udfra projectId og Task no VIRKER
-        taskLine = editProjectMapper.getTaskLine(projectId, taskOrSubTaskNo);
-        model.addAttribute("taskLine", taskLine);
-
-        System.out.println("Trykket på knap---TaskOrSubTaskNo værdi: " + taskOrSubTaskNo);
-
-        //Transfers data to Project header
-        model.addAttribute("projectname","Projectname: "+projectName );
+          //Transfers ArrayList-data to table
+          tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
+//
+//        //Afrunder double SKAL NED I MAPPER TODO eller??
+//        for (int i=0; i<tasksForProjectId.size(); i++ ) {
+//            tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100)/100d);
+//        }
+//
+//        model.addAttribute("tasks", tasksForProjectId);
+//
+//        //Transfers pojo info to textfields form
+//        model.addAttribute("task", POJO_Task);
+//
+//        //Transfers data from input to class attribute for sharing between @PostMappings
+//        transferTaskNo = Math.round(taskOrSubTaskNo*100)/100d;
+//
+//
+//        //TEST henter taskLine udfra projectId og Task no VIRKER
+//        taskLine = editProjectMapper.getTaskLine(projectId, taskOrSubTaskNo);
+//        model.addAttribute("taskLine", taskLine);
+//
+//        System.out.println("Trykket på knap---TaskOrSubTaskNo værdi: " + taskOrSubTaskNo);
+//
+//        //Transfers data to Project header
+//        model.addAttribute("projectname","Projectname: "+projectName );
 
         return "edit_task";
     }
+
+//    //Button "Get task/subTask"
+//    @RequestMapping(value="/edit_task", method= RequestMethod.POST, params="getTaskSubTask")
+//    public String getTask(Model model, @RequestParam("textFieldSubtaskNo") double taskOrSubTaskNo) throws SQLException {
+//
+//        //Transfers ArrayList-data to table
+//        tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
+//
+//        //Afrunder double SKAL NED I MAPPER TODO eller??
+//        for (int i=0; i<tasksForProjectId.size(); i++ ) {
+//            tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100)/100d);
+//        }
+//
+//        model.addAttribute("tasks", tasksForProjectId);
+//
+//        //Transfers pojo info to textfields form
+//        model.addAttribute("task", POJO_Task);
+//
+//        //Transfers data from input to class attribute for sharing between @PostMappings
+//        transferTaskNo = Math.round(taskOrSubTaskNo*100)/100d;
+//
+//
+//        //TEST henter taskLine udfra projectId og Task no VIRKER
+//        taskLine = editProjectMapper.getTaskLine(projectId, taskOrSubTaskNo);
+//        model.addAttribute("taskLine", taskLine);
+//
+//        System.out.println("Trykket på knap---TaskOrSubTaskNo værdi: " + taskOrSubTaskNo);
+//
+//        //Transfers data to Project header
+//        model.addAttribute("projectname","Projectname: "+projectName );
+//
+//        return "edit_task";
+//    }
 
 
     @GetMapping("add_task")
@@ -162,31 +195,18 @@ public class melgaController {
     }
 
 
-    //@PostMapping("/add_task")
-    //task saved
+    //Button "save Task"
     @RequestMapping(value="/add_task", method= RequestMethod.POST, params="addtask")
     public String dropBoxFecthValue(@ModelAttribute("task") Task task, Model model) throws SQLException {
 
-        ArrayList<Task> taskList = new ArrayList<>();
+        //Getting and inserting data for dropbox
+        listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId);
+        model.addAttribute("listTitler", listTitler);
 
-        listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId); //TODO skal skiftes med en søgning på projekt nummer + No overtask
+        //Preparing input data så det kan indsættes i DB
+        taskController.UserInput_FromAddTaskPreparedToMySQL(task);
 
-
-        //TODO PROJEKTID ER HARD CODET IND
-        //Henter data fra textfields på brugerflade
-        taskList.add(new Task(task.getName(),task.getStartDate(),task.getFinishDate(),task.getDuration(),projectId,task.getIsSubTask(),task.getTaskNo(),0,task.getNewTaskName()));
-
-        System.out.println(taskList);
-
-        //preparere input data så det kan indsættes i DB
-        ArrayList<Task> a =  taskController.UserInput_FromAddTaskPreparedToMySQL(taskList);
-
-        //Indsætter bearbejdet data fra dialogbox i DB
-        editProjectMapper.insertNewTaskIn_TaskTabel(a);
-
-        model.addAttribute("listTitler", listTitler); //overføre liste til dropbox
-
-        return "add_task"; //TODO skal returnere til edit_project siden eller????
+        return "add_task";
     }
 
 

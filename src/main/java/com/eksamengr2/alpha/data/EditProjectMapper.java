@@ -204,17 +204,19 @@ public class EditProjectMapper {
         return arrDaters;
     }//Method
 
+
+
     /**Modtager data fra addTask og indsætter i tabellen "task"
      *
-     * @param arr ArrayList udfyld af UI
+     * @param newTask Task()
      * @throws SQLException
      */
-    public void insertNewTaskIn_TaskTabel(ArrayList<Task> arr) throws SQLException {
-            Connection conn=DatabaseConnector.getConnection();
+    public void insertNewTaskIn_TaskTabel(Task newTask) throws SQLException {
+        Connection conn=DatabaseConnector.getConnection();
 
-            PreparedStatement preparedStatement = null; //stored procedure
+        PreparedStatement preparedStatement = null; //stored procedure
 
-            try {
+        try {
             //1) Create a string that holds the query with ? as user input
             String sqlString = "INSERT INTO task(projectid, taskno, name, startdate, finishdate, duration, isSubTask) VALUES(?,?,?,?,?,?,?);";
 
@@ -222,17 +224,17 @@ public class EditProjectMapper {
             preparedStatement = conn.prepareStatement(sqlString);
 
             //Convert Localdate to mysql date
-            java.sql.Date sqlStartDate = java.sql.Date.valueOf(arr.get(0).getStartDate());
-            java.sql.Date sqlFinishDate = java.sql.Date.valueOf(arr.get(0).getFinishDate());
+            java.sql.Date sqlStartDate = java.sql.Date.valueOf(newTask.getStartDate());
+            java.sql.Date sqlFinishDate = java.sql.Date.valueOf(newTask.getFinishDate());
 
             //3) Bind the values to the parameteres
-            preparedStatement.setString(3, arr.get(0).getName());
+            preparedStatement.setInt(1, newTask.getProjectId());
+            preparedStatement.setDouble(2, Math.round(newTask.getTaskNo()*100)/100d);
+            preparedStatement.setString(3, newTask.getName());
             preparedStatement.setDate(4, sqlStartDate);
             preparedStatement.setDate(5, sqlFinishDate);
-            preparedStatement.setInt(6, arr.get(0).getDuration());
-            preparedStatement.setInt(1, arr.get(0).getProjectId());
-            preparedStatement.setString(7, arr.get(0).getIsSubTask());
-            preparedStatement.setDouble(2, arr.get(0).getTaskNo());
+            preparedStatement.setInt(6, newTask.getDuration());
+            preparedStatement.setString(7, newTask.getIsSubTask());
 
             preparedStatement.executeUpdate();
         }
@@ -240,15 +242,54 @@ public class EditProjectMapper {
         {
             System.err.println(e.getMessage());
         }
-//        finally //kode der skal køres selvom den bugger (lukke connection)
-//        {
-//            if (preparedStatement !=null )
-//                preparedStatement.close();
-//
-//            if (conn !=null)
-//                conn.close();
-//        }
     }//Method
+
+
+//    /**Modtager data fra addTask og indsætter i tabellen "task"
+//     *
+//     * @param arr ArrayList udfyld af UI
+//     * @throws SQLException
+//     */
+//    public void insertNewTaskIn_TaskTabel(ArrayList<Task> arr) throws SQLException {
+//            Connection conn=DatabaseConnector.getConnection();
+//
+//            PreparedStatement preparedStatement = null; //stored procedure
+//
+//            try {
+//            //1) Create a string that holds the query with ? as user input
+//            String sqlString = "INSERT INTO task(projectid, taskno, name, startdate, finishdate, duration, isSubTask) VALUES(?,?,?,?,?,?,?);";
+//
+//            //2) prepare the query
+//            preparedStatement = conn.prepareStatement(sqlString);
+//
+//            //Convert Localdate to mysql date
+//            java.sql.Date sqlStartDate = java.sql.Date.valueOf(arr.get(0).getStartDate());
+//            java.sql.Date sqlFinishDate = java.sql.Date.valueOf(arr.get(0).getFinishDate());
+//
+//            //3) Bind the values to the parameteres
+//            preparedStatement.setString(3, arr.get(0).getName());
+//            preparedStatement.setDate(4, sqlStartDate);
+//            preparedStatement.setDate(5, sqlFinishDate);
+//            preparedStatement.setInt(6, arr.get(0).getDuration());
+//            preparedStatement.setInt(1, arr.get(0).getProjectId());
+//            preparedStatement.setString(7, arr.get(0).getIsSubTask());
+//            preparedStatement.setDouble(2, arr.get(0).getTaskNo());
+//
+//            preparedStatement.executeUpdate();
+//        }
+//        catch (Exception e)
+//        {
+//            System.err.println(e.getMessage());
+//        }
+////        finally //kode der skal køres selvom den bugger (lukke connection)
+////        {
+////            if (preparedStatement !=null )
+////                preparedStatement.close();
+////
+////            if (conn !=null)
+////                conn.close();
+////        }
+//    }//Method
 
     //TODO har to med samme
 
