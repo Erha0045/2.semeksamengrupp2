@@ -41,10 +41,10 @@ public class melgaController {
        //Transfer data to TaskNo-exampel
         model.addAttribute("taskLine", taskHandler1.ExampelForTaskLine());
 
-        //Get tasks from DB as ArrayList
+        //Get tasks-data from DB as ArrayList
         tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
 
-        //Afrunder double SKAL NED I MAPPER TODO eller??
+        //Round off...SKAL NED I MAPPER TODO eller??
         for (int i=0; i<tasksForProjectId.size(); i++ ) {
             tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100)/100d);
         }

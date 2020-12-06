@@ -22,6 +22,9 @@
             <th>Duration</th>
             <th>Start date</th>
             <th>Finished date</th>
+            <th>Timeconsumption</th>
+            <th>No of persons</th>
+            <th>Working hours per day</th>
         </tr>
         </thead>
 
@@ -33,6 +36,9 @@
             <td><span th:text="${taskss.getDuration()}">Duration </span></td>
             <td><span th:text="${taskss.getStartDate()}">Start date </span></td>
             <td><span th:text="${taskss.getFinishDate()}">Finished date </span></td>
+            <td><span th:text="${taskss.getTaskTimeconsumption()}">timeconsumption </span></td>
+            <td><span th:text="${taskss.getNoOfPersons()}">Number of persons </span></td>
+            <td><span th:text="${taskss.getWorkingHoursDay()}">Workinghoursperday </span></td>
         </tr>
         </tbody>
     </table>

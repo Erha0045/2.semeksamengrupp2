@@ -392,17 +392,17 @@ public class EditProjectMapper {
 
     //TODO har to mapper med samme formål
     public List<Task> getTaskForEditProject(int projectId) throws SQLException {
-        Task search1=null;
-        Task task = new Task();
+        Task task1=null;
+
 
         Connection conn = null; //forbindelse
         ResultSet resultSet = null; //dataflow 1 linie ad gangen
-        List<Task> arrDaters = new ArrayList<>();
+        List<Task> listTasks = new ArrayList<>();
         PreparedStatement preparedStatement=null;
 
 
         try {
-            // 1) Connect to the database
+            // 1) Connect to the database TODO connection skal rettes til
             conn = DriverManager.getConnection("jdbc:mysql://den1.mysql3.gear.host/alfasolutionsdb?autoReconnect=true&useSSL=false", "alfasolutionsdb", "Ga9Q_!89hJab");
 
             //2) Create a string that holds the query with ? as user input
@@ -423,17 +423,22 @@ public class EditProjectMapper {
             {
                 ++lineCounter; //yderste kolonne i tabel 1,2,3 ect i edit_project
                 //laver et object med en resultat række
-                search1 = new Task(resultSet.getString("name"),
+                task1 = new Task(resultSet.getString("name"),
                         resultSet.getDate("startdate").toLocalDate(),
                         resultSet.getDate("finishdate").toLocalDate(),
                         resultSet.getInt("duration"),
                         resultSet.getInt("projectid"),
                         resultSet.getString("isSubTask"),
-                        resultSet.getFloat("taskno"),
-                        lineCounter);
+                        Math.round(resultSet.getDouble("taskno")*100)/100d,
+                        lineCounter,
+                        resultSet.getInt("idtask"),
+                        resultSet.getInt("tasktimeconsumption"),
+                        resultSet.getInt("noOfPersons"),
+                        Math.round(resultSet.getDouble("workinghoursday")*100)/100d,
+                        resultSet.getString("subtasktoname"));
 
                 //7) fylder ArrayList med data
-                arrDaters.add(search1);
+                listTasks.add(task1);
             }
             //return arrResultList;
         }//try
@@ -449,8 +454,8 @@ public class EditProjectMapper {
                 conn.close();
         }
         //TEST PRINT
-        //for (Task a : arrDaters ) { System.out.println(a.getName() +" taskno: "+a.getTaskNo()) ; }
+        for (Task a : listTasks ) { System.out.println(a.getName() +" taskno: "+a.getTaskNo() + "working hours day" + a.getWorkingHoursDay()) ; }
 
-        return arrDaters;
+        return listTasks;
     }//Method
 }

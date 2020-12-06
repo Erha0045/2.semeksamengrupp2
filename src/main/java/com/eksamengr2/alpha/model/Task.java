@@ -24,7 +24,7 @@ public class Task {
     private String subTaskToName; //If subtask, then name of task
 
     public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask,
-                double taskNo, int lineCounter, int idtask, double taskNumber,
+                double taskNo, int lineCounter, int idtask,
                 int taskTimeconsumption, int noOfPersons, double workingHoursDay, String subTaskToName) {
         this.name = name;
         this.startDate = startDate;
@@ -35,7 +35,6 @@ public class Task {
         this.taskNo = taskNo;
         this.lineCounter = lineCounter;
         this.idtask = idtask;
-        this.taskNumber = taskNumber;
         this.taskTimeconsumption = taskTimeconsumption;
         this.noOfPersons = noOfPersons;
         this.workingHoursDay = workingHoursDay;

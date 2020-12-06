@@ -19,25 +19,66 @@ public class TaskHandler1 {
         //*********************************************************
         //Using local variables to make the code more readable
         //*********************************************************
+        //The old values, the original once
         LocalDate startOld =oldTask.getStartDate();
         LocalDate finishOld = oldTask.getFinishDate();
         int durationOld = oldTask.getDuration();
+        int timeconsumptionOld = oldTask.getTaskTimeconsumption();
+        int personsOnTaskOld = oldTask.getNoOfPersons();
+        double workingHoursDayOld = oldTask.getWorkingHoursDay();
 
         //The values the user have changed (modified)->(mod)
         LocalDate startMod = modifiedTask.getStartDate();
         LocalDate finishMod = modifiedTask.getFinishDate();
         int durationMod = modifiedTask.getDuration();
+        int timeconsumptionMod = modifiedTask.getTaskTimeconsumption();
+        int personsOnTaskMod = modifiedTask.getNoOfPersons();
+        double workingHoursDayMod = modifiedTask.getWorkingHoursDay();
+
+        //The new values
+        LocalDate startNew;
+        LocalDate finishNew;
+        int durationNew;
+        int timeconsumptionNew;
+        int personsOnTaskNew;
+        double workingHoursDayNew;
+
+
 
 
         //**************************************************************************************
-        //The four values for a task, startDate, finishDate, duration noOfPersons and workingHoursDay interact with eachother
+        //** The six values for a task: startDate, finishDate, duration noOfPersons,          **
+        //** Timeconsumption and workingHoursDay interact with eachother                      **
+        //** KUN EN VÆRDI ÆNDRES AF GANGEN                                                    **
         //**************************************************************************************
-        //1) startDate is changed-> durationNew = startMod - finishOld
-//        if( startMod !=null && finishMod==null && durationMod==0){
-//            durationNew = (int) ChronoUnit.DAYS.between(startMod,finishOld) +1;
-//            startNew = startMod;
-//            finishNew = finishOld;
-//        }
+
+        //1) startDate is edited-> durationNew = startMod - finishOld
+        if( startMod !=null){
+            durationNew = (int) ChronoUnit.DAYS.between(startMod,finishOld) +1;
+            startNew = startMod;
+            finishNew = finishOld;
+            timeconsumptionNew = timeconsumptionOld;
+            if (durationNew!=0 && workingHoursDayOld!=0){
+                personsOnTaskNew = (int) Math.ceil((double) timeconsumptionOld/(durationNew*workingHoursDayOld));
+            }
+            workingHoursDayNew = workingHoursDayOld;
+        }
+
+        //2 TimeConsumption is edited
+        if (timeconsumptionMod!=0){
+            durationNew = durationOld;
+            startNew = startOld;
+            finishNew = finishOld;
+            timeconsumptionNew = timeconsumptionMod;
+            if (durationNew!=0 && workingHoursDayOld!=0){
+                personsOnTaskNew = (int) Math.ceil((double) timeconsumptionNew/(durationNew*workingHoursDayOld));
+            }
+            workingHoursDayNew = workingHoursDayOld;
+
+
+        }
+
+
 //
 //        //2) FinishDate is changed->
 //        if( startMod ==null && finishMod!=null && durationMod==0){
@@ -373,10 +414,9 @@ public class TaskHandler1 {
      */
     public ArrayList<Task> ExampelForTaskLine(){
         ArrayList<Task> returnList = new ArrayList<>();
-        Task taskExampel = new Task("Taskname", LocalDate.of(1900,1,1),
-                LocalDate.of(1900,1,1), 0, 0, "",
-        0.0d, 0, 0, 0.0d,
-        0, 0, 0.0d, "String subTaskToName");
+        Task taskExampel = new Task ("Taskname", LocalDate.of(1900,1,1), LocalDate.of(1900,1,1),
+        0, 0, "String isSubTask",0.0d, 0, 0, 0, 0, 0.0d, "String subTaskToName");
+
         returnList.add(taskExampel);
         return returnList;
     }
