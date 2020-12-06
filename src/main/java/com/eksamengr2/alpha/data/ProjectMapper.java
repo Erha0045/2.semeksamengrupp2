@@ -2,8 +2,10 @@ package com.eksamengr2.alpha.data;
 
 
 import com.eksamengr2.alpha.model.Project;
+import com.eksamengr2.alpha.model.User;
 
 import java.sql.*;
+import java.util.Set;
 
 public class ProjectMapper {
 
@@ -31,5 +33,18 @@ public class ProjectMapper {
             } catch (SQLException ex) {
                 throw new Exception(ex.getMessage());
             }
+        }
+
+        public ResultSet getProjectNames(User user) throws SQLException {
+            Connection con = DatabaseConnector.getConnection();
+
+            String SQL = "SELECT * FROM project "
+                    + "WHERE ownername=?";
+            PreparedStatement ps = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, user.getUserName());
+
+            ResultSet resultSet = ps.executeQuery();
+            return resultSet;
+
         }
 }

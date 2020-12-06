@@ -14,8 +14,15 @@ public class Project {
     @DateTimeFormat(pattern = "yyyy-MM-dd") //for at matche formattering fra bruger flade
     private LocalDate deadlineDate;
 
+    //todo j-unit med startdato før deadlinedato
+    //todo j-unit med tjek af projektname ikke eksisterer (ikke relevant alligevel da alle brugere kan have deres egne projecter)
+
 
     public Project() {
+    }
+
+    public Project(int projectId){
+        this.projectId=projectId;
     }
 
     public Project(String projectName, String ownerName, LocalDate startDate) {
@@ -44,10 +51,6 @@ public class Project {
 
     public void setDeadlineDate(LocalDate deadlineDate) {
         this.deadlineDate = deadlineDate;
-    }
-
-    public Project(int projectId){
-        this.projectId=projectId;
     }
 
     public int getProjectId() {
