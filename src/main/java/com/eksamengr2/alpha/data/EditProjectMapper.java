@@ -140,19 +140,14 @@ public class EditProjectMapper {
         return list;
     }
 
-    public ArrayList<Task> getTaskLine(int projectId, double taskNo) throws SQLException {
-        Task search1=null;
-        Task task = new Task();
-
-        Connection conn = null; //forbindelse
+    public Task getTaskLine(int projectId, double taskNo) throws SQLException {
+        Task taskLine = new Task();
         ResultSet resultSet = null; //dataflow 1 linie ad gangen
-        ArrayList<Task> arrDaters = new ArrayList<>();
         PreparedStatement preparedStatement=null;
 
-
         try {
+            Connection conn = DatabaseConnector.getConnection();
             // 1) Connect to the database
-            conn = DriverManager.getConnection("jdbc:mysql://den1.mysql3.gear.host/alfasolutionsdb?autoReconnect=true&useSSL=false", "alfasolutionsdb", "Ga9Q_!89hJab");
 
             //2) Create a string that holds the query with ? as user input
             String sqlString = "SELECT * FROM alfasolutionsdb.task WHERE projectid=? AND taskno=?;";
@@ -168,41 +163,76 @@ public class EditProjectMapper {
             resultSet = preparedStatement.executeQuery();
 
             //6) Fylder ArrayList med data fra mySQL database tabel "Person"
-            int lineCounter=0;
+
             while (resultSet.next()) //true så længe der er mere data i sql tabel
             {
-                ++lineCounter; //yderste kolonne i tabel 1,2,3 ect i edit_project
                 //laver et object med en resultat række
-                search1 = new Task(resultSet.getString("name"),
-                        resultSet.getDate("startdate").toLocalDate(),
-                        resultSet.getDate("finishdate").toLocalDate(),
-                        resultSet.getInt("duration"),
-                        resultSet.getInt("projectid"),
-                        resultSet.getString("isSubTask"),
-                        Math.round((resultSet.getDouble("taskno")*100)/100d),
-                        lineCounter);
-
-                //7) fylder ArrayList med data
-                arrDaters.add(search1);
+                taskLine = new Task(resultSet.getString("name"),
+                                    resultSet.getDate("startdate").toLocalDate(),
+                                    resultSet.getDate("finishdate").toLocalDate(),
+                                    resultSet.getInt("duration"),
+                                    resultSet.getInt("projectid"),
+                                    resultSet.getString("isSubTask"),
+                        Math.round(resultSet.getDouble("taskno")*100)/100d,
+                                    resultSet.getInt("tasktimeconsumption"),
+                                    resultSet.getInt("noofpersons"),
+                        Math.round(resultSet.getDouble("workinghoursday")*100)/100d,
+                        resultSet.getString("subtasktoname"));
             }
-            //return arrResultList;
         }//try
         catch (Exception e) {
             System.err.println(e.getMessage());
 
-        } finally //kode der skal køres selvom den bugger (lukke connection)
-        {
-            if (preparedStatement != null)
-                preparedStatement.close();
-
-            if (conn != null)
-                conn.close();
         }
-        //TEST PRINT
-        for (Task a : arrDaters ) { System.out.println(a.getName() +" taskno: "+a.getTaskNo()) ; }
 
-        return arrDaters;
+        return taskLine;
     }//Method
+
+//    public Task getTaskLine(int projectId, double taskNo) throws SQLException {
+//        Task taskLine = new Task();
+//        ResultSet resultSet = null; //dataflow 1 linie ad gangen
+//        PreparedStatement preparedStatement=null;
+//
+//        try {
+//            Connection conn = DatabaseConnector.getConnection();
+//            // 1) Connect to the database
+//
+//            //2) Create a string that holds the query with ? as user input
+//            String sqlString = "SELECT * FROM alfasolutionsdb.task WHERE projectid=? AND taskno=?;";
+//
+//            //3) prepare the query
+//            preparedStatement= conn.prepareStatement(sqlString);
+//
+//            //4 Indsætter værdier i placeholders '?'
+//            preparedStatement.setInt(1, projectId);
+//            preparedStatement.setDouble(2, Math.round(taskNo*100)/100d);
+//
+//            //5) excecuter sql statement
+//            resultSet = preparedStatement.executeQuery();
+//
+//            //6) Fylder ArrayList med data fra mySQL database tabel "Person"
+//            int lineCounter=0;
+//            while (resultSet.next()) //true så længe der er mere data i sql tabel
+//            {
+//                ++lineCounter; //yderste kolonne i tabel 1,2,3 ect i edit_project
+//                //laver et object med en resultat række
+//                taskLine = new Task(resultSet.getString("name"),
+//                        resultSet.getDate("startdate").toLocalDate(),
+//                        resultSet.getDate("finishdate").toLocalDate(),
+//                        resultSet.getInt("duration"),
+//                        resultSet.getInt("projectid"),
+//                        resultSet.getString("isSubTask"),
+//                        Math.round((resultSet.getDouble("taskno")*100)/100d),
+//                        lineCounter);
+//            }
+//        }//try
+//        catch (Exception e) {
+//            System.err.println(e.getMessage());
+//
+//        }
+//
+//        return taskLine;
+//    }//Method
 
 
 

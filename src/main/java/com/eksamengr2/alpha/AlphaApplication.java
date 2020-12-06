@@ -3,7 +3,9 @@ package com.eksamengr2.alpha;
 import com.eksamengr2.alpha.data.ProjectMapper;
 import com.eksamengr2.alpha.data.RegistrationsMapper;
 import com.eksamengr2.alpha.model.Project;
+import com.eksamengr2.alpha.model.Task;
 import com.eksamengr2.alpha.model.User;
+import com.eksamengr2.alpha.service.TaskHandler1;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -15,11 +17,20 @@ public class AlphaApplication {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(AlphaApplication.class, args);
 
-//        RegistrationsMapper reg = new RegistrationsMapper();
+    TaskHandler1 taskHandler1 = new TaskHandler1();
+        Task old = new Task("Petersen", LocalDate.of(2020,12,02) ,
+        LocalDate.of(2020,12,04), 3,
+        1, "yes", 1.35,
+        100, 5, 7.25, "KØKKEN");
 
-//        //Dummy data
-//        User user1 = new User("pascal", "qwas@mail.com");
-//        reg.registerUser(user1);
+        Task mod = new Task("", null,
+                LocalDate.of(2020,12,04), 0,
+                0, "", 0.0,
+                0, 0, 0.0, "");
+
+
+
+    taskHandler1.UserInput_FromEditTask_UpdateTaskInDB2(mod, old);
 
     }
 

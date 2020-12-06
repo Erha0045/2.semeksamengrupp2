@@ -15,24 +15,43 @@ public class Task {
     private String isSubTask;
     private double taskNo;
     private int lineCounter;
-    private String NewTaskName;
+    //private String newTaskName;
     private int idtask;
     private double taskNumber; //TODO skal fjernes
     private int  taskTimeconsumption; //the total time for one subTask
     private int noOfPersons;
     private double workingHoursDay;
-    private String subTaskToName;
+    private String subTaskToName; //If subtask, then name of task
 
-    public Task(LocalDate startDate, LocalDate finishDate, int duration,
-                int projectId, String isSubTask, double taskNo, String newTaskName,
+    public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask,
+                double taskNo, int lineCounter, int idtask, double taskNumber,
                 int taskTimeconsumption, int noOfPersons, double workingHoursDay, String subTaskToName) {
+        this.name = name;
         this.startDate = startDate;
         this.finishDate = finishDate;
         this.duration = duration;
         this.projectId = projectId;
         this.isSubTask = isSubTask;
         this.taskNo = taskNo;
-        NewTaskName = newTaskName;
+        this.lineCounter = lineCounter;
+        this.idtask = idtask;
+        this.taskNumber = taskNumber;
+        this.taskTimeconsumption = taskTimeconsumption;
+        this.noOfPersons = noOfPersons;
+        this.workingHoursDay = workingHoursDay;
+        this.subTaskToName = subTaskToName;
+    }
+    //For edit task...
+    public Task(String name, LocalDate startDate, LocalDate finishDate, int duration,
+                int projectId, String isSubTask, double taskNo,
+                int taskTimeconsumption, int noOfPersons, double workingHoursDay, String subTaskToName) {
+        this.name = name;
+        this.startDate = startDate;
+        this.finishDate = finishDate;
+        this.duration = duration;
+        this.projectId = projectId;
+        this.isSubTask = isSubTask;
+        this.taskNo = taskNo;
         this.taskTimeconsumption = taskTimeconsumption;
         this.noOfPersons = noOfPersons;
         this.workingHoursDay = workingHoursDay;
@@ -44,7 +63,8 @@ public class Task {
         this.idtask = idtask;
     }
 
-    public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask, double taskNo, int lineCounter, String newTaskName, int idtask) {
+    public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask,
+                double taskNo, int lineCounter, int idtask) {
         this.name = name;
         this.startDate = startDate;
         this.finishDate = finishDate;
@@ -53,11 +73,11 @@ public class Task {
         this.isSubTask = isSubTask;
         this.taskNo = taskNo;
         this.lineCounter = lineCounter;
-        NewTaskName = newTaskName;
         this.idtask = idtask;
     }
 
-    public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask, double taskNo, int lineCounter, String NewTaskName) {
+    public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask,
+                double taskNo, int lineCounter) {
         this.name = name;
         this.startDate = startDate;
         this.finishDate = finishDate;
@@ -66,20 +86,20 @@ public class Task {
         this.isSubTask = isSubTask;
         this.taskNo = taskNo;
         this.lineCounter = lineCounter;
-        this.NewTaskName = NewTaskName;
     }
 
     //bruges til måske edit_project
-    public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask, double taskNo, int lineCounter) {
-        this.name = name;
-        this.startDate = startDate;
-        this.finishDate = finishDate;
-        this.duration = duration;
-        this.projectId = projectId;
-        this.isSubTask = isSubTask;
-        this.taskNo = taskNo;
-        this.lineCounter=lineCounter;
-    }
+//    public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask,
+//                double taskNo, int lineCounter) {
+//        this.name = name;
+//        this.startDate = startDate;
+//        this.finishDate = finishDate;
+//        this.duration = duration;
+//        this.projectId = projectId;
+//        this.isSubTask = isSubTask;
+//        this.taskNo = taskNo;
+//        this.lineCounter=lineCounter;
+//    }
 
     public Task(String name) {
         this.name = name;
@@ -103,7 +123,6 @@ public class Task {
                 ", isSubTask='" + isSubTask + '\'' +
                 ", taskNo=" + taskNo +
                 ", lineCounter=" + lineCounter +
-                ", NewTaskName='" + NewTaskName + '\'' +
                 ", idtask=" + idtask +
                 ", taskNumber=" + taskNumber +
                 ", taskTimeconsumption=" + taskTimeconsumption +
@@ -133,7 +152,6 @@ public class Task {
         if (startDate != null ? !startDate.equals(task.startDate) : task.startDate != null) return false;
         if (finishDate != null ? !finishDate.equals(task.finishDate) : task.finishDate != null) return false;
         if (isSubTask != null ? !isSubTask.equals(task.isSubTask) : task.isSubTask != null) return false;
-        if (NewTaskName != null ? !NewTaskName.equals(task.NewTaskName) : task.NewTaskName != null) return false;
         return subTaskToName != null ? subTaskToName.equals(task.subTaskToName) : task.subTaskToName == null;
     }
 
@@ -150,7 +168,6 @@ public class Task {
         temp = Double.doubleToLongBits(taskNo);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + lineCounter;
-        result = 31 * result + (NewTaskName != null ? NewTaskName.hashCode() : 0);
         result = 31 * result + idtask;
         temp = Double.doubleToLongBits(taskNumber);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
@@ -244,14 +261,6 @@ public class Task {
 
     public int getLineCounter() {
         return lineCounter;
-    }
-
-    public String getNewTaskName() {
-        return NewTaskName;
-    }
-
-    public void setNewTaskName(String newTaskName) {
-        NewTaskName = newTaskName;
     }
 
     public double getTaskNumber() {

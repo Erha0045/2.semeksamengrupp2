@@ -11,140 +11,255 @@ import java.util.ArrayList;
 public class TaskHandler1 {
     EditProjectMapper editProjectMapper = new EditProjectMapper();
 
-
-    public ArrayList<Task> UserInput_FromEditTask_UpdateTaskInDB(ArrayList<Task> modifiedTask, ArrayList<Task> oldTask) throws SQLException {
-        LocalDate startOld;
-        LocalDate finishOld;
-        LocalDate startMod;
-        LocalDate finishMod;
+    public ArrayList<Task> UserInput_FromEditTask_UpdateTaskInDB2(Task modifiedTask, Task oldTask) throws SQLException {
+        Task newTask = oldTask;
+        System.out.println("modified: " + modifiedTask);
+        System.out.println("old: " + oldTask);
 
         //*********************************************************
         //Using local variables to make the code more readable
         //*********************************************************
-
-        //The values the user did not change, keeping (old)
-       // if (oldTask.get(0).getStartDate()!=null && oldTask.get(0).getFinishDate()!=null ) {
-            startOld = oldTask.get(0).getStartDate();
-            finishOld = oldTask.get(0).getFinishDate();
-        //}
-       // else {
-       //     startOld = null;
-       //     finishOld = null;
-        //}
-        int durationOld = oldTask.get(0).getDuration();
+        LocalDate startOld =oldTask.getStartDate();
+        LocalDate finishOld = oldTask.getFinishDate();
+        int durationOld = oldTask.getDuration();
 
         //The values the user have changed (modified)->(mod)
-        startMod = modifiedTask.get(0).getStartDate();
-        finishMod = modifiedTask.get(0).getFinishDate();
-        int durationMod = modifiedTask.get(0).getDuration();
+        LocalDate startMod = modifiedTask.getStartDate();
+        LocalDate finishMod = modifiedTask.getFinishDate();
+        int durationMod = modifiedTask.getDuration();
 
-        //The new values used to update the DB (new)
-        LocalDate startNew=null; //= returnList.get(0).getStartDate();
-        LocalDate finishNew=null;// = returnList.get(0).getFinishDate();
-        int durationNew=0; //  = returnList.get(0).getDuration();
-
-        //Transfer data from the old(DB-values) to new list
-        ArrayList<Task> newList = oldTask;
-
-        //initialiser med værdier da get ellers ikke kan bruges
-        //newList.add(new Task("",LocalDate.of(1900,1,1),LocalDate.of(1900,1,1),0,0,"maybe",(float) 0.0,0));
 
         //**************************************************************************************
-        //The tree values for a task, startDate, finishDate and duration interact with eachother
+        //The four values for a task, startDate, finishDate, duration noOfPersons and workingHoursDay interact with eachother
         //**************************************************************************************
         //1) startDate is changed-> durationNew = startMod - finishOld
-        if( startMod !=null && finishMod==null && durationMod==0){
-            durationNew = (int) ChronoUnit.DAYS.between(startMod,finishOld) +1;
-            startNew = startMod;
-            finishNew = finishOld;
-        }
+//        if( startMod !=null && finishMod==null && durationMod==0){
+//            durationNew = (int) ChronoUnit.DAYS.between(startMod,finishOld) +1;
+//            startNew = startMod;
+//            finishNew = finishOld;
+//        }
+//
+//        //2) FinishDate is changed->
+//        if( startMod ==null && finishMod!=null && durationMod==0){
+//            durationNew = (int) ChronoUnit.DAYS.between(startOld,finishMod) +1;
+//            startNew = startOld;
+//            finishNew = finishMod;
+//        }
+//
+//        //3) Duration is changed->
+//        if( startMod ==null && finishMod==null && durationMod!=0){
+//            durationNew = durationMod;
+//            startNew = startOld;
+//            finishNew = startOld.plusDays(durationMod +1);
+//        }
+//
+//        //4) StartDate and FinishedDate is changed->
+//        if( startMod !=null && finishMod!=null && durationMod==0){
+//            durationNew = (int) ChronoUnit.DAYS.between(startMod,finishMod) +1;;
+//            startNew = startMod;
+//            finishNew = finishMod;
+//        }
+//
+//        //5) FinishedDate and Duration is changed->
+//        if( startMod ==null && finishMod!=null && durationMod!=0){
+//            durationNew = durationMod;
+//            startNew = finishMod.minusDays((long)durationMod-1);
+//            finishNew = finishMod;
+//        }
+//
+//        //6) StartDate and Duration is changed->
+//        if( startMod !=null && finishMod==null && durationMod!=0){
+//            durationNew = durationMod;
+//            startNew = startMod;
+//            finishNew = startMod.plusDays((long)durationMod+1);
+//        }
+//
+//        //7) StartDate, finishDate and Duration is changed-> TODO NÅR DE IKKE PASSER SAMMEN så regnes duration automatisk??
+//        if( startMod !=null && finishMod!=null && durationMod!=0){
+//            durationNew = (int) ChronoUnit.DAYS.between(startMod,finishMod)+1;
+//            startNew = startMod;
+//            finishNew = finishMod;
+//        }
+//
+//        //8) none is changed->
+//        if( startMod ==null && finishMod==null && durationMod==0){
+//            durationNew = durationOld;
+//            startNew = startOld;
+//            finishNew = finishOld;
+//        }
+//        //**********************************************************************************
+//        //**********************************************************************************
+//
+//        //fill newArraylist with values from duration, startDate and finishDate
+//        newList.get(0).setDuration(durationNew);
+//        newList.get(0).setStartDate(startNew);
+//        newList.get(0).setFinishDate(finishNew);
+//
+//        //giving "name" a value depending on users choice
+//        if (modifiedTask.get(0).getName().equals("")){
+//            newList.get(0).setName(oldTask.get(0).getName());
+//        }
+//        else {
+//            newList.get(0).setName(modifiedTask.get(0).getName());
+//        }
+//
+//        //giving attributes the old value,  since they are not in UI choise TODO SKULLE VÆRE OVERFLØDIG
+//        newList.get(0).setProjectId(oldTask.get(0).getProjectId()); //"projectId"
+//        newList.get(0).setIsSubTask(oldTask.get(0).getIsSubTask()); //isSubTask
+//        newList.get(0).setLineCounter(oldTask.get(0).getLineCounter()); //lineCounter
+//        newList.get(0).setName(oldTask.get(0).getName()); //TaskName
+//
+//        //System.out.println("new List Before method: "+newList);
+//        //Change of taskNumber og alle eventuelt tilhørende subtask numre TODO
+//        int projectId = oldTask.get(0).getProjectId();
+//        double modifiedTaskNo = modifiedTask.get(0).getTaskNo();
+//        double oldTaskNo = oldTask.get(0).getTaskNo();
+//        String isSubTask = oldTask.get(0).getIsSubTask();
+//
+//        //Updates DB with new TaskNo'(s)
+//        String sqlString = createsSqlStringForUpdatingTaskNo(projectId, oldTaskNo, modifiedTaskNo, isSubTask);
+//        editProjectMapper.updateTaskNos(sqlString);
+//
+//        //Updates DB with task-attributes except for taskNo
+//        editProjectMapper.updateTask(newList);
 
-        //2) FinishDate is changed->
-        if( startMod ==null && finishMod!=null && durationMod==0){
-            durationNew = (int) ChronoUnit.DAYS.between(startOld,finishMod) +1;
-            startNew = startOld;
-            finishNew = finishMod;
-        }
-
-        //3) Duration is changed->
-        if( startMod ==null && finishMod==null && durationMod!=0){
-            durationNew = durationMod;
-            startNew = startOld;
-            finishNew = startOld.plusDays(durationMod +1);
-        }
-
-        //4) StartDate and FinishedDate is changed->
-        if( startMod !=null && finishMod!=null && durationMod==0){
-            durationNew = (int) ChronoUnit.DAYS.between(startMod,finishMod) +1;;
-            startNew = startMod;
-            finishNew = finishMod;
-        }
-
-        //5) FinishedDate and Duration is changed->
-        if( startMod ==null && finishMod!=null && durationMod!=0){
-            durationNew = durationMod;
-            startNew = finishMod.minusDays((long)durationMod-1);
-            finishNew = finishMod;
-        }
-
-        //6) StartDate and Duration is changed->
-        if( startMod !=null && finishMod==null && durationMod!=0){
-            durationNew = durationMod;
-            startNew = startMod;
-            finishNew = startMod.plusDays((long)durationMod+1);
-        }
-
-        //7) StartDate, finishDate and Duration is changed-> TODO NÅR DE IKKE PASSER SAMMEN så regnes duration automatisk??
-        if( startMod !=null && finishMod!=null && durationMod!=0){
-            durationNew = (int) ChronoUnit.DAYS.between(startMod,finishMod)+1;
-            startNew = startMod;
-            finishNew = finishMod;
-        }
-
-        //8) none is changed->
-        if( startMod ==null && finishMod==null && durationMod==0){
-            durationNew = durationOld;
-            startNew = startOld;
-            finishNew = finishOld;
-        }
-        //**********************************************************************************
-        //**********************************************************************************
-
-        //fill newArraylist with values from duration, startDate and finishDate
-        newList.get(0).setDuration(durationNew);
-        newList.get(0).setStartDate(startNew);
-        newList.get(0).setFinishDate(finishNew);
-
-        //giving "name" a value depending on users choice
-        if (modifiedTask.get(0).getName().equals("")){
-            newList.get(0).setName(oldTask.get(0).getName());
-        }
-        else {
-            newList.get(0).setName(modifiedTask.get(0).getName());
-        }
-
-        //giving attributes the old value,  since they are not in UI choise TODO SKULLE VÆRE OVERFLØDIG
-        newList.get(0).setProjectId(oldTask.get(0).getProjectId()); //"projectId"
-        newList.get(0).setIsSubTask(oldTask.get(0).getIsSubTask()); //isSubTask
-        newList.get(0).setLineCounter(oldTask.get(0).getLineCounter()); //lineCounter
-        newList.get(0).setNewTaskName(oldTask.get(0).getNewTaskName()); //NewTaskName
-
-        //System.out.println("new List Before method: "+newList);
-        //Change of taskNumber og alle eventuelt tilhørende subtask numre TODO
-        int projectId = oldTask.get(0).getProjectId();
-        double modifiedTaskNo = modifiedTask.get(0).getTaskNo();
-        double oldTaskNo = oldTask.get(0).getTaskNo();
-        String isSubTask = oldTask.get(0).getIsSubTask();
-
-        //Updates DB with new TaskNo'(s)
-        String sqlString = createsSqlStringForUpdatingTaskNo(projectId, oldTaskNo, modifiedTaskNo, isSubTask);
-        editProjectMapper.updateTaskNos(sqlString);
-
-        //Updates DB with task-attributes except for taskNo
-        editProjectMapper.updateTask(newList);
-
-        return newList; //BRUGES TIL TEST TODO fjern return og kør mappers direkte????????
+//        return newList; //BRUGES TIL TEST TODO fjern return og kør mappers direkte????????
+        return null;
     }//method
+
+//    public ArrayList<Task> UserInput_FromEditTask_UpdateTaskInDB(ArrayList<Task> modifiedTask, ArrayList<Task> oldTask) throws SQLException {
+//        LocalDate startOld;
+//        LocalDate finishOld;
+//        LocalDate startMod;
+//        LocalDate finishMod;
+//
+//        //*********************************************************
+//        //Using local variables to make the code more readable
+//        //*********************************************************
+//
+//        //The values the user did not change, keeping (old)
+//       // if (oldTask.get(0).getStartDate()!=null && oldTask.get(0).getFinishDate()!=null ) {
+//            startOld = oldTask.get(0).getStartDate();
+//            finishOld = oldTask.get(0).getFinishDate();
+//        //}
+//       // else {
+//       //     startOld = null;
+//       //     finishOld = null;
+//        //}
+//        int durationOld = oldTask.get(0).getDuration();
+//
+//        //The values the user have changed (modified)->(mod)
+//        startMod = modifiedTask.get(0).getStartDate();
+//        finishMod = modifiedTask.get(0).getFinishDate();
+//        int durationMod = modifiedTask.get(0).getDuration();
+//
+//        //The new values used to update the DB (new)
+//        LocalDate startNew=null; //= returnList.get(0).getStartDate();
+//        LocalDate finishNew=null;// = returnList.get(0).getFinishDate();
+//        int durationNew=0; //  = returnList.get(0).getDuration();
+//
+//        //Transfer data from the old(DB-values) to new list
+//        ArrayList<Task> newList = oldTask;
+//
+//        //initialiser med værdier da get ellers ikke kan bruges
+//        //newList.add(new Task("",LocalDate.of(1900,1,1),LocalDate.of(1900,1,1),0,0,"maybe",(float) 0.0,0));
+//
+//        //**************************************************************************************
+//        //The tree values for a task, startDate, finishDate and duration interact with eachother
+//        //**************************************************************************************
+//        //1) startDate is changed-> durationNew = startMod - finishOld
+//        if( startMod !=null && finishMod==null && durationMod==0){
+//            durationNew = (int) ChronoUnit.DAYS.between(startMod,finishOld) +1;
+//            startNew = startMod;
+//            finishNew = finishOld;
+//        }
+//
+//        //2) FinishDate is changed->
+//        if( startMod ==null && finishMod!=null && durationMod==0){
+//            durationNew = (int) ChronoUnit.DAYS.between(startOld,finishMod) +1;
+//            startNew = startOld;
+//            finishNew = finishMod;
+//        }
+//
+//        //3) Duration is changed->
+//        if( startMod ==null && finishMod==null && durationMod!=0){
+//            durationNew = durationMod;
+//            startNew = startOld;
+//            finishNew = startOld.plusDays(durationMod +1);
+//        }
+//
+//        //4) StartDate and FinishedDate is changed->
+//        if( startMod !=null && finishMod!=null && durationMod==0){
+//            durationNew = (int) ChronoUnit.DAYS.between(startMod,finishMod) +1;;
+//            startNew = startMod;
+//            finishNew = finishMod;
+//        }
+//
+//        //5) FinishedDate and Duration is changed->
+//        if( startMod ==null && finishMod!=null && durationMod!=0){
+//            durationNew = durationMod;
+//            startNew = finishMod.minusDays((long)durationMod-1);
+//            finishNew = finishMod;
+//        }
+//
+//        //6) StartDate and Duration is changed->
+//        if( startMod !=null && finishMod==null && durationMod!=0){
+//            durationNew = durationMod;
+//            startNew = startMod;
+//            finishNew = startMod.plusDays((long)durationMod+1);
+//        }
+//
+//        //7) StartDate, finishDate and Duration is changed-> TODO NÅR DE IKKE PASSER SAMMEN så regnes duration automatisk??
+//        if( startMod !=null && finishMod!=null && durationMod!=0){
+//            durationNew = (int) ChronoUnit.DAYS.between(startMod,finishMod)+1;
+//            startNew = startMod;
+//            finishNew = finishMod;
+//        }
+//
+//        //8) none is changed->
+//        if( startMod ==null && finishMod==null && durationMod==0){
+//            durationNew = durationOld;
+//            startNew = startOld;
+//            finishNew = finishOld;
+//        }
+//        //**********************************************************************************
+//        //**********************************************************************************
+//
+//        //fill newArraylist with values from duration, startDate and finishDate
+//        newList.get(0).setDuration(durationNew);
+//        newList.get(0).setStartDate(startNew);
+//        newList.get(0).setFinishDate(finishNew);
+//
+//        //giving "name" a value depending on users choice
+//        if (modifiedTask.get(0).getName().equals("")){
+//            newList.get(0).setName(oldTask.get(0).getName());
+//        }
+//        else {
+//            newList.get(0).setName(modifiedTask.get(0).getName());
+//        }
+//
+//        //giving attributes the old value,  since they are not in UI choise TODO SKULLE VÆRE OVERFLØDIG
+//        newList.get(0).setProjectId(oldTask.get(0).getProjectId()); //"projectId"
+//        newList.get(0).setIsSubTask(oldTask.get(0).getIsSubTask()); //isSubTask
+//        newList.get(0).setLineCounter(oldTask.get(0).getLineCounter()); //lineCounter
+//        newList.get(0).setName(oldTask.get(0).getName()); //TaskName
+//
+//        //System.out.println("new List Before method: "+newList);
+//        //Change of taskNumber og alle eventuelt tilhørende subtask numre TODO
+//        int projectId = oldTask.get(0).getProjectId();
+//        double modifiedTaskNo = modifiedTask.get(0).getTaskNo();
+//        double oldTaskNo = oldTask.get(0).getTaskNo();
+//        String isSubTask = oldTask.get(0).getIsSubTask();
+//
+//        //Updates DB with new TaskNo'(s)
+//        String sqlString = createsSqlStringForUpdatingTaskNo(projectId, oldTaskNo, modifiedTaskNo, isSubTask);
+//        editProjectMapper.updateTaskNos(sqlString);
+//
+//        //Updates DB with task-attributes except for taskNo
+//        editProjectMapper.updateTask(newList);
+//
+//        return newList; //BRUGES TIL TEST TODO fjern return og kør mappers direkte????????
+//    }//method
 
 
     //TODO kan vel fjerne if'erne og vel kun en repeatString da for løkke automatisk kun udskifter de valgte????
@@ -219,7 +334,7 @@ public class TaskHandler1 {
          int duration = newTaskFromInput.getDuration();
 
          //Inserts new name
-        newTaskFromInput.setName(newTaskFromInput.getNewTaskName());
+        newTaskFromInput.setName(newTaskFromInput.getName());
 
         //Finds value for isSubTask
         if (newTaskFromInput.getSubTaskToName().equals("No overtask")){
@@ -250,5 +365,19 @@ public class TaskHandler1 {
         editProjectMapper.insertNewTaskIn_TaskTabel(newTaskFromInput);
 
         return newTaskFromInput; //Kun til test
+    }
+
+    /**Exampel text of a task for the UI
+     *
+     * @return
+     */
+    public ArrayList<Task> ExampelForTaskLine(){
+        ArrayList<Task> returnList = new ArrayList<>();
+        Task taskExampel = new Task("Taskname", LocalDate.of(1900,1,1),
+                LocalDate.of(1900,1,1), 0, 0, "",
+        0.0d, 0, 0, 0.0d,
+        0, 0, 0.0d, "String subTaskToName");
+        returnList.add(taskExampel);
+        return returnList;
     }
 }
