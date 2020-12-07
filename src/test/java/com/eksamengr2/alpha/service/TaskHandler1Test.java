@@ -2,13 +2,10 @@ package com.eksamengr2.alpha.service;
 
 import com.eksamengr2.alpha.model.Task;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.junit.runner.RunWith;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -144,7 +141,7 @@ class TaskHandler1Test {
     })
     void createsSqlStringForUpdatingTaskNo(int projectId, float oldTaskNo, float newTaskNo, String isSubTask, String expected) {
         TaskHandler1 taskHandler1 = new TaskHandler1();
-        String actual = taskHandler1.createsSqlStringForUpdatingTaskNo(projectId, oldTaskNo, newTaskNo, isSubTask);
+        String actual = taskHandler1.UpdateTaskNos(projectId, oldTaskNo, newTaskNo, isSubTask);
 
         assertEquals(expected,actual);
 

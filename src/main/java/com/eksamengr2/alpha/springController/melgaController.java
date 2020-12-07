@@ -128,7 +128,7 @@ public class melgaController {
         arrTaskLine.add(objTaskLine);
         model.addAttribute("taskLine", arrTaskLine);
 
-        //3 Transfer data from ArrayList to tabel after roundofing double taskNo
+        //3 Transfer data from ArrayList to tabel after rounding double taskNo TODO hvorfor ikke efter data er opdateret
         tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
         for (int i=0; i<tasksForProjectId.size(); i++ ) { //Afrunder double TODO SKAL i metode
             tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100)/100d);
@@ -143,16 +143,17 @@ public class melgaController {
         System.out.println("Oldtask: "+oldTaskdata); //TEST
         System.out.println("modTask: " +task);
 
-
+        //6a Send old + modified object to SQL generator which then sends to DB
+        taskHandler1.UpdateTaskInDB(task,oldTaskdata);
 
 
         //1 transfer headline projectname
-        //2 transfer TaskNo-example data til UI
+        //2 transfer TaskNo-example data til UI --Måske ikke
         //3 transfer arraylist til tabel
         //4 er bare task-------Hent input fra textfelter til object
         //5 Send input til en check metode
         //5a Hvis OKAY Hent old data for taskLine til object
-        //6a Send old. modified object til SQL generator
+        //6a Send old + modified object til SQL generator --> mapper
         //5b Hvis IK OKAY send besked til bruger
 
 //        //Transfer to task-info-line
@@ -223,7 +224,7 @@ public class melgaController {
         model.addAttribute("listTitler", listTitler);
 
         //Preparing input data så det kan indsættes i DB
-        taskController.UserInput_FromAddTaskPreparedToMySQL(task);
+        taskController.UserInput_FromAddTaskPreparedToMySQL(task); //TODO METODE ER IKKE OPDATET
 
         return "add_task";
     }

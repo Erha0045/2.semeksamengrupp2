@@ -17,21 +17,6 @@ public class AlphaApplication {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(AlphaApplication.class, args);
 
-    TaskHandler1 taskHandler1 = new TaskHandler1();
-        Task old = new Task("Petersen", LocalDate.of(2020,12,02) ,
-        LocalDate.of(2020,12,04), 3,
-        1, "yes", 1.35,
-        100, 5, 7.25, "KØKKEN");
-
-        Task mod = new Task("", null,
-                LocalDate.of(2020,12,04), 0,
-                0, "", 0.0,
-                0, 0, 0.0, "");
-
-
-
-    taskHandler1.UserInput_FromEditTask_UpdateTaskInDB2(mod, old);
-
     }
 
 
