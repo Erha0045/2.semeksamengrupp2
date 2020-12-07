@@ -5,14 +5,12 @@ import com.eksamengr2.alpha.model.Project;
 import com.eksamengr2.alpha.model.Task;
 import com.eksamengr2.alpha.model.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OverviewMapper {
+public class DashboardMapper {
+
 
 //    public static ArrayList<Project> getProjectsFromDB() throws Exception {
 //        ResultSet rs = null;
@@ -75,17 +73,20 @@ public class OverviewMapper {
             Connection con = DatabaseConnector.getConnection();
             String SQL = "SELECT * FROM project "
                     + "WHERE ownername=?";
+//            Date sqlStartDate = Date.valueOf(project.getStartDate());
+//            Date sqlDeadlineDate = Date.valueOf(project.getDeadlineDate());
             ps = con.prepareStatement(SQL);
             ps.setString(1, ownerName);
 
             rs = ps.executeQuery();
             while (rs.next()) {
 //                Project mapperProject = new Project();
-                search = new Project(rs.getInt("idproject"),
+                search = new Project(
+                        rs.getInt("idproject"),
                         rs.getString("projectname"),
                         rs.getString ("ownername"),
-                        rs.getDate("startdate").toLocalDate());
-
+                        rs.getDate("startdate").toLocalDate(),
+                        rs.getDate("deadlinedate").toLocalDate());
 
                 //7) fylder ArrayList med data
                 projectList.add(search);

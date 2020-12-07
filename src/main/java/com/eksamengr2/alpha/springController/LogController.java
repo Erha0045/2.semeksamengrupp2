@@ -36,7 +36,7 @@ public class LogController {
 
             System.out.println("username, password: " + username + password);
             System.out.println(user);
-            return user.getUserType() + "/"+ user.getUserType() + "dashboard1";
+            return user.getUserType() + "/"+ user.getUserType() + "dashboard2";
 
 //            Project projectz = new Project();
 //            model.addAttribute("pojotransfer",projectz);

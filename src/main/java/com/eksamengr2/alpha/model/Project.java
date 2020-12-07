@@ -45,6 +45,14 @@ public class Project {
         this.deadlineDate = deadlineDate;
     }
 
+    public Project(int projectId, String projectName, String ownerName, LocalDate startDate, LocalDate deadlineDate) {
+        this.projectId = projectId;
+        this.projectName = projectName;
+        this.ownerName = ownerName;
+        this.startDate = startDate;
+        this.deadlineDate = deadlineDate;
+    }
+
     public LocalDate getDeadlineDate() {
         return deadlineDate;
     }
