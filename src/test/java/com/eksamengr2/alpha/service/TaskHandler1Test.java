@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-@DisplayName("Hejsa")
+
 class TaskHandler1Test {
 
 
@@ -141,7 +141,7 @@ class TaskHandler1Test {
     })
     void createsSqlStringForUpdatingTaskNo(int projectId, float oldTaskNo, float newTaskNo, String isSubTask, String expected) {
         TaskHandler1 taskHandler1 = new TaskHandler1();
-        String actual = taskHandler1.UpdateTaskNos(projectId, oldTaskNo, newTaskNo, isSubTask);
+        String actual = taskHandler1.updateTaskNos(projectId, oldTaskNo, newTaskNo, isSubTask);
 
         assertEquals(expected,actual);
 
@@ -150,8 +150,229 @@ class TaskHandler1Test {
     }
 
     @Test
-    void testtest(){
+    @DisplayName("TEST 1: StartDate i changed")
+    void editTask1() throws SQLException {
+        TaskHandler1 taskHandler1 = new TaskHandler1();
 
-        System.out.println("testtest");
+        //Parameters1
+        Task old = new Task("Taskname", LocalDate.of(2020,1,2),
+                LocalDate.of(2020,1,4), 3, 1, "yes",
+                1.4, 0, 74,
+                100, 4, 10, "");
+
+        //Parameters2
+        Task mod = new Task("", LocalDate.of(2020,1,1),
+                null, 0, 0, "",
+                0.0, 0, 0,
+                0, 0, 0.0, "");
+
+        //Expected result
+        Task exp = new Task("Taskname", LocalDate.of(2020,1,1),
+                LocalDate.of(2020,1,4), 4, 1, "yes",
+                1.4, 0, 74,
+                100, 3, 10, "");
+
+        Task actual = taskHandler1.editTask(mod, old);
+
+        //Assert
+        assertEquals(exp, actual);
+
+
+    }
+
+    @Test
+    @DisplayName("TEST 2: TimeConsumption is changed")
+    void editTask2() throws SQLException {
+        TaskHandler1 taskHandler1 = new TaskHandler1();
+
+        //Parameters1
+        Task old = new Task("Taskname", LocalDate.of(2020,1,1),
+                LocalDate.of(2020,1,4), 4, 1, "yes",
+                1.4, 0, 74,
+                100, 3, 10, "");
+
+        //Parameters2
+        Task mod = new Task("", null,
+                null, 0, 0, "",
+                0.0, 0, 0,
+                50, 0, 0.0, "");
+
+        //Expected result
+        Task exp = new Task("Taskname", LocalDate.of(2020,1,1),
+                LocalDate.of(2020,1,4), 4, 1, "yes",
+                1.4, 0, 74,
+                50, 2, 10, "");
+
+        Task actual = taskHandler1.editTask(mod, old);
+
+        //Assert
+        assertEquals(exp, actual);
+
+
+    }
+
+    @Test
+    @DisplayName("TEST 3: FinishDate is changed")
+    void editTask3() throws SQLException {
+        TaskHandler1 taskHandler1 = new TaskHandler1();
+
+        //Parameters1
+        Task old = new Task("Taskname", LocalDate.of(2020,1,1),
+                LocalDate.of(2020,1,11), 11, 1, "yes",
+                1.4, 0, 74,
+                560, 6, 10, "");
+
+        //Parameters2
+        Task mod = new Task("", null,
+                LocalDate.of(2020,1,6), 0, 0, "",
+                0.0, 0, 0,
+                0, 0, 0.0, "");
+
+        //Expected result
+        Task exp = new Task("Taskname", LocalDate.of(2020,1,1),
+                LocalDate.of(2020,1,6), 6, 1, "yes",
+                1.4, 0, 74,
+                560, 10, 10, "");
+
+        Task actual = taskHandler1.editTask(mod, old);
+
+        //Assert
+        assertEquals(exp, actual);
+    }
+
+    @Test
+    @DisplayName("TEST 4: Duration is changed")
+    void editTask4() throws SQLException {
+        TaskHandler1 taskHandler1 = new TaskHandler1();
+
+        //Parameters1
+        Task old = new Task("Taskname", LocalDate.of(2020,1,1),
+                LocalDate.of(2020,1,13), 13, 1, "yes",
+                1.4, 0, 74,
+                844, 9, 7.5, "");
+
+        //Parameters2
+        Task mod = new Task("", null,
+                null, 10, 0, "",
+                0.0, 0, 0,
+                0, 0, 0.0, "");
+
+        //Expected result
+        Task exp = new Task("Taskname", LocalDate.of(2020,1,1),
+                LocalDate.of(2020,1,10), 10, 1, "yes",
+                1.4, 0, 74,
+                844, 12, 7.5, "");
+
+        Task actual = taskHandler1.editTask(mod, old);
+
+        //Assert
+        assertEquals(exp, actual);
+    }
+
+    @Test
+    @DisplayName("TEST 5: personsOnTask is changed")
+    void editTask5() throws SQLException {
+        TaskHandler1 taskHandler1 = new TaskHandler1();
+
+        //Parameters1
+        Task old = new Task("Taskname", LocalDate.of(2020,1,1),
+                LocalDate.of(2020,1,20), 20, 1, "yes",
+                1.4, 0, 74,
+                741, 5, 7.0, "");
+
+        //Parameters2
+        Task mod = new Task("", null,
+                null, 0, 0, "",
+                0.0, 0, 0,
+                0, 10, 0.0, ""); //noOfPersons er afrundet??? når man regner modsat??
+
+        //Expected result
+        Task exp = new Task("Taskname", LocalDate.of(2020,1,1),
+                LocalDate.of(2020,1,10), 10, 1, "yes",
+                1.4, 0, 74,
+                741, 10, 7.41, "");
+
+        //Actual result
+        Task actual = taskHandler1.editTask(mod, old);
+
+        //Assert
+        assertEquals(exp, actual);
+    }
+
+    @Test
+    @DisplayName("TEST 6: workingHoursDay is changed")
+    void editTask6() throws SQLException {
+        TaskHandler1 taskHandler1 = new TaskHandler1();
+
+        //Parameters1
+        Task old = new Task("Taskname", LocalDate.of(2020,1,1),
+                LocalDate.of(2020,1,11), 11, 1, "yes",
+                1.4, 0, 74,
+                654, 8, 7.25, "");
+
+        //Parameters2
+        Task mod = new Task("", null,
+                null, 0, 0, "",
+                0.0, 0, 0,
+                0, 0, 6, ""); //noOfPersons er afrundet??? når man regner modsat??
+
+        //Expected result
+        Task exp = new Task("Taskname", LocalDate.of(2020,1,1),
+                LocalDate.of(2020,1,11), 11, 1, "yes",
+                1.4, 0, 74,
+                654, 10, 6.0, "");
+
+        //Actual result
+        Task actual = taskHandler1.editTask(mod, old);
+
+        //Assert
+        assertEquals(exp, actual);
+    }
+
+    @Test
+    @DisplayName("TEST 7: nothing is changed")
+    void editTask7() throws SQLException {
+        TaskHandler1 taskHandler1 = new TaskHandler1();
+
+        //Parameters1
+        Task old = new Task("Taskname", LocalDate.of(2020,1,1),
+                LocalDate.of(2020,1,11), 11, 1, "yes",
+                1.4, 0, 74,
+                654, 8, 7.25, "");
+
+        //Parameters2
+        Task mod = new Task("", null,
+                null, 0, 0, "",
+                0.0, 0, 0,
+                0, 0, 0, ""); //noOfPersons er afrundet??? når man regner modsat??
+
+        //Expected result
+        Task exp = new Task("Taskname", LocalDate.of(2020,1,1),
+                LocalDate.of(2020,1,11), 11, 1, "yes",
+                1.4, 0, 74,
+                654, 8, 7.25, "");
+
+        //Actual result
+        Task actual = taskHandler1.editTask(mod, old);
+
+        //Assert
+        assertEquals(exp, actual);
+    }
+
+    @Test
+    void updateTaskNos() {
+        TaskHandler1 taskHandler1 = new TaskHandler1();
+        int projectId=1;
+        double oldTaskNo=14.00;
+        double newTaskNo=15.00;
+        String isSubtask="no";
+        String expected="BEGIN WORK; START TRANSACTION; UPDATE alfasolutionsdb.task SET taskno =15.0 WHERE idtask=54;" +
+                        " UPDATE alfasolutionsdb.task SET taskno =15.25 WHERE idtask=55;" +
+                        " UPDATE alfasolutionsdb.task SET taskno =15.3 WHERE idtask=56; COMMIT;";
+
+        String actual=  taskHandler1.updateTaskNos(projectId,oldTaskNo,newTaskNo,isSubtask);
+
+        assertEquals(expected, actual);
+
     }
 }

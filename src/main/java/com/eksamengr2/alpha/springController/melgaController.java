@@ -32,8 +32,6 @@ public class melgaController {
     private ArrayList<Task> arrTaskLine = new ArrayList<>();
 
 
-
-
     @GetMapping("edit_task")
     public String edittask(Model model) throws SQLException  {
         //taskLine.add(new Task("Taskname", LocalDate.of(1900,1,1),LocalDate.of(1900,1,1),0,0,"yes",(float) 0.0,0));
@@ -69,6 +67,9 @@ public class melgaController {
     public String getTask(Model model, @RequestParam("textFieldSubtaskNo") double taskOrSubTaskNo) throws SQLException {
         Task objTaskLine;
 
+        //Transfers taskNo from input to class attribute for sharing between @PostMappings
+        transferTaskNo = Math.round(taskOrSubTaskNo*100)/100d;
+
         //Transfers pojo info to textfields form
         model.addAttribute("task", POJO_Task);
 
@@ -82,9 +83,6 @@ public class melgaController {
             tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100)/100d);
         }
         model.addAttribute("tasks", tasksForProjectId);
-
-        //Transfers data from input to class attribute for sharing between @PostMappings
-        transferTaskNo = Math.round(taskOrSubTaskNo*100)/100d;
 
         //Gets taskLinePOJO-data from DB when user push Button TODO GRIMT
         objTaskLine = editProjectMapper.getTaskLine(projectId, transferTaskNo);
@@ -140,11 +138,11 @@ public class melgaController {
 
         //5a Get old data for taskNo
         Task oldTaskdata = editProjectMapper.getTaskLine(projectId,transferTaskNo);
-        System.out.println("Oldtask: "+oldTaskdata); //TEST
-        System.out.println("modTask: " +task);
 
-        //6a Send old + modified object to SQL generator which then sends to DB
-        taskHandler1.UpdateTaskInDB(task,oldTaskdata);
+        //6a Send old + modified object to SQL generator which then sends data to DB
+        taskHandler1.editTask(task,oldTaskdata);
+
+
 
 
         //1 transfer headline projectname
@@ -194,8 +192,8 @@ public class melgaController {
 //        taskLine.add(new Task("Taskname", LocalDate.of(1900,1,1),LocalDate.of(1900,1,1),0,0,"yes", 0.0,0));
 //        model.addAttribute("taskLine", taskLine);
 
-        return "/edit_task"; //TODO afslut test
-//        return "redirect:/edit_task";
+        //return "/edit_task"; //TODO afslut test
+        return "redirect:/edit_task";
     }
 
 
@@ -223,7 +221,9 @@ public class melgaController {
         listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId);
         model.addAttribute("listTitler", listTitler);
 
-        //Preparing input data så det kan indsættes i DB
+
+
+        //New task inserted to DB
         taskController.UserInput_FromAddTaskPreparedToMySQL(task); //TODO METODE ER IKKE OPDATET
 
         return "add_task";

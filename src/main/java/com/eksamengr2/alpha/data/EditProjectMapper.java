@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EditProjectMapper {
+
     //TODO ER IKKE TJEKKET
     public void updateTask(Task task) throws SQLException {
         Connection conn=DatabaseConnector.getConnection();
@@ -86,7 +87,7 @@ public class EditProjectMapper {
                 //laver et object med en resultat række
 
 
-                task = new Task(Math.round((resultSet.getFloat("taskno")*100)/100d),
+                task = new Task((Math.round((resultSet.getDouble("taskno")*100.00))/100.00d),
                         resultSet.getInt("idtask"));
 
                 //7) fylder ArrayList med data
@@ -127,7 +128,7 @@ public class EditProjectMapper {
                 //laver et object med en resultat række
 
 
-                task = new Task(Math.round((resultSet.getDouble("taskno")*100.0)/100.0),
+                task = new Task((Math.round((resultSet.getDouble("taskno")*100.00))/100.00d),
                         resultSet.getInt("idtask"));
 
                 //7) fylder ArrayList med data
@@ -180,7 +181,9 @@ public class EditProjectMapper {
                                     resultSet.getInt("duration"),
                                     resultSet.getInt("projectid"),
                                     resultSet.getString("isSubTask"),
-                        Math.round(resultSet.getDouble("taskno")*100)/100d,
+                  Math.round(resultSet.getDouble("taskno")*100)/100d,
+                                    0,
+                        resultSet.getInt("idtask"),
                                     resultSet.getInt("tasktimeconsumption"),
                                     resultSet.getInt("noofpersons"),
                         Math.round(resultSet.getDouble("workinghoursday")*100)/100d,
