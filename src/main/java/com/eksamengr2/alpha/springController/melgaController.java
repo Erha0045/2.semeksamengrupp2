@@ -68,7 +68,7 @@ public class melgaController {
         Task objTaskLine;
 
         //Transfers taskNo from input to class attribute for sharing between @PostMappings
-        transferTaskNo = Math.round(taskOrSubTaskNo*100)/100d;
+        transferTaskNo = Math.round(taskOrSubTaskNo*100.00)/100.00d; //TODO ÆNDRET HER IKKE TESTET
 
         //Transfers pojo info to textfields form
         model.addAttribute("task", POJO_Task);
@@ -139,8 +139,19 @@ public class melgaController {
         //5a Get old data for taskNo
         Task oldTaskdata = editProjectMapper.getTaskLine(projectId,transferTaskNo);
 
-        //6a Send old + modified object to SQL generator which then sends data to DB
+        //6a Sends old + modified object to SQL generator which then sends data to DB
         taskHandler1.editTask(task,oldTaskdata);
+
+
+
+        //Transfers ArrayList-data to table
+        tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
+
+        //Afrunder double SKAL NED I MAPPER TODO eller??
+        for (int i=0; i<tasksForProjectId.size(); i++ ) {
+            tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100.0)/100.0);
+        }
+        model.addAttribute("tasks", tasksForProjectId);
 
 
 
@@ -221,10 +232,11 @@ public class melgaController {
         listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId);
         model.addAttribute("listTitler", listTitler);
 
-
+        System.out.println("Print fra controller: " +task);
+        task.setProjectId(projectId);
 
         //New task inserted to DB
-        taskController.UserInput_FromAddTaskPreparedToMySQL(task); //TODO METODE ER IKKE OPDATET
+        taskController.AddTaskToDB(task); //TODO METODE ER IKKE OPDATET
 
         return "add_task";
     }

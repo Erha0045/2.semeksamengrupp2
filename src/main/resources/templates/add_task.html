@@ -9,7 +9,7 @@
 
 <form method="post" action="/add_task" th:object="${task}">
     <!--    dropdown-->
-    <select th:field="*{subTaskToName}">
+    <select th:field="*{subTaskToName} ">
         <label>Choose if any Task above:</label>
         <option th:each="p : ${listTitler}" th:value="${p.getName()}" th:text="${p.getName()}" />
     </select>

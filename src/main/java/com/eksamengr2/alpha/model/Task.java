@@ -21,7 +21,7 @@ public class Task {
     private int  taskTimeconsumption; //the total time for one subTask
     private int noOfPersons;
     private double workingHoursDay;
-    private String subTaskToName; //If subtask, then name of task
+    private String subTaskToName; //If subtask, then name of overtask
 
     public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask,
                 double taskNo, int lineCounter, int idtask,

@@ -246,7 +246,9 @@ public class TaskHandler1 {
      * @param newTaskFromInput
      * @return
      */
-    public Task UserInput_FromAddTaskPreparedToMySQL(Task newTaskFromInput) throws SQLException {
+    public Task AddTaskToDB(Task newTaskFromInput) throws SQLException {
+
+        System.out.println("KOM NED I AddTaskToDB ");
 
          //Variables used to ease redaability of code
          LocalDate startDate = newTaskFromInput.getStartDate();
@@ -278,10 +280,8 @@ public class TaskHandler1 {
 
         }
 
-        System.out.println("Dette er print fra TaskController: "+newTaskFromInput);
-
         //Inserts prepared data from dialogbox to DB
-        editProjectMapper.createNewTask(newTaskFromInput); //TODO DENNE MAPPER ER IKKE OPDATERET
+        editProjectMapper.createNewTask(newTaskFromInput);
 
         return newTaskFromInput; //Kun til test
     }
