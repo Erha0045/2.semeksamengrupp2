@@ -8,6 +8,34 @@ import java.util.List;
 
 public class EditProjectMapper {
 
+    public double getTaskNo(int projectId, String name) {
+        double returnTaskNo=0.0;
+
+        try {
+            Connection con = DatabaseConnector.getConnection();
+
+            String SQL = "SELECT taskno FROM task WHERE projectid=? AND name=? AND isSubTask='no';";
+
+            PreparedStatement ps = con.prepareStatement(SQL);
+
+            ps.setInt(1, projectId);
+            ps.setString(2, name);
+
+
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) //true så længe der er mere data i sql tabel
+            {
+                returnTaskNo = (Math.round((resultSet.getDouble("taskno")*100.00))/100.00d);
+            }
+        } catch (SQLException ex) {
+            System.out.println("get_idtask_TaskNo: " + ex);
+        }
+            System.out.println("Hentet taskNo: " +returnTaskNo);
+
+        return returnTaskNo;
+    }
+
     //TODO ER IKKE TJEKKET
     public void updateTask(Task task) throws SQLException {
         Connection conn=DatabaseConnector.getConnection();
@@ -310,20 +338,22 @@ public class EditProjectMapper {
     }//Method
 
 
-    //TODO har to mapper med samme formål
+    //TODO ER IKKE TESTET efter connector er rettet
     public List<Task> getTaskForEditProject(int projectId) throws SQLException {
         Task task1=null;
+        Connection conn = DatabaseConnector.getConnection();
 
 
-        Connection conn = null; //forbindelse
+//        Connection conn = null; //forbindelse
         ResultSet resultSet = null; //dataflow 1 linie ad gangen
         List<Task> listTasks = new ArrayList<>();
         PreparedStatement preparedStatement=null;
 
 
         try {
-            // 1) Connect to the database TODO connection skal rettes til
-            conn = DriverManager.getConnection("jdbc:mysql://den1.mysql3.gear.host/alfasolutionsdb?autoReconnect=true&useSSL=false", "alfasolutionsdb", "Ga9Q_!89hJab");
+            // 1) Connect to the database
+
+//            conn = DriverManager.getConnection("jdbc:mysql://den1.mysql3.gear.host/alfasolutionsdb?autoReconnect=true&useSSL=false", "alfasolutionsdb", "Ga9Q_!89hJab");
 
             //2) Create a string that holds the query with ? as user input
             String sqlString = "SELECT * FROM alfasolutionsdb.task WHERE projectid=? ORDER BY taskno;";
@@ -349,12 +379,12 @@ public class EditProjectMapper {
                         resultSet.getInt("duration"),
                         resultSet.getInt("projectid"),
                         resultSet.getString("isSubTask"),
-                        Math.round(resultSet.getDouble("taskno")*100)/100d,
+                        Math.round(resultSet.getDouble("taskno")*100.00)/100.00d,
                         lineCounter,
                         resultSet.getInt("idtask"),
                         resultSet.getInt("tasktimeconsumption"),
                         resultSet.getInt("noOfPersons"),
-                        Math.round(resultSet.getDouble("workinghoursday")*100)/100d,
+                        Math.round(resultSet.getDouble("workinghoursday")*100.00)/100.00d,
                         resultSet.getString("subtasktoname"));
 
                 //7) fylder ArrayList med data
@@ -365,14 +395,15 @@ public class EditProjectMapper {
         catch (Exception e) {
             System.err.println(e.getMessage());
 
-        } finally //kode der skal køres selvom den bugger (lukke connection)
-        {
-            if (preparedStatement != null)
-                preparedStatement.close();
-
-            if (conn != null)
-                conn.close();
         }
+//        finally //kode der skal køres selvom den bugger (lukke connection)
+//        {
+//            if (preparedStatement != null)
+//                preparedStatement.close();
+//
+//            if (conn != null)
+//                conn.close();
+//        }
         //TEST PRINT
         //for (Task a : listTasks ) { System.out.println(a.getName() +" taskno: "+a.getTaskNo() + "working hours day" + a.getWorkingHoursDay()) ; }
 

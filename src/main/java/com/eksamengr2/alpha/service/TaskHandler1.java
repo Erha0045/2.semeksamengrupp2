@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 public class TaskHandler1 {
     EditProjectMapper editProjectMapper = new EditProjectMapper();
+    public static final double DEFAULT_WORKING_HOURS_DAY = 7.5;
+    public static final double DEFAULT_PERSONS_ON_TASK = 1;
 
     public Task editTask(Task modifiedTask, Task oldTask) throws SQLException {
         Task newTask = oldTask;
@@ -243,47 +245,106 @@ public class TaskHandler1 {
     //TODO ADD_TASK ....SKAL OPDATERES SÅ DE NYE ATTRIBUTTEr KOMMER MED,
     /**Method prepares input data from Add_task page to be inserted to database
      *
-     * @param newTaskFromInput
+     * @param task
      * @return
      */
-    public Task AddTaskToDB(Task newTaskFromInput) throws SQLException {
+    public Task AddTaskToDB(Task task) throws SQLException {
+        System.out.println("AddTaskToDB" + task);
 
-        System.out.println("KOM NED I AddTaskToDB ");
+        //Local variables used to ease redaability of code
+        LocalDate startDate = task.getStartDate();
+        LocalDate finishDate= task.getFinishDate();
+        int duration = task.getDuration();
+        int timeConsumption = task.getTaskTimeconsumption();
+        int personsOnTask= task.getNoOfPersons();
+        double workingHoursDay=task.getWorkingHoursDay();
+        double preTaskNo=0.0d;
 
-         //Variables used to ease redaability of code
-         LocalDate startDate = newTaskFromInput.getStartDate();
-         LocalDate finishDate= newTaskFromInput.getFinishDate();
-         int duration = newTaskFromInput.getDuration();
-
-         //Inserts new name
-        newTaskFromInput.setName(newTaskFromInput.getName());
-
-        //Finds value for isSubTask
-        if (newTaskFromInput.getSubTaskToName().equals("No overtask")){
-            newTaskFromInput.setIsSubTask("no");
+        //isSubTask value is set
+        if (task.getSubTaskToName().equals(null)){
+            task.setIsSubTask("no");
         }
         else {
-            newTaskFromInput.setIsSubTask("yes");
+            task.setIsSubTask("yes");
         }
 
-        //If only one of either finish data or duration is filled, the missing one is calculated
-        if (newTaskFromInput.getFinishDate()==null){ //finish date is calculated
-            newTaskFromInput.setFinishDate(startDate.plusDays(duration-1));
-        }
-        else if (newTaskFromInput.getDuration()==0){ //duration is calculated
-            newTaskFromInput.setDuration((int) ChronoUnit.DAYS.between(startDate,finishDate)+1);
+        //SubtaskNo value is set, only for subTask...task i allready given
+        if (task.getIsSubTask().equals("yes")){ //task
+            preTaskNo= editProjectMapper.getTaskNo(task.getProjectId(),task.getSubTaskToName());
+            task.setTaskNo((Math.round((preTaskNo + task.getTaskNo())*100.00))/100.00d);
         }
 
+        //finishDate is set, presuming duration is not filled
+        if (task.getFinishDate()==null && task.getDuration() !=0){ //finish date is calculated
+            task.setFinishDate(startDate.plusDays(duration-1));
+        }
+        //duration is set, presuming finishDate is not filled
+        else if (task.getDuration()==0 && task.getFinishDate()!=null){ //duration is calculated
+            task.setDuration((int) ChronoUnit.DAYS.between(startDate,finishDate)+1);
+        }
+        //duration is set, presuming finishDate and duration is filled, removing entered error
+        else if (task.getDuration()!=0 && task.getFinishDate()!=null){ //duration is calculated
+            task.setDuration((int) ChronoUnit.DAYS.between(startDate,finishDate)+1);
+        }
 
-        if (newTaskFromInput.getDuration() == 0){
-            newTaskFromInput.setDuration((int) ChronoUnit.DAYS.between(startDate, finishDate)+1);
+        //**********************************************************************************
+        //*finishDate, duration, personsOnTask and workingHoursDay interact with eachother *
+        // duration is rounded up where nessesary
+        //**********************************************************************************
 
+        //1) FinishDate or Duration entered
+        if ((finishDate!=null || duration!=0) && personsOnTask==0 && workingHoursDay==0.0d){
+            task.setNoOfPersons(((int) (timeConsumption/(duration*DEFAULT_WORKING_HOURS_DAY)))+1);
+            task.setWorkingHoursDay(DEFAULT_WORKING_HOURS_DAY);
+        }
+
+        //2 workingHoursDay entered
+        if ((finishDate==null || duration==0) && personsOnTask!=0 && workingHoursDay==0.0d){
+            task.setWorkingHoursDay(DEFAULT_WORKING_HOURS_DAY);
+            task.setDuration((int) Math.ceil(timeConsumption/(personsOnTask*DEFAULT_WORKING_HOURS_DAY)));
+        }
+
+        //3) workingHoursDay entered
+        if ((finishDate==null || duration==0) && personsOnTask==0 && workingHoursDay!=0.0d){
+            task.setNoOfPersons((int)DEFAULT_PERSONS_ON_TASK);
+            task.setDuration((int) Math.ceil(timeConsumption/(DEFAULT_PERSONS_ON_TASK*workingHoursDay)));
+            task.setFinishDate(startDate.plusDays(task.getDuration()-1));
+        }
+
+        //4) FinishDate or Duration and personsOnTask entered
+        if ((finishDate!=null || duration!=0) && personsOnTask!=0 && workingHoursDay==0.0d){
+            task.setWorkingHoursDay(timeConsumption/(duration*personsOnTask));
+        }
+
+        //5) FinishDate or Duration and workingHoursDay entered
+        if ((finishDate!=null || duration!=0) && personsOnTask==0 && workingHoursDay!=0.0d){
+            task.setNoOfPersons((int)Math.ceil(timeConsumption/(duration*workingHoursDay)));
+        }
+
+        //6)workingHoursDay and personsOnTask
+        if ((finishDate==null || duration==0) && personsOnTask!=0 && workingHoursDay!=0.0d){
+            task.setDuration((int) Math.ceil(timeConsumption/(personsOnTask*workingHoursDay)));
+            task.setFinishDate(startDate.plusDays(task.getDuration()-1));
+        }
+
+        //7)All entered
+        if ((finishDate!=null || duration!=0) && personsOnTask!=0 && workingHoursDay!=0.0d){
+            task.setDuration((int) ChronoUnit.DAYS.between(startDate,finishDate)+1);
+        }
+
+
+         //8)None entered
+        if ((finishDate==null || duration==0) && personsOnTask==0 && workingHoursDay==0.0d){
+            task.setWorkingHoursDay(DEFAULT_WORKING_HOURS_DAY);
+            task.setFinishDate(startDate.plusDays(task.getDuration()-1));
+            task.setDuration((int) Math.ceil(timeConsumption/(DEFAULT_PERSONS_ON_TASK*DEFAULT_WORKING_HOURS_DAY)));
+            task.setFinishDate(startDate.plusDays(task.getDuration()-1));
         }
 
         //Inserts prepared data from dialogbox to DB
-        editProjectMapper.createNewTask(newTaskFromInput);
+        editProjectMapper.createNewTask(task);
 
-        return newTaskFromInput; //Kun til test
+        return task; //Kun til test
     }
 
 

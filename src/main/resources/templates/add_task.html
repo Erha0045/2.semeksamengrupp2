@@ -5,47 +5,70 @@
     <title>add_task</title>
 </head>
 <body>
-<h1>add_task</h1>
+    <h1>Add tasks and Subtasks</h1>
+    <br>
+<!--TASK-->
+    <form method="post" action="/add_task" th:object="${task}">
+        <h1>Add task</h1>
+        <label>Task no/Sub task no:</label>
+        <input type="text" th:field="*{taskNo}"  />
+        <br><br>
+        <label>New task name:</label>
+        <input type="text" th:field="*{name}" maxlength="45" />
+        <br><br>
+        <label>Start date:</label>
+        <input type="date" th:field="*{startDate}" />
+        <br><br>
 
-<form method="post" action="/add_task" th:object="${task}">
-    <!--    dropdown-->
-    <select th:field="*{subTaskToName} ">
-        <label>Choose if any Task above:</label>
-        <option th:each="p : ${listTitler}" th:value="${p.getName()}" th:text="${p.getName()}" />
-    </select>
+        <label>Finish date:</label>
+        <input type="date" th:field="*{finishDate}" />
+        <br><br>
+        <label>Duration:</label>
+        <input type="text" th:field="*{duration}" />
+        <br><br><br>
 
-    <br><br>
-    <label>Task no/Sub task no:</label>
-    <input type="text" th:field="*{taskNo}" />
-    <br><br>
-    <label>New task name:</label>
-    <input type="text" th:field="*{name}" />
-    <br><br>
-    <label>Start date:</label>
-    <input type="date" th:field="*{startDate}" />
-    <br><br>
-    <label>Time consumption(h):</label>
-    <input type="text" th:field="*{taskTimeconsumption}" />
-    <br><br><br><br>
-    <label>Finish date:</label>
-    <input type="date" th:field="*{finishDate}" />
-    <br><br>
-    <label>Duration:</label>
-    <input type="text" th:field="*{duration}" />
-    <br><br><br><br>
-    <label>Persons on subtask:</label>
-    <input type="text" th:field="*{noOfPersons}" />
-    <br><br>
-    <label>Working hours/day/person:</label>
-    <input type="text" th:field="*{workingHoursDay}" />
-    <br><br><br>
+        <input type="submit" name="addtask" value="Save task">
+        <input type="submit" name="cancel" value="Back">
+        <br><br><br>
+    </form>
 
-    <input type="submit" name="addtask" value="Save task">
-    <input type="submit" name="cancel" value="Close">
+<!--SUB_TASK-->
+    <form method="post" action="/add_task" th:object="${task}">
+        <h1>Add subtask</h1>
+        <!--    dropdown-->
+        <select th:field="*{subTaskToName} ">
+            <label>Choose if any Task above:</label>
+            <option th:each="p : ${listTitler}" th:value="${p.getName()}" th:text="${p.getName()}" />
+        </select>
 
-</form>
+        <br><br>
+        <label>Task no/Sub task no:</label>
+        <input type="text" th:field="*{taskNo}"  />
+        <br><br>
+        <label>New task name:</label>
+        <input type="text" th:field="*{name}" maxlength="45" />
+        <br><br>
+        <label>Start date:</label>
+        <input type="date" th:field="*{startDate}" />
+        <br><br>
+        <label>Time consumption(h):</label>
+        <input type="text" th:field="*{taskTimeconsumption}" />
+        <br><br><br><br>
+        <label>Finish date:</label>
+        <input type="date" th:field="*{finishDate}" />
+        <br><br>
+        <label>Duration:</label>
+        <input type="text" th:field="*{duration}" />
+        <br><br><br><br>
+        <label>Persons on subtask:</label>
+        <input type="text" th:field="*{noOfPersons}" />
+        <br><br>
+        <label>Working hours/day/person:</label>
+        <input type="text" th:field="*{workingHoursDay}" />
+        <br><br><br>
 
-
-
+        <input type="submit" name="addsubtask" value="Save subtask">
+        <input type="submit" name="cancel" value="Back">
+    </form>
 </body>
 </html>

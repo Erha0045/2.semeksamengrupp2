@@ -67,6 +67,9 @@ public class melgaController {
     public String getTask(Model model, @RequestParam("textFieldSubtaskNo") double taskOrSubTaskNo) throws SQLException {
         Task objTaskLine;
 
+        //Transfers data to Project header TODO skal hentes fra database
+        //model.addAttribute("projectname","Projectname: "+projectName );
+
         //Transfers taskNo from input to class attribute for sharing between @PostMappings
         transferTaskNo = Math.round(taskOrSubTaskNo*100.00)/100.00d; //TODO ÆNDRET HER IKKE TESTET
 
@@ -82,15 +85,14 @@ public class melgaController {
         for (int i=0; i<tasksForProjectId.size(); i++ ) { //Afrunder double TODO SKAL i metode
             tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100)/100d);
         }
-        model.addAttribute("tasks", tasksForProjectId);
+        model.addAttribute("tasks", tasksForProjectId); //tabel insert
 
         //Gets taskLinePOJO-data from DB when user push Button TODO GRIMT
         objTaskLine = editProjectMapper.getTaskLine(projectId, transferTaskNo);
         arrTaskLine.add(objTaskLine);
         model.addAttribute("taskLine", arrTaskLine);
 
-        //Transfers data to Project header TODO skal hentes fra database
-        model.addAttribute("projectname","Projectname: "+projectName );
+
 
         //1)Udfyld tabel
         //2) exampel line udfyldes med dummy
@@ -226,14 +228,31 @@ public class melgaController {
 
     //Button "save Task"
     @RequestMapping(value="/add_task", method= RequestMethod.POST, params="addtask")
-    public String dropBoxFecthValue(@ModelAttribute("task") Task task, Model model) throws SQLException {
+    public String saveTask(@ModelAttribute("task") Task task, Model model) throws SQLException {
+
+        //setting attribute not included in input
+        task.setProjectId(projectId);
+
+        //TODO kontrol af indtastet data
+
+        //New task inserted to DB
+        taskController.AddTaskToDB(task); //TODO METODE ER IKKE OPDATET
+
+        return "add_task";
+    }
+
+    //Button "save subTask"
+    @RequestMapping(value="/add_task", method= RequestMethod.POST, params="addsubtask")
+    public String saveSubTask(@ModelAttribute("task") Task task, Model model) throws SQLException {
 
         //Getting and inserting data for dropbox
         listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId);
         model.addAttribute("listTitler", listTitler);
 
-        System.out.println("Print fra controller: " +task);
+        //setting attribute not included in input
         task.setProjectId(projectId);
+
+        //TODO kontrol af indtastet data
 
         //New task inserted to DB
         taskController.AddTaskToDB(task); //TODO METODE ER IKKE OPDATET
