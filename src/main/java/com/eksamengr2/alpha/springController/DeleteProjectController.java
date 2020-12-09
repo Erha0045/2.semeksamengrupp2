@@ -10,7 +10,7 @@ import org.springframework.web.context.request.WebRequest;
 
 @Controller
 public class DeleteProjectController {
-    DeleteProjectMapper deleteProjectMapper= new DeleteProjectMapper();
+  private DeleteProjectMapper deleteProjectMapper= new DeleteProjectMapper();
 
     @GetMapping("/delete_project")
     public String delete_taskView() {
