@@ -45,4 +45,25 @@ public class TaskMapper {
 
         return taskArrayList;
     }
+
+    //returns true if name exists in DB
+    public boolean checkTaskNameExistsInDB(Task task) throws SQLException {
+        Connection con = DatabaseConnector.getConnection();
+        String SQL = "select * FROM task WHERE  name =? AND projectid=?";
+        PreparedStatement ps = con.prepareStatement(SQL);
+        ps.setString(1, task.getName());
+        ps.setInt(2, task.getProjectId());
+        ResultSet resultSet = ps.executeQuery();
+        return resultSet.next();
+    }
+    public boolean checkTaskNoExistsInDB(Task task) throws SQLException {
+        Connection con = DatabaseConnector.getConnection();
+        String SQL = "select * FROM task WHERE  taskno=? AND projectid= ?;";
+        PreparedStatement ps = con.prepareStatement(SQL);
+        ps.setDouble(1, task.getTaskNo());
+        ps.setInt(2, task.getProjectId());
+        ResultSet resultSet = ps.executeQuery();
+        return resultSet.next();
+    }
 }
+

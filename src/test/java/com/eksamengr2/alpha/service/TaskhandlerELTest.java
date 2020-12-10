@@ -5,6 +5,7 @@ import com.eksamengr2.alpha.model.Task;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -116,6 +117,68 @@ class TaskhandlerELTest {
 
         assertFalse(taskhandlerEL.createTaskInputChecksIfDurationIsOverFinishDateMinusStartdate(task));
         //assertTrue(taskhandlerEL.CreateTaskInputChecksIfDurationIsOverFinishDateMinusStartdate(task));
+
+    }
+
+    @Test
+    @DisplayName("check for null value if all three variable are 0")
+    void checkForNullValue() {
+        //arrange
+        TaskhandlerEL taskhandlerEL = new TaskhandlerEL();
+        Task task = new Task();
+        task.setDuration(0);
+        task.setNoOfPersons(0);
+        task.setWorkingHoursDay(0);
+
+        //act
+        String fejl = taskhandlerEL.checkForNullValue(task);
+
+        //assert
+        assertEquals("MINDST TO VARIABLE SKAL INDTASTES ",fejl);
+    }
+    @Test
+    @DisplayName("check for null value if two variables are 0")
+    void checkForNullValue1() {
+        //arrange
+        TaskhandlerEL taskhandlerEL = new TaskhandlerEL();
+        Task task = new Task();
+        task.setDuration(1);
+        task.setNoOfPersons(0);
+        task.setWorkingHoursDay(0);
+
+        //act
+        String fejl = taskhandlerEL.checkForNullValue(task);
+
+        //assert
+        assertEquals("FEJL I INDTASTNING",fejl);
+    }
+
+    @Test
+    @DisplayName("check if name exists on projectId")
+    void checkTaskName() throws SQLException {
+            //arrange
+        TaskhandlerEL taskhandlerEL = new TaskhandlerEL();
+        Task task = new Task();
+        task.setName("blah");
+        task.setProjectId(34);
+            //act
+        boolean actual = taskhandlerEL.checkTaskName(task);
+            //assert
+        assertTrue(actual);
+
+    }
+    @Test
+    @DisplayName("check if taskno exists on projectId")
+    void checkTaskNo() throws SQLException {
+            //arrange
+        TaskhandlerEL taskhandlerEL = new TaskhandlerEL();
+        Task task = new Task();
+        task.setTaskNo(1);
+        task.setProjectId(34);
+            //act
+        boolean actual = taskhandlerEL.checkTaskNo(task);
+            //assert
+        assertTrue(actual);
 
     }
 }

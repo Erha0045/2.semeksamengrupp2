@@ -1,11 +1,9 @@
 package com.eksamengr2.alpha.service;
 
-import com.eksamengr2.alpha.data.DeleteTaskMapper;
 import com.eksamengr2.alpha.data.TaskMapper;
 import com.eksamengr2.alpha.model.Project;
 import com.eksamengr2.alpha.model.Task;
 
-import javax.print.attribute.standard.MediaSizeName;
 import java.sql.SQLException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -71,7 +69,7 @@ public class TaskhandlerEL {
         return timeConsumptionSum;
     }
 
-    //possible 4 på krav listen?
+    //TODO muligvis dobbeltgænger?? possible 4 på krav listen?
     public Task createTaskTimeConsumption(Task task) {
         //
         if (task.getWorkingHoursDay() == 0) {
@@ -92,6 +90,27 @@ public class TaskhandlerEL {
         }
         return task;
 
+    }
+    //     Duration       Persons     WorkHours
+    public String  checkForNullValue(Task task){
+        if (task.getDuration() == 0 && task.getNoOfPersons() == 0 && task.getWorkingHoursDay() == 0){
+                return "MINDST TO VARIABLE SKAL INDTASTES ";
+        }else if ((task.getDuration() == 0 && task.getNoOfPersons() == 0)||
+                (task.getDuration() == 0 && task.getWorkingHoursDay() == 0)||
+                (task.getWorkingHoursDay() == 0 && task.getNoOfPersons() == 0)){
+            return "FEJL I INDTASTNING";
+        }
+        return "Task test approved";
+    }
+
+    //if returns true it exists in DB
+    public boolean checkTaskName(Task task) throws SQLException {
+        TaskMapper taskMapper = new TaskMapper();
+        return taskMapper.checkTaskNameExistsInDB(task);
+    }
+    public boolean checkTaskNo(Task task) throws SQLException {
+        TaskMapper taskMapper = new TaskMapper();
+        return taskMapper.checkTaskNoExistsInDB(task);
     }
 
 //luff erhan test ?
