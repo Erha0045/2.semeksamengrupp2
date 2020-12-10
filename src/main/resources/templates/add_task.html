@@ -10,21 +10,21 @@
 <!--TASK-->
     <form method="post" action="/add_task" th:object="${task}">
         <h1>Add task</h1>
-        <label>Task no/Sub task no:</label>
+        <label>Task no</label>
         <input type="text" th:field="*{taskNo}"  />
         <br><br>
-        <label>New task name:</label>
-        <input type="text" th:field="*{name}" maxlength="45" />
+        <label>Task name:</label>
+        <input type="text" required th:field="*{name}" maxlength="45" />
         <br><br>
         <label>Start date:</label>
-        <input type="date" th:field="*{startDate}" />
+        <input type="date" required th:field="*{startDate}" />
         <br><br>
 
         <label>Finish date:</label>
         <input type="date" th:field="*{finishDate}" />
         <br><br>
         <label>Duration:</label>
-        <input type="text" th:field="*{duration}" />
+        <input type="number" value="0" th:field="*{duration}" />
         <br><br><br>
 
         <input type="submit" name="addtask" value="Save task">
@@ -42,29 +42,29 @@
         </select>
 
         <br><br>
-        <label>Task no/Sub task no:</label>
-        <input type="text" th:field="*{taskNo}"  />
+        <label>Subtask no:</label>
+        <input type="number" required th:field="*{taskNo}"  />
         <br><br>
-        <label>New task name:</label>
-        <input type="text" th:field="*{name}" maxlength="45" />
+        <label>Subtask name:</label>
+        <input type="text" required th:field="*{name}" maxlength="45" />
         <br><br>
         <label>Start date:</label>
-        <input type="date" th:field="*{startDate}" />
+        <input type="date" required th:field="*{startDate}" />
         <br><br>
         <label>Time consumption(h):</label>
-        <input type="text" th:field="*{taskTimeconsumption}" />
+        <input type="number"  required min="1" step="1"  th:field="*{taskTimeconsumption}" />
         <br><br><br><br>
         <label>Finish date:</label>
         <input type="date" th:field="*{finishDate}" />
         <br><br>
         <label>Duration:</label>
-        <input type="text" th:field="*{duration}" />
+        <input type="number" value="0" th:field="*{duration}" />
         <br><br><br><br>
         <label>Persons on subtask:</label>
-        <input type="text" th:field="*{noOfPersons}" />
+        <input type="number" th:field="*{noOfPersons}" />
         <br><br>
         <label>Working hours/day/person:</label>
-        <input type="text" th:field="*{workingHoursDay}" />
+        <input type="number" th:field="*{workingHoursDay}" />
         <br><br><br>
 
         <input type="submit" name="addsubtask" value="Save subtask">

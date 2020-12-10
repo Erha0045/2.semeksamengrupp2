@@ -375,4 +375,267 @@ class TaskHandler1Test {
         assertEquals(expected, actual);
 
     }
+
+    @Test
+    @DisplayName("TEST 0: TASK")
+    void addTaskToDB0() throws SQLException {
+        TaskHandler1 taskHandler1 = new TaskHandler1();
+
+        //parameter Task
+        Task input = new Task("BAD", LocalDate.of(2020,1,1),
+                null, 15, 1, "",
+                6.0, 0, 0,
+                0, 0, 0.0, "");
+
+        //Expected result
+        Task exp = new Task("BAD", LocalDate.of(2020,1,1),
+                LocalDate.of(2020,1,15), 15, 1, "no",
+                6.0, 0, 0,
+                0, 1, 7.5, "");
+
+        //Actual result
+        Task actual = taskHandler1.AddTaskToDB(input);
+
+        //Assert
+        assertEquals(exp, actual);
+
+
+    }
+
+
+
+
+    @Test
+    @DisplayName("TEST 1: subTask: Finishdate entered")
+    void addTaskToDB1() throws SQLException {
+        TaskHandler1 taskHandler1 = new TaskHandler1();
+
+        //parameter- subTask
+        Task input = new Task("BAD_sub2", LocalDate.of(2020,12,1),
+                LocalDate.of(2021,1,15), 0, 1, "",
+                14, 0, 0,
+                1500, 0, 0.0, "BAD77");
+
+        //Expected result
+        Task exp = new Task("BAD_sub2", LocalDate.of(2020,12,1),
+                LocalDate.of(2021,1,15), 46, 1, "yes",
+                6.14, 0, 0,
+                1500, 5, 7.5, "BAD77");
+
+        //Actual result
+        Task actual = taskHandler1.AddTaskToDB(input);
+
+        //Assert
+        assertEquals(exp, actual);
+
+
+    }
+
+    @Test
+    @DisplayName("TEST 1a: subTask: Duration entered")
+    void addTaskToDB1a() throws SQLException {
+        TaskHandler1 taskHandler1 = new TaskHandler1();
+
+        //parameter- subTask
+        Task input = new Task("BAD_sub3", LocalDate.of(2020,12,1),
+                null, 15, 1, "",
+                10.0, 0, 0,
+                1000, 0, 0.0, "BAD77");
+
+        //Expected result
+        Task exp = new Task("BAD_sub3", LocalDate.of(2020,12,1),
+                LocalDate.of(2020,12,15), 15, 1, "yes",
+                6.10, 0, 0,
+                1000, 9, 7.5, "BAD77");
+
+        //Actual result
+        Task actual = taskHandler1.AddTaskToDB(input);
+
+        //Assert
+        assertEquals(exp, actual);
+
+
+    }
+
+    @Test
+    @DisplayName("TEST 2: subTask: personOnTask entered")
+    void addTaskToDB2() throws SQLException {
+        TaskHandler1 taskHandler1 = new TaskHandler1();
+
+        //parameter- subTask
+        Task input = new Task("BAD_sub2", LocalDate.of(2020,12,1),
+                null, 0, 1, "",
+                13.0, 0, 0,
+                1000, 9, 8.4, "BAD77");
+
+        //Expected result
+        Task exp = new Task("BAD_sub2", LocalDate.of(2020,12,1),
+                LocalDate.of(2020,12,14), 14, 1, "yes",
+                6.13, 0, 0,
+                1000, 9, 8.4, "BAD77");
+
+        //Actual result
+        Task actual = taskHandler1.AddTaskToDB(input);
+
+        //Assert
+        assertEquals(exp, actual);
+
+
+    }
+
+    @Test
+    @DisplayName("TEST 3: subTask: workingHoursDay entered")
+    void addTaskToDB3() throws SQLException {
+        TaskHandler1 taskHandler1 = new TaskHandler1();
+
+        //parameter- subTask
+        Task input = new Task("BAD_sub3", LocalDate.of(2020,12,1),
+                null, 15, 1, "",
+                12.0, 0, 0,
+                1000, 0, 0.0, "BAD77");
+
+        //Expected result
+        Task exp = new Task("BAD_sub3", LocalDate.of(2020,12,1),
+                LocalDate.of(2020,12,15), 15, 1, "yes",
+                6.12, 0, 0,
+                1000, 1, 7.5, "BAD77");
+
+        //Actual result
+        Task actual = taskHandler1.AddTaskToDB(input);
+
+        //Assert
+        assertEquals(exp, actual);
+
+
+    }
+
+    @Test
+    @DisplayName("TEST 4: subTask: finishDate and personOnTask entered")
+    void addTaskToDB4() throws SQLException {
+        TaskHandler1 taskHandler1 = new TaskHandler1();
+
+        //parameter- subTask
+        Task input = new Task("BAD_sub4", LocalDate.of(2020,12,1),
+                LocalDate.of(2020,12,15), 0, 1, "",
+                11.0, 0, 0,
+                1000, 9, 0.0, "BAD77");
+
+        //Expected result
+        Task exp = new Task("BAD_sub4", LocalDate.of(2020,12,1),
+                LocalDate.of(2020,12,15), 15, 1, "yes",
+                6.11, 0, 0,
+                1000, 9, 7.41, "BAD77");
+
+        //Actual result
+        Task actual = taskHandler1.AddTaskToDB(input);
+
+        //Assert
+        assertEquals(exp, actual);
+
+
+    }
+
+    @Test
+    @DisplayName("TEST 5: subTask: finishDate duration and personOnTask entered")
+    void addTaskToDB5() throws SQLException {
+        TaskHandler1 taskHandler1 = new TaskHandler1();
+
+        //parameter- subTask
+        Task input = new Task("BAD_sub5", LocalDate.of(2020,12,1),
+                LocalDate.of(2020,12,15), 14, 1, "",
+                50.0, 0, 0,
+                1000, 0, 0.0, "BAD77");
+
+        //Expected result
+        Task exp = new Task("BAD_sub4", LocalDate.of(2020,12,1),
+                LocalDate.of(2020,12,15), 15, 1, "yes",
+                6.50, 0, 0,
+                1000, 10, 7.50, "BAD77");
+
+        //Actual result
+        Task actual = taskHandler1.AddTaskToDB(input);
+
+        //Assert
+        assertEquals(exp, actual);
+
+
+    }
+
+    @Test
+    @DisplayName("TEST 6: subTask: personOnTask and workingHoursDay entered")
+    void addTaskToDB6() throws SQLException {
+        TaskHandler1 taskHandler1 = new TaskHandler1();
+
+        //parameter- subTask
+        Task input = new Task("BAD_sub6", LocalDate.of(2020,12,1),
+                null, 0, 1, "",
+                26.0, 0, 0,
+                1000, 6, 8.0, "BAD77");
+
+        //Expected result
+        Task exp = new Task("BAD_sub4", LocalDate.of(2020,12,1),
+                LocalDate.of(2020,12,21), 21, 1, "yes",
+                6.26, 0, 0,
+                1000, 6, 8.0, "BAD77");
+
+        //Actual result
+        Task actual = taskHandler1.AddTaskToDB(input);
+
+        //Assert
+        assertEquals(exp, actual);
+
+
+    }
+
+    @Test
+    @DisplayName("TEST 7: subTask: All entered")
+    void addTaskToDB7() throws SQLException {
+        TaskHandler1 taskHandler1 = new TaskHandler1();
+
+        //parameter- subTask
+        Task input = new Task("BAD_sub7", LocalDate.of(2020,12,1),
+                LocalDate.of(2020,12,14), 14, 1, "",
+                36.0, 0, 0,
+                1000, 6, 8.0, "BAD77");
+
+        //Expected result
+        Task exp = new Task("BAD_sub7", LocalDate.of(2020,12,1),
+                LocalDate.of(2020,12,21), 21, 1, "yes",
+                6.36, 0, 0,
+                1000, 6, 8.0, "BAD77");
+
+        //Actual result
+        Task actual = taskHandler1.AddTaskToDB(input);
+
+        //Assert
+        assertEquals(exp, actual);
+
+
+    }
+
+    @Test
+    @DisplayName("TEST 8: subTask: none entered")
+    void addTaskToDB8() throws SQLException {
+        TaskHandler1 taskHandler1 = new TaskHandler1();
+
+        //parameter- subTask
+        Task input = new Task("BAD_sub8", LocalDate.of(2020,12,1),
+                null, 0, 1, "",
+                37.0, 0, 0,
+                1000, 0, 0.0, "BAD77");
+
+        //Expected result
+        Task exp = new Task("BAD_sub8", LocalDate.of(2020,12,1),
+                LocalDate.of(2021,4,14), 134, 1, "yes",
+                6.37, 0, 0,
+                1000, 1, 7.5, "BAD77");
+
+        //Actual result
+        Task actual = taskHandler1.AddTaskToDB(input);
+
+        //Assert
+        assertEquals(exp, actual);
+
+
+    }
 }
