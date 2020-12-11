@@ -47,4 +47,29 @@ public class ProjectMapper {
             return resultSet;
 
         }
+
+        public Project getProjectFromId(int projectid) throws SQLException {
+            Project project = null;
+            try {
+                Connection con = DatabaseConnector.getConnection();
+                String SQL = "SELECT * FROM project "
+                        + "WHERE idproject=?";
+                PreparedStatement ps = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+                ps.setInt(1, projectid);
+
+                ResultSet resultSet = ps.executeQuery();
+                while (resultSet.next()) {
+                     project = new Project(projectid,
+                            resultSet.getString("projectname"),
+                            resultSet.getString("ownername"),
+                            resultSet.getDate("startdate").toLocalDate(),
+                            resultSet.getDate("deadlinedate").toLocalDate());
+                    return project;
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            return project;
+        }
+
 }

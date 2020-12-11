@@ -3,8 +3,11 @@ package com.eksamengr2.alpha.springController;
 import com.eksamengr2.alpha.data.EditProjectMapper;
 import com.eksamengr2.alpha.data.Facade;
 import com.eksamengr2.alpha.data.FacadeTest;
+import com.eksamengr2.alpha.data.ProjectMapper;
+import com.eksamengr2.alpha.model.Project;
 import com.eksamengr2.alpha.model.Task;
 import com.eksamengr2.alpha.service.TaskHandler1;
+import com.eksamengr2.alpha.service.TaskhandlerEL;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +33,10 @@ public class melgaController {
     private ArrayList<Task> modifiedTaskList = new ArrayList<>();
     private TaskHandler1 taskHandler1 = new TaskHandler1();
     private ArrayList<Task> arrTaskLine = new ArrayList<>();
+
+    private TaskhandlerEL taskhandlerEL = new TaskhandlerEL();
+    public static String errorString;
+    private ProjectMapper projectMapper = new ProjectMapper();
 
 
     @GetMapping("edit_task")
@@ -229,11 +236,20 @@ public class melgaController {
     //Button "save Task"
     @RequestMapping(value="/add_task", method= RequestMethod.POST, params="addtask")
     public String saveTask(@ModelAttribute("task") Task task, Model model) throws SQLException {
-
         //setting attribute not included in input
         task.setProjectId(projectId);
 
         //TODO kontrol af indtastet data
+        Project project = projectMapper.getProjectFromId(projectId);
+        errorString = taskhandlerEL.errorMessageTask(task,project);
+
+        if (!errorString.equals(""))return "add_task_error_page1";
+
+//        if (taskhandlerEL.checkTaskName(task)) return "add_task_name_error";
+//
+//        if(taskhandlerEL.checkTaskNo(task)) return "add_task_taskno_error";
+//
+//        if (!taskhandlerEL.taskStartDateBeforeFinishCheck(task)) return "add_task_date_error";
 
         //New task inserted to DB
         taskController.AddTaskToDB(task); //TODO METODE ER IKKE OPDATET
@@ -252,7 +268,11 @@ public class melgaController {
         //setting attribute not included in input
         task.setProjectId(projectId);
 
-        //TODO kontrol af indtastet data
+        //testing insertet data
+        Project project = projectMapper.getProjectFromId(projectId);
+        errorString = taskhandlerEL.errorMessageSubtask(task,project);
+
+        if (!errorString.equals(""))return "add_task_error_page1";
 
         //New task inserted to DB
         taskController.AddTaskToDB(task); //TODO METODE ER IKKE OPDATET

@@ -11,16 +11,21 @@ import java.util.ArrayList;
 public class TaskhandlerEL {
 
     //subtask + task
-    public boolean createTaskInputDateCheck(Task task) {
-        if (task.getFinishDate().isBefore(task.getStartDate())) {
-            return false;
-        } else return true;
+    public boolean taskStartDateBeforeFinishCheck(Task task) {
+        System.out.println(task.getFinishDate());
+        if (task.getFinishDate()!=null) {
+            return task.getStartDate().isBefore(task.getFinishDate());
+        }else {
+            return true;
+        }
     }
 
     // subtask+task
-    public boolean createTaskInputChecksIfTaskDatesAreWithinProjectDates(Task task, Project project) {
+    public boolean taskDatesAreWithinProjectDatesCheck(Task task, Project project) {
 
-        if (task.getStartDate().isBefore(project.getStartDate())) {
+        if (task.getFinishDate()==null){
+            return true;
+        }else if (task.getStartDate().isBefore(project.getStartDate())) {
             return false;
         } else if (task.getStartDate().isAfter(project.getDeadlineDate())) {
             //task.getStartDate().isAfter(project.getDeadlineDate());
@@ -33,7 +38,7 @@ public class TaskhandlerEL {
     }
 
     //subtask + task
-    public boolean createTaskInputChecksIfDurationIsOverFinishDateMinusStartdate(Task task) {
+    public boolean durationIsOverFinishDateMinusStartdateCheck(Task task) {
 
         return task.getDuration() == ChronoUnit.DAYS.between(task.getStartDate(), task.getFinishDate()) + 1;
     }
@@ -42,7 +47,6 @@ public class TaskhandlerEL {
         double totalWorkTimeHours = task.getDuration() * task.getNoOfPersons() * task.getWorkingHoursDay();
 
         return task.getTaskTimeconsumption() < totalWorkTimeHours;
-
 
     }
 
@@ -92,15 +96,15 @@ public class TaskhandlerEL {
 
     }
     //     Duration       Persons     WorkHours
-    public String  checkForNullValue(Task task){
+    public boolean  checkForNullValue(Task task){
         if (task.getDuration() == 0 && task.getNoOfPersons() == 0 && task.getWorkingHoursDay() == 0){
-                return "MINDST TO VARIABLE SKAL INDTASTES ";
+                return false;
         }else if ((task.getDuration() == 0 && task.getNoOfPersons() == 0)||
                 (task.getDuration() == 0 && task.getWorkingHoursDay() == 0)||
                 (task.getWorkingHoursDay() == 0 && task.getNoOfPersons() == 0)){
-            return "FEJL I INDTASTNING";
+            return false;
         }
-        return "Task test approved";
+        return true;
     }
 
     //if returns true it exists in DB
@@ -111,6 +115,44 @@ public class TaskhandlerEL {
     public boolean checkTaskNo(Task task) throws SQLException {
         TaskMapper taskMapper = new TaskMapper();
         return taskMapper.checkTaskNoExistsInDB(task);
+    }
+
+    public String errorMessageTask(Task task, Project project) throws SQLException {
+        if (checkTaskName(task)){
+            return   "the chosen name is already in use!";
+        }else if (checkTaskNo(task)){
+            return  "the chosen number is already in use!";
+        }else if (taskStartDateBeforeFinishCheck(task)){
+            return  "finishdate is before startdate!";
+        }else if (taskDatesAreWithinProjectDatesCheck(task, project)){
+            return "taskdate needs to be within project scope!";
+        }else
+        return "";
+    }
+
+    public String errorMessageSubtask(Task task, Project project) throws SQLException {
+
+        if (checkTaskName(task)){
+            System.out.println("the chosen name is already in use!");
+            return   "the chosen name is already in use!";
+            //todo taskno!!
+//        }else if (checkTaskNo(task)){
+//            System.out.println("the chosen number is already in use!");
+//            return  "the chosen number is already in use!";
+        }else if (!taskStartDateBeforeFinishCheck(task)){
+            System.out.println("finishdate is before startdate!");
+            return  "finishdate is before startdate!";
+        }else if (!taskDatesAreWithinProjectDatesCheck(task, project)){
+            System.out.println("taskdate needs to be within project scope!");
+            return "taskdate needs to be within project scope!";
+        }else if (!checkForNullValue(task)){
+            System.out.println("atleast one of (Persons on subtask:) or (Working hours/day/person:) needs to be typed! ");
+            return "atleast two variables needs to be typed! ";
+        }else if (!createTaskTotalWorkTCalculation(task)) {
+            System.out.println("working hours total is less than task time consumption");
+            return "working hours total is less than task time consumption";
+
+        }else return "";
     }
 
 //luff erhan test ?
