@@ -1,8 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<link rel="stylesheet" href="alfa.css">
+<div lang="en" xmlns:th="http://www.thymeleaf.org/">
+    <head>
+        <meta charset="UTF-8">
+        <title>deleteconfirmation</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+    <header>
+        <div class="header" id="confirmation">
+            <h1>You are required to confirm your deletion</h1>
+        </div>
+    </header>
+    <ul>
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/logout">Log out</a></li>
+        <li><a href="mailto:contact@fff.dk">Contact</a></li>
+        <li><a href="mailto:support@fff.dk">Support</a></li>
+    </ul>
+
+    <div class="container">
+        <fieldset>
+            <legend>Login</legend>
+            <br>
     are you sure you want to delete task number:  <span th:text="${task.getTaskNumber}"></span> and all its associated subtasks?
 
 
@@ -17,8 +38,7 @@
         <input type="submit" value="cancel.  ">
     </form>
 
-</head>
-<body>
+
 
 </body>
 </html>

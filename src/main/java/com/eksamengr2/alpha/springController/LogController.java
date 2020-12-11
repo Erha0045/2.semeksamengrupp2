@@ -1,5 +1,6 @@
 package com.eksamengr2.alpha.springController;
 
+import com.eksamengr2.alpha.data.DashboardMapper;
 import com.eksamengr2.alpha.data.DataFacadeImpl;
 import com.eksamengr2.alpha.model.LoginController;
 import com.eksamengr2.alpha.model.LoginSampleException;
@@ -14,6 +15,8 @@ import org.springframework.web.context.request.WebRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.util.List;
+
 @Controller
 public class LogController {
 
@@ -25,20 +28,24 @@ public class LogController {
         }
 
         @PostMapping("/login")
-        public String login(WebRequest request, Model model) throws SQLException, LoginSampleException {
+        public String login(WebRequest request, Model model) throws Exception {
             //henter userName og password fra loginpage textfelter
             String username = request.getParameter("username");
             String password = request.getParameter("password");
-
+//            User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
             //delegate work + data to login controller
             User user = loginController.login(username, password);
-            setSessionInfo(request, user);
 
+            setSessionInfo(request, user);
+            user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
             System.out.println("usertype: "+user.getUserType());
 
             System.out.println("username, password: " + username + password);
             System.out.println(user);
-            return user.getUserType() + "/"+ user.getUserType() + "dashboard2";
+            List<Project> projectsList = new DashboardMapper().getProjectByUser(user.getUserName());
+            model.addAttribute("projects", projectsList);
+
+            return user.getUserType() + "/" + user.getUserType() +"dashboard2";
 
 //            Project projectz = new Project();
 //            model.addAttribute("pojotransfer",projectz);

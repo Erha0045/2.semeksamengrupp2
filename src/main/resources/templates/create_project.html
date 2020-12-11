@@ -1,21 +1,40 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<head>
-    <meta charset="UTF-8">
-    <title>Create project</title>
-</head>
-<body>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<link rel="stylesheet" href="alfa.css">
+<!--<div lang="en" xmlns:th="http://www.thymeleaf.org/">-->
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>projectcreation</title>
+    </head>
+    <body>
+    <header>
+        <div class="header">
+            <h1>Create project</h1>
+        </div>
+    </header>
+    <ul>
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/logout">Log out</a></li>
+        <li><a href="mailto:contact@fff.dk">Contact</a></li>
+        <li><a href="mailto:support@fff.dk">Support</a></li>
+    </ul>
 
+    <div class="container">
+        <br>
 
+        <fieldset>
+            <legend>Create a project</legend>
+            <br>
     <form method="post" action="/create_project" th:object="${pojotransfer}">
 
     <!--    textfield String type-->
-    <label>Type a projectname:</label>
+    Type projectname:
     <input type="text" th:field="*{projectName}" placeholder="projectname"/>
     <br>
 
     <!--    textfield String type-->
-    <label>Type a ownername:</label>
+    <label>Type ownername:</label>
     <input type="text" th:field="*{ownerName}"placeholder="ownername"/>
     <br>
 
@@ -28,7 +47,9 @@
     <input type="submit"  value="Create project" name="getvalue" >
 
 </form>
-
+        </fieldset>
+    </div>
 
 </body>
+</div>
 </html>

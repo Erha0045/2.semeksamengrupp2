@@ -1,31 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<link rel="stylesheet" href="alfa.css">
+<div lang="en" xmlns:th="http://www.thymeleaf.org/">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Registration page</title>
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-<!--    <link rel="stylesheet" type="text/css" href="style.css">-->
-    <title>Registrering side</title>
-</head>
-<body>
-<header id="pageheader" >
+    <body>
 
-    <div>
-        <div class="indexheader">
-
-
+    <header>
+        <div class="header">
+            <h1>User management</h1>
         </div>
-    </div>
-</header>
-<h1> Her kan du oprette et profil! </h1>
-<br>
-<br>
-<div >
-    <div class="center">
-        <table>
-            <td>
-                <form  name="register" action="/registration1" method=POST th:object="${user}" >
+    </header>
+    <ul>
 
-                    <br>
+        <li><a href="/index">Welcome page</a></li>
+        <li><a href="mailto:contact@fff.dk">Contact</a></li>
+        <li><a href="mailto:support@fff.dk">Support</a></li>
+    </ul>
+
+    <div class="container">
+        <br>
+        <form  name="register" action="/registration2" method="post" th:object="${user}" >
+<!--        <form  name="register" action="/registration2" method=get th:object="${user}" >-->
+        <fieldset>
+            <legend>Create a user</legend>
+            <br>
+            <br>
                     Type your username:<br>
                     <input type="text" name="username" value="">
                     <br>
@@ -39,13 +43,11 @@
                     <br>
                     <br>
 
+                    <button type="submit" class="button">Create account</button>
 
-                    <input type="submit" value="Create account">
-                </form>
-            </td>
-            </tr>
-        </table>
+        </fieldset>
+        </form>
     </div>
-</div>
 </body>
+</div>
 </html>

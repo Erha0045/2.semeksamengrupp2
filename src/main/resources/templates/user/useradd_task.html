@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<link rel="stylesheet" href="alfa.css">
+<div lang="en" xmlns:th="http://www.thymeleaf.org/">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>addtask</title>
+    </head>
+    <body>
+    <header>
+        <div class="header">
+            <h1>Add task</h1>
+        </div>
+    </header>
+    <ul>
+        <li><a href="/dashboard2">Dashboard</a></li>
+        <li><a href="/logout">Log out</a></li>
+        <li><a href="mailto:contact@fff.dk">Contact</a></li>
+        <li><a href="mailto:support@fff.dk">Support</a></li>
+    </ul>
+
+    <div class="container">
+        <br>
+
+        <fieldset>
+            <legend>Add a task</legend>
+            <br>
+
+            <form name="addtask" method="post" action="/add_task" th:object="${task}">Dropdown button</form>
+            <!--    dropdown-->
+            <select th:field="*{subTaskToName} ">
+                <label>Choose if any Task above:</label>
+                <option th:each="p : ${listTitler}" th:value="${p.getName()}" th:text="${p.getName()}" />
+            </select>
+
+            <br><br>
+            <label>Task no/Sub task no:</label>
+            <input type="text" th:field="*{taskNo}" />
+            <br><br>
+            <label>New task name:</label>
+            <input type="text" th:field="*{name}" />
+            <br><br>
+            <label>Start date:</label>
+            <input type="date" th:field="*{startDate}" />
+            <br><br>
+            <label>Time consumption(h):</label>
+            <input type="text" th:field="*{taskTimeconsumption}" />
+            <br><br><br><br>
+            <label>Finish date:</label>
+            <input type="date" th:field="*{finishDate}" />
+            <br><br>
+            <label>Duration:</label>
+            <input type="text" th:field="*{duration}" />
+            <br><br><br><br>
+            <label>Persons on subtask:</label>
+            <input type="text" th:field="*{noOfPersons}" />
+            <br><br>
+            <label>Working hours/day/person:</label>
+            <input type="text" th:field="*{workingHoursDay}" />
+            <br><br><br>
+
+            <button class="button" input type="submit">Save task"</button>
+            <button class="button" input type="submit">Cancel</button>
+
+            </form>
+        </fieldset>
+    </div>
+
+
+    </body>
+    <</div>
+</html>

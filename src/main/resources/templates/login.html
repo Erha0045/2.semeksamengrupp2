@@ -1,26 +1,43 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org/">
-
-    <meta charset="UTF-8">
-    <title>login</title>
-</head>
-<body>
-<div id="logincenter">
-    <div class="center">
-
-        <form name="login" action="/login" method=POST>
-
-             Username:<br>
-            <input type="text" id="username" name="username">
-            <br>
-            <br>
-            Password:<br>
-            <input type="text" id="password" name="password" >
-            <br>
-            <br>
-            <input type="Submit" value="  Log ind!  ">
-        </form>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<link rel="stylesheet" href="alfa.css">
+<div lang="en" xmlns:th="http://www.thymeleaf.org/">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>loginpage</title>
+    </head>
+    <body>
+<header>
+    <div class="header">
+        <h1>Welcome Menu</h1>
     </div>
+</header>
+<ul>
+    <li><a href="mailto:contact@fff.dk">Contact</a></li>
+    <li><a href="mailto:support@fff.dk">Support</a></li>
+</ul>
+<div class="container">
+
+<fieldset>
+    <br>
+<legend>Login session</legend>
+            <form name="login"  action="/login" method=POST>
+
+                Username:<br>
+                <input  class="inputwhite" type="text" id="username" name="username">
+                <br>
+                <br>
+                Password:<br>
+                <input  class="inputwhite" type="text" id="password" name="password" >
+                <br>
+                <br>
+                <button type="Submit"  class="button" >Log in</button>
+            </form>
+    <br>
+</fieldset>
+
 </div>
 </body>
+</div>
 </html>

@@ -13,12 +13,14 @@ import org.springframework.web.context.request.WebRequest;
 public class RegistrationController {
         @GetMapping("/registration2")
         public String registrationpage(@ModelAttribute("user")User user, Model model) {
+            System.out.println("du er kommet til registration2");
             model.addAttribute("user", user);
             return "registration2";
         }
 
-    @PostMapping("/registration1")
+    @PostMapping("registration2")
     public String registerUser(@ModelAttribute("user") User user, WebRequest request, Model model) throws Exception {
+        System.out.println("du er kommet til registration1");
         model.addAttribute("user", user);
 
         RegistrationsMapper registrationsMapper = new RegistrationsMapper();
@@ -32,7 +34,7 @@ public class RegistrationController {
             setSessionInfo(request, user );
             registrationsMapper.registerUser(user);
 
-            return "dashboard";
+            return "user/userdashboard2";
 
         } else { // If passwords don't match, an exception is thrown
             throw new Exception("Adgangskode skal være éns.");

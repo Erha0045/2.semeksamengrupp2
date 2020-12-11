@@ -1,24 +1,38 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<head>
-    <meta charset="UTF-8">
-    <title>Create project</title>
-</head>
-<body>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<link rel="stylesheet" href="alfa.css">
+<div lang="en" xmlns:th="http://www.thymeleaf.org/">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>project_creation</title>
+    </head>
+    <body>
+    <header>
+        <div class="header">
+            <h1>Project management</h1>
+        </div>
+    </header>
+    <ul>
+        <li><a href="/dashboard2">Dashboard</a></li>
+        <li><a href="/logout">Log out</a></li>
+        <li><a href="mailto:contact@fff.dk">Contact</a></li>
+        <li><a href="mailto:support@fff.dk">Support</a></li>
+    </ul>
 
+    <div class="container">
+        <br>
 
-<form method="post" action="/create_project" th:object="${pojotransfer}">
+        <fieldset>
+            <legend>Create a project</legend>
+            <br>
 
-    <!--    textfield String type-->
+    <form method="post" action="/create_project1" th:object="${pojotransfer}">
+
     <label>Type a projectname:</label>
-    <input type="text" th:field="*{projectName}" placeholder="projectname"/>
+    <input  class="inputwhite" type="text" th:field="*{projectName}" placeholder="projectname"/>
     <br>
-
-    <!--    textfield String type-->
-    <!--    <label>Type a ownername:</label>-->
-    <!--    <input type="text" th:field="*{ownerName}"placeholder="ownername"/>-->
     <br>
-
     <!--    textfield Date type-->
     <label>Type in a startDate:</label>
     <input type="date" th:field="*{startDate}" placeholder="yyyy-MM-dd"/>
@@ -30,11 +44,22 @@
     <input type="date" th:field="*{deadlineDate}" placeholder="yyyy-MM-dd"/>
     <br>
     <br>
+    <br>
+    <br>
     <!--    Button-->
-    <input type="submit" value="Create project" name="getvalue">
+        <button class="button" type="submit" >Create project</button>
 
 </form>
+            <br>
 
 
+    <form name="cancel" action="/dashboard2" method=GET>
+                <button class="button" type="submit" >cancel</button>
+            </form>
+            <br>
+        </fieldset>
+
+    </div>
 </body>
+</div>
 </html>

@@ -5,12 +5,12 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>deleteerrort</title>
+        <title>deleteconfirmation</title>
     </head>
-    <body>
+   <body>
     <header>
         <div class="header">
-            <h1>Delete project ERROR</h1>
+            <h1>Delete project</h1>
         </div>
     </header>
     <ul>
@@ -24,21 +24,22 @@
         <br>
 
         <fieldset>
-    <form name="delete_project" action="/delete_project" method=POST>
-        The project number you entered has not been found, please try again.
-        <br>
-        Write project number you wish removed.<br>
-        <input type="number" id="Project_number" min="0" step="1" name="Project_number">
+            <legend>CAUTION!</legend>
+            <h3>are you sure you want to delete project number:  <span style="color: red"  th:text="${project.getProjectId()}"></span> and all its associated tasks?</h3>
+
+
+    <form name="delete_project" action="delete_project_confirmation1" method=POST>
 
         <br>
-        <!--        Write Project from which you would like to delete task.-->
-        <!--        <input type="number" id="Project_ID" step="1" name="Project_ID">-->
-        <br>
-        <input type="submit" value="Delete project.  ">
+        <input type="submit" value="Delete Project">
     </form>
+            <form name="cancel" action="/edit_project" method=GET>
+
+                <button class="button" type="submit" >cancel</button>
+            </form>
         </fieldset>
     </div>
 
-    </body>
-</div>
+</body>
+    </div>
 </html>
