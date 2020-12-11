@@ -221,6 +221,7 @@ public class melgaController {
 
     @GetMapping("add_task")
     public String add_task(Model model) throws SQLException {
+        System.out.println("add_task getMapping");
         listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId); //TODO skal skiftes med en søgning på projekt nummer + No overtask
 
         //Person person = new Person();
@@ -254,7 +255,7 @@ public class melgaController {
         //New task inserted to DB
         taskController.AddTaskToDB(task); //TODO METODE ER IKKE OPDATET
 
-        return "add_task";
+        return "redirect:/add_task"; //TODO
     }
 
     //Button "save subTask"
@@ -277,7 +278,7 @@ public class melgaController {
         //New task inserted to DB
         taskController.AddTaskToDB(task); //TODO METODE ER IKKE OPDATET
 
-        return "add_task";
+        return "redirect:/add_task"; //TODO
     }
 
 

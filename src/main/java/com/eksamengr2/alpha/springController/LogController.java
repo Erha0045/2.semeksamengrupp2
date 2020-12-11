@@ -32,20 +32,18 @@ public class LogController {
             //henter userName og password fra loginpage textfelter
             String username = request.getParameter("username");
             String password = request.getParameter("password");
-//            User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
+
             //delegate work + data to login controller
             User user = loginController.login(username, password);
-
             setSessionInfo(request, user);
             user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
             System.out.println("usertype: "+user.getUserType());
-
-            System.out.println("username, password: " + username + password);
-            System.out.println(user);
             List<Project> projectsList = new DashboardMapper().getProjectByUser(user.getUserName());
             model.addAttribute("projects", projectsList);
 
-            return user.getUserType() + "/" + user.getUserType() +"dashboard2";
+            System.out.println("username, password: " + username + password);
+            System.out.println(user);
+            return user.getUserType() + "/"+ user.getUserType() + "dashboard2";
 
 //            Project projectz = new Project();
 //            model.addAttribute("pojotransfer",projectz);

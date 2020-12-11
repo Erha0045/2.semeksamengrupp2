@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TaskHandler1Test {
 
 
-
+    //Denne skal laves med kontrolleret DB eller virker den ikke
     @Test
     @DisplayName("Updggggate")
     void userInput_FromEditTask_UpdateTaskInDB() throws SQLException {
@@ -148,7 +148,7 @@ class TaskHandler1Test {
 //        System.out.println("Print fra test: " + projectId +" " + oldTaskNo +" "+ newTaskNo +" "+ isSubTask);
 
     }
-
+    //TODO disse skal rettes til
     @Test
     @DisplayName("TEST 1: StartDate i changed")
     void editTask1() throws SQLException {
@@ -376,9 +376,14 @@ class TaskHandler1Test {
 
     }
 
+
+    //*********************************************
+    //** JUnit add a new Task
+    //*********************************************
+
     @Test
-    @DisplayName("TEST 0: TASK")
-    void addTaskToDB0() throws SQLException {
+    @DisplayName("TEST a: TASK duration entered")
+    void addTaskToDBa() throws SQLException {
         TaskHandler1 taskHandler1 = new TaskHandler1();
 
         //parameter Task
@@ -391,18 +396,48 @@ class TaskHandler1Test {
         Task exp = new Task("BAD", LocalDate.of(2020,1,1),
                 LocalDate.of(2020,1,15), 15, 1, "no",
                 6.0, 0, 0,
-                0, 1, 7.5, "");
+                0, 0, 0.0, "");
 
         //Actual result
         Task actual = taskHandler1.AddTaskToDB(input);
 
         //Assert
         assertEquals(exp, actual);
+    }
 
+    @Test
+    @DisplayName("TEST b: TASK finishDate entered")
+    void addTaskToDBb() throws SQLException {
+        TaskHandler1 taskHandler1 = new TaskHandler1();
 
+        //parameter Task
+        Task input = new Task("BAD", LocalDate.of(2020,1,1),
+                LocalDate.of(2020,1,1), 1, 1, "",
+                16.0, 0, 0,
+                0, 0, 0.0, "");
+
+        //Expected result
+        Task exp = new Task("BAD", LocalDate.of(2020,1,1),
+                LocalDate.of(2020,1,1), 1, 1, "no",
+                16.0, 0, 0,
+                0, 0, 0.0, "");
+
+        //Actual result
+        Task actual = taskHandler1.AddTaskToDB(input);
+
+        //Assert
+        assertEquals(exp, actual);
     }
 
 
+
+
+
+
+
+    //*********************************************
+    //** JUnit add a new subTask
+    //*********************************************
 
 
     @Test
@@ -490,13 +525,13 @@ class TaskHandler1Test {
 
         //parameter- subTask
         Task input = new Task("BAD_sub3", LocalDate.of(2020,12,1),
-                null, 15, 1, "",
+                null, 0, 1, "",
                 12.0, 0, 0,
-                1000, 0, 0.0, "BAD77");
+                1000, 0, 7.5, "BAD77");
 
         //Expected result
         Task exp = new Task("BAD_sub3", LocalDate.of(2020,12,1),
-                LocalDate.of(2020,12,15), 15, 1, "yes",
+                LocalDate.of(2021,4,13), 134, 1, "yes",
                 6.12, 0, 0,
                 1000, 1, 7.5, "BAD77");
 
@@ -547,7 +582,7 @@ class TaskHandler1Test {
                 1000, 0, 0.0, "BAD77");
 
         //Expected result
-        Task exp = new Task("BAD_sub4", LocalDate.of(2020,12,1),
+        Task exp = new Task("BAD_sub5", LocalDate.of(2020,12,1),
                 LocalDate.of(2020,12,15), 15, 1, "yes",
                 6.50, 0, 0,
                 1000, 10, 7.50, "BAD77");
@@ -573,7 +608,7 @@ class TaskHandler1Test {
                 1000, 6, 8.0, "BAD77");
 
         //Expected result
-        Task exp = new Task("BAD_sub4", LocalDate.of(2020,12,1),
+        Task exp = new Task("BAD_sub6", LocalDate.of(2020,12,1),
                 LocalDate.of(2020,12,21), 21, 1, "yes",
                 6.26, 0, 0,
                 1000, 6, 8.0, "BAD77");

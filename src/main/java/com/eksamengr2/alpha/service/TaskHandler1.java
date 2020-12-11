@@ -7,16 +7,23 @@ import java.sql.SQLException;
 import java.time.temporal.ChronoUnit;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class TaskHandler1 {
     EditProjectMapper editProjectMapper = new EditProjectMapper();
     public static final double DEFAULT_WORKING_HOURS_DAY = 7.5;
     public static final double DEFAULT_PERSONS_ON_TASK = 1;
 
+    /**Prepares data from input to be inserted into DB
+     *
+     * @param modifiedTask attributes user want edited
+     * @param oldTask attributes from before editing
+     * @return is only for JUnit testing
+     * @throws SQLException
+     */
     public Task editTask(Task modifiedTask, Task oldTask) throws SQLException {
         Task newTask = oldTask;
-        System.out.println("modified TH: " + modifiedTask);
-        System.out.println("old TH: " + oldTask);
+        String sqlString;
 
         //*********************************************************
         //Using local variables to make the code more readable
@@ -105,10 +112,8 @@ public class TaskHandler1 {
         double workingHoursDayOldCalculated=0;
         //5) PersonsOnTask is edited->
         if( personsOnTaskMod!=0){
-
             workingHoursDayNew =  Math.round(timeconsumptionOld /((double)durationOld*personsOnTaskOld)*100.00)/100d;
             durationNew = (int) Math.ceil(timeconsumptionOld/(personsOnTaskMod*workingHoursDayNew)) ;
-
             finishNew = startOld.plusDays(durationNew -1);
             personsOnTaskNew = personsOnTaskMod;
             startNew = startOld;
@@ -127,7 +132,6 @@ public class TaskHandler1 {
 
         //6) none is changed
         if(startMod==null && timeconsumptionMod==0 && finishMod==null && durationMod==0 && personsOnTaskMod==0 && workingHoursDayMod==0.0){
-
             startNew = startOld;
             workingHoursDayNew = workingHoursDayOld;
             timeconsumptionNew = timeconsumptionOld;
@@ -136,14 +140,13 @@ public class TaskHandler1 {
             personsOnTaskNew = personsOnTaskOld;
         }
 
-        //7 name is changed
+        //7) name is changed
         if (!modifiedTask.getName().equals("")){
             newTask.setName(modifiedTask.getName());
         }
         else {
             newTask.setName(oldTask.getName());
         }
-            //MAN KUNNE MÅSKE LADE BRUGER UDVÆLGE 2 UDVALGTE???
 
         //Populater new task object
         newTask.setDuration(durationNew);
@@ -153,20 +156,16 @@ public class TaskHandler1 {
         newTask.setWorkingHoursDay(workingHoursDayNew);
         newTask.setTaskTimeconsumption(timeconsumptionNew);
 
-        //Change of taskNumber og alle eventuelt tilhørende subtask numre TODO
-
-        String sqlString;
         //Updates DB with new TaskNo'(s)
         if (modifiedTask.getTaskNo() !=0.0) {
-            System.out.println("Var inde i new taskNO if før sql generator"); //TIL TEST
             sqlString = updateTaskNos(oldTask.getProjectId(), oldTask.getTaskNo(), modifiedTask.getTaskNo(), oldTask.getIsSubTask());
             editProjectMapper.updateTaskNos(sqlString);
         }
 
         //Updates DB with task-attributes except for taskNo
-        editProjectMapper.updateTask(newTask);  //TODO ikke testet
+        editProjectMapper.updateTask(newTask);
 
-        return newTask; //BRUGES TIL TEST TODO fjern return og kør mappers direkte????????
+        return newTask; //KUN TIL TEST
 
     }//method
 
@@ -188,9 +187,6 @@ public class TaskHandler1 {
         oldTaskNo = Math.round(oldTaskNo * 100)/100d;
         newTaskNo = Math.round(newTaskNo * 100)/100d;
 
-//        System.out.println("oldTaskNo: "+oldTaskNo); //14.2
-//        System.out.println("newTaskNo: "+newTaskNo);  //13.2
-
         //Gets taskNo and all belonging subtask numbers
         if (isSubTask.equals("no")) { //it is an overTask
             listOld = editProjectMapper.get_idtasks_TaskNos(projectId, oldTaskNo);
@@ -202,9 +198,9 @@ public class TaskHandler1 {
         }
         System.out.println("listOld" + listOld);
 
+        //Populates ArrayList
         listNew = listOld;
 
-        System.out.println("listNew efter = listOld"+listNew);
 
         /*  BEGIN WORK;START TRANSACTION;
             UPDATE alfasolutionsdb.task SET taskno = 99.1 WHERE idtask=19;
@@ -217,8 +213,6 @@ public class TaskHandler1 {
         String endString=" COMMIT;";
         String sqlString="";
 
-        //Difference between new and old taskNo FEJL differenc 0.04999999999952 = 0.05  ->((int) ((value + 0.005f) * 100)) / 100f skal tjekkes
-//        float diffBetweenOldAndNewTaskNo = (float)Math.round((newTaskNo - oldTaskNo) *100.0f) / 100.0f;
         double diffBetweenOldAndNewTaskNo = Math.round((newTaskNo - oldTaskNo) *100) / 100d;
 
         System.out.println("Before add: " + listNew );
@@ -226,7 +220,6 @@ public class TaskHandler1 {
         for (Task lineElement: listNew) {
             lineElement.setTaskNo(lineElement.getTaskNo()+diffBetweenOldAndNewTaskNo);
         }
-        System.out.println("After add: " + listNew );
 
         //Fills taskNo to the composed sqlString-substring with new values
         if(isSubTask.equals("no")){ //task with subtasks
@@ -237,19 +230,18 @@ public class TaskHandler1 {
         else if(isSubTask.equals("yes")){ //subtask
             repeatString.append(" UPDATE alfasolutionsdb.task SET taskno =").append(Math.round((listNew.get(0).getTaskNo()) *100.00)/100d).append(" WHERE idtask=").append(listNew.get(0).getIdtask()).append(";");
         }
-        //System.out.println(startString+repeatString+endString);
 
         return startString+repeatString+endString;
     }
 
-    //TODO ADD_TASK ....SKAL OPDATERES SÅ DE NYE ATTRIBUTTEr KOMMER MED,
+
     /**Method prepares input data from Add_task page to be inserted to database
      *
      * @param task
      * @return
      */
     public Task AddTaskToDB(Task task) throws SQLException {
-        System.out.println("AddTaskToDB" + task);
+        System.out.println("Var i AddTaskToDB:");
 
         //Local variables used to ease redaability of code
         LocalDate startDate = task.getStartDate();
@@ -260,12 +252,13 @@ public class TaskHandler1 {
         double workingHoursDay=task.getWorkingHoursDay();
         double preTaskNo;
 
-
-        //isSubTask value is set
-        if (task.getSubTaskToName()==null){
+        //values are set depending if it is subTask or Task
+        if (Objects.isNull(task.getSubTaskToName()) || task.getSubTaskToName().isBlank()){ //task
             task.setIsSubTask("no");
+            task.setNoOfPersons(0);
+            task.setWorkingHoursDay(0.0);
         }
-        else {
+        else { //subTask
             task.setIsSubTask("yes");
         }
 
@@ -290,67 +283,72 @@ public class TaskHandler1 {
             task.setDuration((int) ChronoUnit.DAYS.between(startDate,finishDate)+1);
         }
 
-
         //**********************************************************************************
-        //*finishDate, duration, personsOnTask and workingHoursDay interact with eachother *
+        //For subtask
+        //finishDate, duration, personsOnTask and workingHoursDay interact with eachother *
         // duration is rounded up where nessesary
         //**********************************************************************************
 
-        //1) FinishDate or Duration entered
-        if ((finishDate!=null || duration!=0) && personsOnTask==0 && workingHoursDay==0.0){
-            System.out.println("noOfPersons: "+task.getNoOfPersons());
-            System.out.println("duration: " + duration);
-            task.setNoOfPersons(((int) (timeConsumption/(duration*DEFAULT_WORKING_HOURS_DAY)))+1);
+        if (task.getIsSubTask().equals("yes")) {
 
-            System.out.println("noOfPersons: "+task.getNoOfPersons());
+            //1) FinishDate or Duration entered
+            if ((finishDate != null || duration != 0) && personsOnTask == 0 && workingHoursDay == 0.0) {
+                System.out.println("Var i 1");
+                task.setNoOfPersons(((int) (timeConsumption / (duration * DEFAULT_WORKING_HOURS_DAY))) + 1);
+                task.setWorkingHoursDay(DEFAULT_WORKING_HOURS_DAY);
+            }
 
-            task.setWorkingHoursDay(DEFAULT_WORKING_HOURS_DAY);
-        }
+            //2 workingHoursDay entered
+            if ((finishDate == null || duration == 0) && personsOnTask != 0 && workingHoursDay == 0.0d) {
+                System.out.println("Var i 2");
+                task.setWorkingHoursDay(DEFAULT_WORKING_HOURS_DAY);
+                task.setDuration((int) Math.ceil(timeConsumption / (personsOnTask * DEFAULT_WORKING_HOURS_DAY)));
+            }
 
-        //2 workingHoursDay entered
-        if ((finishDate==null || duration==0) && personsOnTask!=0 && workingHoursDay==0.0d){
-            task.setWorkingHoursDay(DEFAULT_WORKING_HOURS_DAY);
-            task.setDuration((int) Math.ceil(timeConsumption/(personsOnTask*DEFAULT_WORKING_HOURS_DAY)));
-        }
+            //3) workingHoursDay entered
+            if ((finishDate == null || duration == 0) && personsOnTask == 0 && workingHoursDay != 0.0d) {
+                System.out.println("Var i 3");
+                task.setNoOfPersons((int) DEFAULT_PERSONS_ON_TASK);
+                task.setDuration((int) Math.ceil((double) timeConsumption / (DEFAULT_PERSONS_ON_TASK * workingHoursDay)));
+                task.setFinishDate(startDate.plusDays(task.getDuration() - 1));
+            }
 
-        //3) workingHoursDay entered
-        if ((finishDate==null || duration==0) && personsOnTask==0 && workingHoursDay!=0.0d){
-            task.setNoOfPersons((int)DEFAULT_PERSONS_ON_TASK);
-            task.setDuration((int) Math.ceil(timeConsumption/(DEFAULT_PERSONS_ON_TASK*workingHoursDay)));
-            task.setFinishDate(startDate.plusDays(task.getDuration()-1));
-        }
+            //4) FinishDate or Duration and personsOnTask entered
+            if ((finishDate != null || duration != 0) && personsOnTask != 0 && workingHoursDay == 0.0d) {
+                System.out.println("Var i 4");
+                task.setWorkingHoursDay(Math.round(100.00 * timeConsumption / (duration * (double) personsOnTask)) / 100.00);
+            }
 
-        //4) FinishDate or Duration and personsOnTask entered
-        if ((finishDate!=null || duration!=0) && personsOnTask!=0 && workingHoursDay==0.0d){
-            System.out.println("task.getNoOfPersons: "+task.getWorkingHoursDay());
-            task.setWorkingHoursDay(Math.round(100.00*timeConsumption/(duration*(double)personsOnTask))/100.00);
-            System.out.println("task.getNoOfPersons: "+task.getWorkingHoursDay());
-        }
+            //5) FinishDate or Duration and workingHoursDay entered
+            if ((finishDate != null || duration != 0) && personsOnTask == 0 && workingHoursDay != 0.0d) {
+                System.out.println("Var i 5");
+                task.setNoOfPersons((int) Math.ceil(timeConsumption / (duration * workingHoursDay)));
+            }
 
-        //5) FinishDate or Duration and workingHoursDay entered
-        if ((finishDate!=null || duration!=0) && personsOnTask==0 && workingHoursDay!=0.0d){
-            task.setNoOfPersons((int)Math.ceil(timeConsumption/(duration*workingHoursDay)));
-        }
+            //6)workingHoursDay and personsOnTask
+            if ((finishDate == null || duration == 0) && personsOnTask != 0 && workingHoursDay != 0.0d) {
+                System.out.println("Var i 6");
+                task.setDuration((int) Math.ceil(timeConsumption / (personsOnTask * workingHoursDay)));
+                task.setFinishDate(startDate.plusDays(task.getDuration() - 1));
+            }
 
-        //6)workingHoursDay and personsOnTask
-        if ((finishDate==null || duration==0) && personsOnTask!=0 && workingHoursDay!=0.0d){
-            task.setDuration((int) Math.ceil(timeConsumption/(personsOnTask*workingHoursDay)));
-            task.setFinishDate(startDate.plusDays(task.getDuration()-1));
-        }
-
-        //7)All entered
-        if ((finishDate!=null || duration!=0) && personsOnTask!=0 && workingHoursDay!=0.0d){
-            task.setDuration((int) Math.ceil(timeConsumption/(personsOnTask*workingHoursDay)));
-            task.setFinishDate(startDate.plusDays(task.getDuration()-1));
-        }
+            //7)All entered
+            if ((finishDate != null || duration != 0) && personsOnTask != 0 && workingHoursDay != 0.0d) {
+                System.out.println("Var i 7");
+                task.setDuration((int) Math.ceil(timeConsumption / (personsOnTask * workingHoursDay)));
+                task.setFinishDate(startDate.plusDays(task.getDuration() - 1));
+            }
 
 
-         //8)None entered
-        if ((finishDate==null || duration==0) && personsOnTask==0 && workingHoursDay==0.0d){
-            task.setWorkingHoursDay(DEFAULT_WORKING_HOURS_DAY);
-            task.setDuration((int) Math.ceil(timeConsumption/(DEFAULT_PERSONS_ON_TASK*DEFAULT_WORKING_HOURS_DAY)));
-            task.setFinishDate(startDate.plusDays(task.getDuration()));
-            task.setNoOfPersons((int) DEFAULT_PERSONS_ON_TASK);
+            //8)None entered
+            if ((finishDate == null || duration == 0) && personsOnTask == 0 && workingHoursDay == 0.0d) {
+                System.out.println("Var i 8");
+                task.setWorkingHoursDay(DEFAULT_WORKING_HOURS_DAY);
+                task.setDuration((int) Math.ceil(timeConsumption / (DEFAULT_PERSONS_ON_TASK * DEFAULT_WORKING_HOURS_DAY)));
+                task.setFinishDate(startDate.plusDays(task.getDuration()));
+                task.setNoOfPersons((int) DEFAULT_PERSONS_ON_TASK);
+            }
+
         }
         System.out.println("finishdate efter:" + task.getFinishDate());
         //Inserts prepared data from dialogbox to DB
