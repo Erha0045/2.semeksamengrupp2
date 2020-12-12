@@ -10,34 +10,52 @@ import java.util.ArrayList;
 
 public class TaskhandlerEL {
 
+
     //subtask + task
     public boolean taskStartDateBeforeFinishCheck(Task task) {
-        System.out.println(task.getFinishDate());
-        if (task.getFinishDate()!=null) {
-            return task.getStartDate().isBefore(task.getFinishDate());
-        }else {
-            return true;
+
+        if (task.getFinishDate() != null) {
+            if (task.getStartDate().isEqual(task.getFinishDate())) {
+                return true;
+            } else return task.getStartDate().isBefore(task.getFinishDate());
         }
+        else return true;
+
+    }
+
+    public boolean subTaskDatesWithInTaskDates(Task task, Task overTask) {
+        if (task.getFinishDate() != null) {
+            if (task.getStartDate().isBefore(overTask.getStartDate())) {
+                return false;
+            } else if (task.getStartDate().isAfter(overTask.getFinishDate())) {
+                return false;
+            } else if (task.getFinishDate().isAfter(overTask.getFinishDate())) {
+                return false;
+            } else return !task.getFinishDate().isBefore(overTask.getStartDate());
+        } else if (task.getStartDate().isBefore(overTask.getStartDate())) {
+            return false;
+        } else return (!task.getStartDate().isAfter(overTask.getFinishDate()));
     }
 
     // subtask+task
     public boolean taskDatesAreWithinProjectDatesCheck(Task task, Project project) {
 
-        if (task.getFinishDate()==null){
-            return true;
-        }else if (task.getStartDate().isBefore(project.getStartDate())) {
-            return false;
-        } else if (task.getStartDate().isAfter(project.getDeadlineDate())) {
-            //task.getStartDate().isAfter(project.getDeadlineDate());
-            return false;
-        } else if (task.getFinishDate().isBefore(project.getStartDate())) {
-            //task.getFinishDate().isBefore(project.getStartDate());
-            return false;
-        } else return !task.getFinishDate().isAfter(project.getDeadlineDate());
+        if (task.getFinishDate() != null) {
 
+            if (task.getStartDate().isBefore(project.getStartDate())) {
+                return false;
+            } else if (task.getStartDate().isAfter(project.getDeadlineDate())) {
+                return false;
+            } else if (task.getFinishDate().isBefore(project.getStartDate())) {
+                return false;
+            } else return !task.getFinishDate().isAfter(project.getDeadlineDate());
+        } else if (task.getStartDate().isBefore(project.getStartDate())) {
+            return false;
+        } else return (!task.getStartDate().isAfter(project.getDeadlineDate()));
     }
 
-    //subtask + task
+
+    //unused og nok ligegyldig.
     public boolean durationIsOverFinishDateMinusStartdateCheck(Task task) {
 
         return task.getDuration() == ChronoUnit.DAYS.between(task.getStartDate(), task.getFinishDate()) + 1;
@@ -53,8 +71,8 @@ public class TaskhandlerEL {
     //skal bruge heltal, men er vel ikke et problem?
     public int taskTimeConsumptionSum(Task task) throws SQLException {
         TaskMapper taskMapper = new TaskMapper();
-       ArrayList<Task> taskArrayList = taskMapper.findTasksSubTasks(task);
-        int timeConsumptionSum=0;
+        ArrayList<Task> taskArrayList = taskMapper.findTasksSubTasks(task);
+        int timeConsumptionSum = 0;
 
         for (Task value : taskArrayList) {
             timeConsumptionSum += value.getTaskTimeconsumption();
@@ -65,7 +83,7 @@ public class TaskhandlerEL {
     public int projectTimeConsumptionSum(Project project) throws SQLException {
         TaskMapper taskMapper = new TaskMapper();
         ArrayList<Task> taskArrayList = taskMapper.findProjectTask(project);
-        int timeConsumptionSum=0;
+        int timeConsumptionSum = 0;
 
         for (Task task : taskArrayList) {
             timeConsumptionSum += task.getTaskTimeconsumption();
@@ -77,6 +95,7 @@ public class TaskhandlerEL {
     public Task createTaskTimeConsumption(Task task) {
         //
         if (task.getWorkingHoursDay() == 0) {
+
             task.setWorkingHoursDay((double) task.getTaskTimeconsumption() / task.getNoOfPersons() / task.getDuration());
         }
         if (task.getNoOfPersons() == 0) {
@@ -95,15 +114,25 @@ public class TaskhandlerEL {
         return task;
 
     }
+
     //     Duration       Persons     WorkHours
-    public boolean  checkForNullValue(Task task){
-        if (task.getDuration() == 0 && task.getNoOfPersons() == 0 && task.getWorkingHoursDay() == 0){
-                return false;
-        }else if ((task.getDuration() == 0 && task.getNoOfPersons() == 0)||
-                (task.getDuration() == 0 && task.getWorkingHoursDay() == 0)||
-                (task.getWorkingHoursDay() == 0 && task.getNoOfPersons() == 0)){
+    public boolean checkForNullValue(Task task) {
+        if (task.getDuration() == 0 && task.getNoOfPersons() == 0 && task.getWorkingHoursDay() == 0) {
+            return false;
+        } else if ((task.getDuration() == 0 && task.getNoOfPersons() == 0) ||
+                (task.getDuration() == 0 && task.getWorkingHoursDay() == 0) ||
+                (task.getWorkingHoursDay() == 0 && task.getNoOfPersons() == 0)) {
             return false;
         }
+        return true;
+    }
+
+    public boolean checkForNullValueFinishDateDuration(Task task) {
+
+        if (task.getFinishDate() == null && task.getDuration() == 0) {
+            return false;
+        }
+
         return true;
     }
 
@@ -112,47 +141,67 @@ public class TaskhandlerEL {
         TaskMapper taskMapper = new TaskMapper();
         return taskMapper.checkTaskNameExistsInDB(task);
     }
+
     public boolean checkTaskNo(Task task) throws SQLException {
         TaskMapper taskMapper = new TaskMapper();
         return taskMapper.checkTaskNoExistsInDB(task);
     }
 
-    public String errorMessageTask(Task task, Project project) throws SQLException {
-        if (checkTaskName(task)){
-            return   "the chosen name is already in use!";
-        }else if (checkTaskNo(task)){
-            return  "the chosen number is already in use!";
-        }else if (taskStartDateBeforeFinishCheck(task)){
-            return  "finishdate is before startdate!";
-        }else if (taskDatesAreWithinProjectDatesCheck(task, project)){
-            return "taskdate needs to be within project scope!";
-        }else
-        return "";
+    public boolean checkSubTaskNoExistsInDB(Task task, double overTaskNo) throws SQLException {
+        TaskMapper taskMapper = new TaskMapper();
+        return taskMapper.checkSubTaskNoExistsInDB(task, overTaskNo);
     }
 
-    public String errorMessageSubtask(Task task, Project project) throws SQLException {
+    public String errorMessageTask(Task task, Project project) throws SQLException {
+        String error = "";
+        if (checkTaskName(task)) {
+            error += " \n -  the chosen name is already in use!";
+        }
+        if (checkTaskNo(task)) {
+            error += " \n -  the chosen number is already in use!";
+        }
+        if (!checkForNullValueFinishDateDuration(task)) {
+            error += " \n - You need to enter either a finish date or a Duration! ";
+        }
+        if (!taskStartDateBeforeFinishCheck(task)) {
+            error += " \n -  finishdate is before startdate!";
+        }
+        if (!taskDatesAreWithinProjectDatesCheck(task, project)) {
+            error += " \n -  taskdate needs to be within project scope!";
+        }
+        return error;
+    }
 
-        if (checkTaskName(task)){
-            System.out.println("the chosen name is already in use!");
-            return   "the chosen name is already in use!";
-            //todo taskno!!
-//        }else if (checkTaskNo(task)){
+    public String errorMessageSubtask(Task task, Project project, Task overTask) throws SQLException {
+
+        String error = "";
+        if (checkTaskName(task)) {
+//            System.out.println("the chosen name is already in use!");
+            error += " - the chosen name is already in use!";
+        }
+        if (checkSubTaskNoExistsInDB(task, overTask.getTaskNo())) {
 //            System.out.println("the chosen number is already in use!");
-//            return  "the chosen number is already in use!";
-        }else if (!taskStartDateBeforeFinishCheck(task)){
-            System.out.println("finishdate is before startdate!");
-            return  "finishdate is before startdate!";
-        }else if (!taskDatesAreWithinProjectDatesCheck(task, project)){
-            System.out.println("taskdate needs to be within project scope!");
-            return "taskdate needs to be within project scope!";
-        }else if (!checkForNullValue(task)){
-            System.out.println("atleast one of (Persons on subtask:) or (Working hours/day/person:) needs to be typed! ");
-            return "atleast two variables needs to be typed! ";
-        }else if (!createTaskTotalWorkTCalculation(task)) {
-            System.out.println("working hours total is less than task time consumption");
-            return "working hours total is less than task time consumption";
+            error += " \n -  the chosen number is already in use!";
+        }
+        if (!checkForNullValueFinishDateDuration(task)) {
+            error += " \n - You need to enter either a finish date or a Duration! ";
+        }
+        if (!taskStartDateBeforeFinishCheck(task)) {
+//            System.out.println("finishdate is before startdate!");
+            error += "\n - finishdate is before startdate!";
+        }
+        if (!taskDatesAreWithinProjectDatesCheck(task, project)) {
+//            System.out.println("taskdate needs to be within project scope!");
+            error += "\n -  taskdate needs to be within project scope!";
+        }
+        if (!subTaskDatesWithInTaskDates(task, overTask)) {
+            error += "\n - SubTaskDates need to be within Task scope";
+        }
+        return error;
 
-        }else return "";
+        //else if (!createTaskTotalWorkTCalculation(task)) {
+        // System.out.println("working hours total is less than task time consumption");
+        //return "working hours total is less than task time consumption";
     }
 
 //luff erhan test ?
@@ -197,8 +246,6 @@ public class TaskhandlerEL {
 //
 //        return deleteTaskMapper.checkIfTaskNoExistsBeforeDelete(task);
 //    }
-
-
 
 
 }

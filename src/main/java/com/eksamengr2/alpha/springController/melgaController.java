@@ -1,9 +1,6 @@
 package com.eksamengr2.alpha.springController;
 
-import com.eksamengr2.alpha.data.EditProjectMapper;
-import com.eksamengr2.alpha.data.Facade;
-import com.eksamengr2.alpha.data.FacadeTest;
-import com.eksamengr2.alpha.data.ProjectMapper;
+import com.eksamengr2.alpha.data.*;
 import com.eksamengr2.alpha.model.Project;
 import com.eksamengr2.alpha.model.Task;
 import com.eksamengr2.alpha.service.TaskHandler1;
@@ -13,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Array;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,7 +24,7 @@ public class melgaController {
     private TaskHandler1 taskController = new TaskHandler1();
     private List<Task> listTitler;
     private List<Task> taskLine = new ArrayList<>();
-    private String projectName="Xxxxxxxx"; //TODO TEST SKAL HENTES FRA LINKVALG PÅ PROJECT OVERVIEW
+    private String projectName = "Xxxxxxxx"; //TODO TEST SKAL HENTES FRA LINKVALG PÅ PROJECT OVERVIEW
     private static int projectId; //værdi hente fra URL
     private double transferTaskNo;
     private Task POJO_Task = new Task();
@@ -40,24 +38,24 @@ public class melgaController {
 
 
     @GetMapping("edit_task")
-    public String edittask(Model model) throws SQLException  {
+    public String edittask(Model model) throws SQLException {
         //taskLine.add(new Task("Taskname", LocalDate.of(1900,1,1),LocalDate.of(1900,1,1),0,0,"yes",(float) 0.0,0));
 
-       //Transfer data to TaskNo-exampel
+        //Transfer data to TaskNo-exampel
         model.addAttribute("taskLine", taskHandler1.ExampelForTaskLine());
 
         //Get tasks-data from DB as ArrayList
         tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
 
         //Round off...SKAL NED I MAPPER TODO eller??
-        for (int i=0; i<tasksForProjectId.size(); i++ ) {
-            tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100)/100d);
+        for (int i = 0; i < tasksForProjectId.size(); i++) {
+            tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo() * 100) / 100d);
         }
         //Transfers task-data to table
         model.addAttribute("tasks", tasksForProjectId);
 
         //Transfers data to Project header
-        model.addAttribute("projectname","Projectname: "+projectName );
+        model.addAttribute("projectname", "Projectname: " + projectName);
 
         //Transfers pojo info to textfields form
         model.addAttribute("task", POJO_Task);
@@ -70,7 +68,7 @@ public class melgaController {
 
 
     //Button "Get task/subTask"
-    @RequestMapping(value="/edit_task", method= RequestMethod.POST, params="getTaskSubTask")
+    @RequestMapping(value = "/edit_task", method = RequestMethod.POST, params = "getTaskSubTask")
     public String getTask(Model model, @RequestParam("textFieldSubtaskNo") double taskOrSubTaskNo) throws SQLException {
         Task objTaskLine;
 
@@ -78,19 +76,19 @@ public class melgaController {
         //model.addAttribute("projectname","Projectname: "+projectName );
 
         //Transfers taskNo from input to class attribute for sharing between @PostMappings
-        transferTaskNo = Math.round(taskOrSubTaskNo*100.00)/100.00d; //TODO ÆNDRET HER IKKE TESTET
+        transferTaskNo = Math.round(taskOrSubTaskNo * 100.00) / 100.00d; //TODO ÆNDRET HER IKKE TESTET
 
         //Transfers pojo info to textfields form
         model.addAttribute("task", POJO_Task);
 
         //Transfer data to TaskNo exampel
-        model.addAttribute("taskLine", editProjectMapper.getTaskLine(projectId,Math.round(taskOrSubTaskNo*100)/100d));
+        model.addAttribute("taskLine", editProjectMapper.getTaskLine(projectId, Math.round(taskOrSubTaskNo * 100) / 100d));
 
         //Transfer data from ArrayList to tabel after roundofing double taskNo
         tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
 
-        for (int i=0; i<tasksForProjectId.size(); i++ ) { //Afrunder double TODO SKAL i metode
-            tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100)/100d);
+        for (int i = 0; i < tasksForProjectId.size(); i++) { //Afrunder double TODO SKAL i metode
+            tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo() * 100) / 100d);
         }
         model.addAttribute("tasks", tasksForProjectId); //tabel insert
 
@@ -98,7 +96,6 @@ public class melgaController {
         objTaskLine = editProjectMapper.getTaskLine(projectId, transferTaskNo);
         arrTaskLine.add(objTaskLine);
         model.addAttribute("taskLine", arrTaskLine);
-
 
 
         //1)Udfyld tabel
@@ -116,12 +113,12 @@ public class melgaController {
 
 
     //Button "Update task"
-    @RequestMapping(value="/edit_task", method= RequestMethod.POST, params="updateTask")
+    @RequestMapping(value = "/edit_task", method = RequestMethod.POST, params = "updateTask")
     public String saveChangesToTask(Model model, @ModelAttribute("task") Task task,
                                     @RequestParam("taskNo") double newTaskNo,
                                     @RequestParam("name") String name,
-                                    @RequestParam(value = "startDate",required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate newStartDate,
-                                    @RequestParam(value = "finishDate",required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate newFinishedDate,
+                                    @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate newStartDate,
+                                    @RequestParam(value = "finishDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate newFinishedDate,
                                     @RequestParam("duration") int duration,
                                     @RequestParam("taskTimeconsumption") int taskTimeconsumption,
                                     @RequestParam("noOfPersons") int noOfPersons,
@@ -137,8 +134,8 @@ public class melgaController {
 
         //3 Transfer data from ArrayList to tabel after rounding double taskNo TODO hvorfor ikke efter data er opdateret
         tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
-        for (int i=0; i<tasksForProjectId.size(); i++ ) { //Afrunder double TODO SKAL i metode
-            tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100)/100d);
+        for (int i = 0; i < tasksForProjectId.size(); i++) { //Afrunder double TODO SKAL i metode
+            tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo() * 100) / 100d);
         }
         model.addAttribute("tasks", tasksForProjectId);
 
@@ -146,23 +143,20 @@ public class melgaController {
         //TODO
 
         //5a Get old data for taskNo
-        Task oldTaskdata = editProjectMapper.getTaskLine(projectId,transferTaskNo);
+        Task oldTaskdata = editProjectMapper.getTaskLine(projectId, transferTaskNo);
 
         //6a Sends old + modified object to SQL generator which then sends data to DB
-        taskHandler1.editTask(task,oldTaskdata);
-
+        taskHandler1.editTask(task, oldTaskdata);
 
 
         //Transfers ArrayList-data to table
         tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
 
         //Afrunder double SKAL NED I MAPPER TODO eller??
-        for (int i=0; i<tasksForProjectId.size(); i++ ) {
-            tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100.0)/100.0);
+        for (int i = 0; i < tasksForProjectId.size(); i++) {
+            tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo() * 100.0) / 100.0);
         }
         model.addAttribute("tasks", tasksForProjectId);
-
-
 
 
         //1 transfer headline projectname
@@ -217,8 +211,6 @@ public class melgaController {
     }
 
 
-
-
     @GetMapping("add_task")
     public String add_task(Model model) throws SQLException {
         System.out.println("add_task getMapping");
@@ -236,7 +228,7 @@ public class melgaController {
 
 
     //Button "save Task"
-    @RequestMapping(value="/add_task", method= RequestMethod.POST, params="addtask")
+    @RequestMapping(value = "/add_task", method = RequestMethod.POST, params = "addtask")
     public String saveTask(@ModelAttribute("task") Task task, Model model) throws SQLException {
         //setting attribute not included in input
         task.setProjectId(projectId);
@@ -244,9 +236,10 @@ public class melgaController {
 
         //TODO kontrol af indtastet data
         Project project = projectMapper.getProjectFromId(projectId);
-        errorString = taskhandlerEL.errorMessageTask(task,project);
-
-        if (!errorString.equals(""))return "add_task_error_page1";
+        errorString = taskhandlerEL.errorMessageTask(task, project);
+        System.out.println(errorString);
+        model.addAttribute("errorString", errorString);
+        if (!errorString.equals("")) return "add_task_error_page1";
 
 //        if (taskhandlerEL.checkTaskName(task)) return "add_task_name_error";
 //
@@ -261,7 +254,7 @@ public class melgaController {
     }
 
     //Button "save subTask"
-    @RequestMapping(value="/add_task", method= RequestMethod.POST, params="addsubtask")
+    @RequestMapping(value = "/add_task", method = RequestMethod.POST, params = "addsubtask")
     public String saveSubTask(@ModelAttribute("task") Task task, Model model) throws SQLException {
 
         //Getting and inserting data for dropbox
@@ -270,12 +263,21 @@ public class melgaController {
 
         //setting attribute not included in input
         task.setProjectId(projectId);
+       //skal vel rykkes op i toppen af klassen?
+        TaskMapper taskMapper = new TaskMapper();
 
         //testing insertet data
         Project project = projectMapper.getProjectFromId(projectId);
-        errorString = taskhandlerEL.errorMessageSubtask(task,project);
+        //
+        double overTaskNo = editProjectMapper.getTaskNo(projectId, task.getSubTaskToName());
+        Task overTask = taskMapper.getTask(overTaskNo, projectId);
 
-        if (!errorString.equals(""))return "add_task_error_page1";
+        String errorString = taskhandlerEL.errorMessageSubtask(task, project, overTask);
+
+        model.addAttribute("errorString", errorString);
+        System.out.println(errorString);
+
+         if (!errorString.equals(""))return "add_task_error_page1";
 
         //New task inserted to DB
         taskController.AddTaskToDB(task); //TODO METODE ER IKKE OPDATET
@@ -284,13 +286,13 @@ public class melgaController {
     }
 
 
-    @RequestMapping(value="/add_task", method= RequestMethod.POST, params="cancel")
+    @RequestMapping(value = "/add_task", method = RequestMethod.POST, params = "cancel")
     public String cancelAddTask(Model model) throws SQLException {
 
         tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
         //Afrunder double SKAL NED I MAPPER TODO eller??
-        for (int i=0; i<tasksForProjectId.size(); i++ ) {
-            tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100)/100d);
+        for (int i = 0; i < tasksForProjectId.size(); i++) {
+            tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo() * 100) / 100d);
         }
 
         model.addAttribute("tasks", tasksForProjectId);
@@ -305,17 +307,17 @@ public class melgaController {
     public String editProject(Model model, @RequestParam("projectId") int urlProjectId) throws SQLException {
 
         //Overføre værdi fra url
-        projectId =urlProjectId;
+        projectId = urlProjectId;
 
-       // tasksForProjectId = facade.getTaskForEditProject(projectId);
+        // tasksForProjectId = facade.getTaskForEditProject(projectId);
 
         FacadeTest facadeTest = new Facade();
         tasksForProjectId = facadeTest.getTaskForEditProject(projectId);
         ArrayList<Task> taskNoRounded = new ArrayList<>();
 
         //Afrunder double SKAL NED I MAPPER TODO eller??
-        for (int i=0; i<tasksForProjectId.size(); i++ ) {
-            tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100.0)/100.0);
+        for (int i = 0; i < tasksForProjectId.size(); i++) {
+            tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo() * 100.0) / 100.0);
         }
 
         model.addAttribute("tasks", tasksForProjectId);

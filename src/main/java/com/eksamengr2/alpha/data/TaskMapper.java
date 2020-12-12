@@ -65,5 +65,34 @@ public class TaskMapper {
         ResultSet resultSet = ps.executeQuery();
         return resultSet.next();
     }
+    // potentiel løsning for mig og erhan.
+    public boolean checkSubTaskNoExistsInDB(Task task,double overTaskNo) throws SQLException {
+        Connection con = DatabaseConnector.getConnection();
+        String SQL = "select * FROM task WHERE  taskno=? AND isSubTask='yes' and projectid= ?;";
+        PreparedStatement ps = con.prepareStatement(SQL);
+        ps.setDouble(1, task.getTaskNo()/100.00+ overTaskNo);
+        ps.setInt(2, task.getProjectId());
+        ResultSet resultSet = ps.executeQuery();
+        return resultSet.next();
+    }
+
+    public Task getTask(double overTaskNo,int projectID) throws SQLException {
+        Task task = new Task();
+
+        Connection con = DatabaseConnector.getConnection();
+        String SQL = "select startdate, finishdate, taskno FROM task WHERE  taskno=? and projectid= ?";
+        PreparedStatement ps = con.prepareStatement(SQL);
+        ps.setDouble(1, overTaskNo);
+        ps.setInt(2, projectID);
+
+        ResultSet resultSet = ps.executeQuery();
+
+        while(resultSet.next()){
+             task = new Task(resultSet.getDouble("taskno"),resultSet.getDate("startdate").toLocalDate(),resultSet.getDate("finishdate").toLocalDate());
+            return task;
+        }
+
+       return task;
+    }
 }
 

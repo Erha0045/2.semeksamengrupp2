@@ -18,10 +18,16 @@ public class Task {
     //private String newTaskName;
     private int idtask;
     private double taskNumber; //TODO skal fjernes
-    private int  taskTimeconsumption; //the total time for one subTask
+    private int taskTimeconsumption; //the total time for one subTask
     private int noOfPersons;
     private double workingHoursDay;
     private String subTaskToName; //If subtask, then name of overtask
+
+    public Task(double taskno, LocalDate startDate, LocalDate finishDate) {
+        this.taskNo = taskno;
+        this.startDate = startDate;
+        this.finishDate = finishDate;
+    }
 
     public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask,
                 double taskNo, int lineCounter, int idtask,
@@ -40,6 +46,7 @@ public class Task {
         this.workingHoursDay = workingHoursDay;
         this.subTaskToName = subTaskToName;
     }
+
     //For edit task...
     public Task(String name, LocalDate startDate, LocalDate finishDate, int duration,
                 int projectId, String isSubTask, double taskNo,
@@ -106,9 +113,10 @@ public class Task {
 
     public Task() {
     }
+
     //luff constructor
-    public Task(double taskNumber){
-        this.taskNumber=taskNumber;
+    public Task(double taskNumber) {
+        this.taskNumber = taskNumber;
     }
 
     @Override
@@ -263,7 +271,7 @@ public class Task {
     }
 
     public double getTaskNumber() {
-        return Math.round(taskNumber*100)/100d;
+        return Math.round(taskNumber * 100) / 100d;
     }
 
     public void setLineCounter(int lineCounter) {

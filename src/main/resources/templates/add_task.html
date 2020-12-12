@@ -29,7 +29,7 @@
                 <form method="post" action="/add_task" th:object="${task}">
                     <h1>Add task</h1>
                     <label>Task no</label>
-                    <input type="number" min="1" step="0.01" th:field="*{taskNo}"  />
+                    <input type="number" min="1" step="1" max="999" th:field="*{taskNo}"  />
                     <br><br>
                     <label>Task name:</label>
                     <input type="text" required th:field="*{name}" maxlength="45" />
@@ -71,7 +71,7 @@
 
                 <br><br>
                 <label>Subtask no:</label>
-                <input type="number" required th:field="*{taskNo}"  />
+                <input type="number" min="1" required max="99" th:field="*{taskNo}"  />
                 <br><br>
                 <label>Subtask name:</label>
                 <input type="text" required th:field="*{name}" maxlength="45" />
