@@ -224,6 +224,7 @@ public class melgaController {
         System.out.println("add_task getMapping");
         listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId); //TODO skal skiftes med en søgning på projekt nummer + No overtask
 
+
         //Person person = new Person();
         model.addAttribute("task", POJO_Task); //overføre model klasse
 
@@ -239,6 +240,7 @@ public class melgaController {
     public String saveTask(@ModelAttribute("task") Task task, Model model) throws SQLException {
         //setting attribute not included in input
         task.setProjectId(projectId);
+
 
         //TODO kontrol af indtastet data
         Project project = projectMapper.getProjectFromId(projectId);

@@ -215,7 +215,8 @@ public class EditProjectMapper {
                                     resultSet.getInt("tasktimeconsumption"),
                                     resultSet.getInt("noofpersons"),
                         Math.round(resultSet.getDouble("workinghoursday")*100)/100d,
-                        resultSet.getString("subtasktoname"));
+                        "");
+                        //resultSet.getString("subtasktoname"));
             }
         }//try
         catch (Exception e) {
@@ -385,7 +386,8 @@ public class EditProjectMapper {
                         resultSet.getInt("tasktimeconsumption"),
                         resultSet.getInt("noOfPersons"),
                         Math.round(resultSet.getDouble("workinghoursday")*100.00)/100.00d,
-                        resultSet.getString("subtasktoname"));
+                        "");
+                        //resultSet.getString("subtasktoname"));
 
                 //7) fylder ArrayList med data
                 listTasks.add(task1);
