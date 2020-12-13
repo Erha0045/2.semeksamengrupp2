@@ -180,6 +180,8 @@ public class EditProjectMapper {
         Task taskLine = new Task();
         ResultSet resultSet = null; //dataflow 1 linie ad gangen
         PreparedStatement preparedStatement=null;
+        System.out.println("fra mapper projectId: "+projectId);
+        System.out.println("fra mapper taskNo: "+ taskNo);
 
         try {
             Connection conn = DatabaseConnector.getConnection();
@@ -223,6 +225,7 @@ public class EditProjectMapper {
             System.err.println(e.getMessage());
 
         }
+        System.out.println("Task i mapper: " + taskLine);
 
         return taskLine;
     }//Method

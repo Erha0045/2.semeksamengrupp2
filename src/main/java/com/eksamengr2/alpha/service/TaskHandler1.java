@@ -25,6 +25,9 @@ public class TaskHandler1 {
         Task newTask = oldTask;
         String sqlString;
 
+        System.out.println("mod: " + modifiedTask);
+        System.out.println("old: " + oldTask);
+
         //*********************************************************
         //Using local variables to make the code more readable
         //*********************************************************
@@ -196,7 +199,6 @@ public class TaskHandler1 {
         if (isSubTask.equals("yes")) {
             listOld = editProjectMapper.getIdtasks_subTaskNo_FromTask(projectId, oldTaskNo);
         }
-        System.out.println("listOld" + listOld);
 
         //Populates ArrayList
         listNew = listOld;
@@ -215,7 +217,6 @@ public class TaskHandler1 {
 
         double diffBetweenOldAndNewTaskNo = Math.round((newTaskNo - oldTaskNo) *100) / 100d;
 
-        System.out.println("Before add: " + listNew );
         //Add the difference between oldTaskNo and newtaskNo to all new taskNo values
         for (Task lineElement: listNew) {
             lineElement.setTaskNo(lineElement.getTaskNo()+diffBetweenOldAndNewTaskNo);
