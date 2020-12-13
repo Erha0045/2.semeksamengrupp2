@@ -1,12 +1,26 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<link rel="stylesheet" href="../static/alfa.css">
+<!--<div lang="en" xmlns:th="http://www.thymeleaf.org/">-->
 <head>
     <meta charset="UTF-8">
-    <title>Create project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ERROR creat project finifh date</title>
 </head>
 <body>
+<header>
+    <div class="header">
+        <h1>Welcome Menu</h1>
+    </div>
+</header>
+<ul>
+    <li><a href="mailto:contact@fff.dk">Contact</a></li>
+    <li><a href="mailto:support@fff.dk">Support</a></li>
+</ul>
+<div class="container">
 
-
+    <fieldset style="width: 100%;">
+        <br>
 <form method="post" action="/create_project" th:object="${pojotransfer}">
 
     <!--    textfield String type-->
@@ -33,10 +47,11 @@
     <br>
     <br>
     <!--    Button-->
-    <input type="submit" value="Create project" name="getvalue">
+    <button class="button" type="submit" name="getvalue">Create project</button>
 
 </form>
-
+    </fieldset>
+</div>
 
 </body>
 </html>

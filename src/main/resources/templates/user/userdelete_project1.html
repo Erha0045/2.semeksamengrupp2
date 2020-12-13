@@ -1,54 +1,44 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <link rel="stylesheet" href="alfa.css">
-<div lang="en" xmlns:th="http://www.thymeleaf.org/">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>deleteproject1</title>
-    </head>
-    <body>
-    <header>
-        <div class="header">
-            <h1>Delete project</h1>
-        </div>
-    </header>
-    <ul>
-        <li><a href="/dashboard2">Dashboard</a></li>
-        <li><a href="/logout">Log out</a></li>
-        <li><a href="mailto:contact@fff.dk">Contact</a></li>
-        <li><a href="mailto:support@fff.dk">Support</a></li>
-    </ul>
-
-    <div class="container">
-        <br>
-
-        <fieldset>
-            <legend>Caution: Deleting project!</legend>
-            <br>
-            <form name="delete_project" action="/delete_project1" method=POST>
-
-                Write project number, that you wish to remove.
-                <br>
-                <br>
-                <input type="number" id="Project_number" min="0" step="1" name="Project_number">
-
-                <br>
-                <!--        Write Project from which you would like to delete task.-->
-                <!--        <input type="number" id="Project_ID" step="1" name="Project_ID">-->
-                <br>
-                <br>
-                <button class="button" input type="submit">Delete Project</button>
-            </form>
-            <br>
-            <br>
-            <form name="cancel" action="/dashboard2" method=GET>
-
-                <button class="button" type="submit" >cancel</button>
-            </form>
-            <br>
-        </fieldset>
+<!--<div lang="en" xmlns:th="http://www.thymeleaf.org/">-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>deleteproject</title>
+</head>
+<body>
+<header>
+    <div class="header">
+        <h1>Project management</h1>
     </div>
-    </body>
+</header>
+<ul>
+    <li><a href="/dashboard2">Dashboard</a></li>
+    <li><a href="/logout">Log out</a></li>
+    <li><a href="mailto:contact@fff.dk">Contact</a></li>
+    <li><a href="mailto:support@fff.dk">Support</a></li>
+</ul>
+
+<div class="container">
+    <br>
+    <fieldset style="width: 100%" >
+        <legend style="color: red; background-color: white; border: 2px solid black">Caution: Deleting project!</legend>
+        <br>
+        <form name="delete_project" action="/delete_project" method=POST>
+
+            Project number to be removed:
+
+            <input type="number" id="Project_number" min="0" step="1" name="Project_number">
+
+            <br>
+            <!--        Write Project from which you would like to delete task.-->
+            <!--        <input type="number" id="Project_ID" step="1" name="Project_ID">-->
+            <br>
+            <button class="button" type="submit" >Delete Project</button>
+        </form>
+    </fieldset>
+</div>
+</body>
 </div>
 </html>

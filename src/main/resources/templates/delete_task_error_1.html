@@ -1,21 +1,41 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<link rel="stylesheet" href="alfa.css">
+<!--<div lang="en" xmlns:th="http://www.thymeleaf.org/">-->
 <head>
     <meta charset="UTF-8">
-    <title>delete_task</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ERROR deletetask</title>
+</head>
+<body>
+<header style="background-color: darkred">
+    <div class="header">
+        <h1>Delete project ERROR page</h1>
+    </div>
+</header>
+<ul>
+    <li><a href="/dashboard2">Dashboard</a></li>
+    <li><a href="/logout">Log out</a></li>
+    <li><a href="mailto:contact@fff.dk">Contact</a></li>
+    <li><a href="mailto:support@fff.dk">Support</a></li>
+</ul>
 
+<div class="container">
+    <br>
+    <fieldset style="width: 100%" >
+        <legend style="color: red; background-color: white; border: 2px solid black">Error deleting task!</legend>
+        <br>
 
     <form name="delete_task" action="/delete_task" method=POST>
 
-        The number you've entered wasn't found, try again.<br>
+        The number you've entered wasn't found, please try again:&nbsp;
         <input type="number" id="Task_number" step="0.01" name="Task_number">
         <br>
 
         <br>
-        <input type="submit" value="Delete Task.  ">
+        <button class="button" type="submit" >Delete Task</button>
     </form>
-</head>
-<body>
-
+    </fieldset>
+</div>
 </body>
 </html>

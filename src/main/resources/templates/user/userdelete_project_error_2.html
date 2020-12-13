@@ -1,47 +1,46 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <link rel="stylesheet" href="alfa.css">
-<div lang="en" xmlns:th="http://www.thymeleaf.org/">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>deleteproject1</title>
-    </head>
-    <body>
-    <header>
-        <div class="header">
-            <h1>Delete project error page</h1>
-        </div>
-    </header>
-    <ul>
-        <li><a href="/dashboard2">Dashboard</a></li>
-        <li><a href="/logout">Log out</a></li>
-        <li><a href="mailto:contact@fff.dk">Contact</a></li>
-        <li><a href="mailto:support@fff.dk">Support</a></li>
-    </ul>
-
-    <div class="container">
-        <br>
-        <fieldset>
-            <legend>Caution: Delete error!</legend>
-            <br>
-
-    <form name="delete_task" action="/delete_project1" method=POST>
-
-        The number you've entered wasn't found, try again.<br>
-        <input type="number" id="Task_number" step="0.01" name="Task_number">
-        <br>
-
-        <br>
-        <input type="submit" value="Delete task">
-    </form>
-    <form name="cancel" action="/dashboard2" method=GET>
-
-        <br>
-        <input type="submit" value="cancel">
-    </form>
-        </fieldset>
+<!--<div lang="en" xmlns:th="http://www.thymeleaf.org/">-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ERROR deleteproject</title>
+</head>
+<body>
+<header style="background-color: darkred">
+    <div class="header">
+        <h1>Delete project ERROR page</h1>
     </div>
+</header>
+<ul>
+    <li><a href="/dashboard2">Dashboard</a></li>
+    <li><a href="/logout">Log out</a></li>
+    <li><a href="mailto:contact@fff.dk">Contact</a></li>
+    <li><a href="mailto:support@fff.dk">Support</a></li>
+</ul>
+
+<div class="container">
+    <br>
+    <fieldset style="width: 100%" >
+        <legend style="color: red; background-color: white; border: 2px solid black">Error deleting task!</legend>
+        <br>
+        <form name="delete_project" action="/delete_project" method=POST>
+            <p style="font-size: 24px; color: red">No project with the entered number has been found, please try again.</p><br>
+
+            Project number to be removed:&nbsp;
+
+            <input type="number" id="Project_number" min="0" step="1" name="Project_number">
+
+            <br>
+            <!--        Write Project from which you would like to delete task.-->
+            <!--        <input type="number" id="Project_ID" step="1" name="Project_ID">-->
+            <br>
+            <button class="button" type="submit" >Delete project</button>
+        </form>
+    </fieldset>
+</div>
+
 </body>
 </div>
 </html>

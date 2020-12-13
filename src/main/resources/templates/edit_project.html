@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <link rel="stylesheet" href="alfa.css">
-<div lang="en" xmlns:th="http://www.thymeleaf.org/">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>editproject</title>
-    </head>
+<!--<div lang="en" xmlns:th="http://www.thymeleaf.org/">-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>editproject</title>
+</head>
     <body>
     <header>
         <div class="header">
@@ -23,11 +23,12 @@
     <div class="container">
         <br>
 
-        <fieldset>
+        <fieldset style="width: 100%">
             <legend>edit project</legend>
             <br>
 
-            <form name="addtask" action ="/add_task" method="get">
+
+            <form name="gotoaddtask" action ="/add_task" method="get">
                 <button class="button" >Add new task</button>
             </form>
             <br>
@@ -40,7 +41,7 @@
             </form>
             <br>
             <br>
-            <form name="cancel" action="/dashboard2" method=GET>
+            <form name="cancel" action="/dashboard" method=get>
 
                 <button class="button" type="submit" >cancel</button>
             </form>
@@ -49,8 +50,7 @@
         <br>
         <br>
 
-        <fieldset>
-            <legend>Edit your projects</legend>
+
 
             <table class="table" style="width:100%" align="Center">
                 <thead>
@@ -82,7 +82,7 @@
                 </tr>
                 </tbody>
             </table>
-        </fieldset>
+
     </div>
     </body>
 </div>

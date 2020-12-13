@@ -2,9 +2,11 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <link rel="stylesheet" href="alfa.css">
 <div lang="en" xmlns:th="http://www.thymeleaf.org/">
-
-
-<!--    <div class="body-text">-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>dashboard</title>
+</head>
 <body>
 <header>
     <div class="header">
@@ -20,11 +22,9 @@
 
 <div class="container">
 
-<br>
-    <fieldset>
+    <fieldset style="width: 100%">
         <legend>Project Name</legend>
-        <br>
-            <form name="gotocreation" action ="/create_project" method="get">
+               <form name="gotocreation" action ="/create_project" method="get">
                 <button class="button" >Create new project</button>
             </form>
 <br>
@@ -39,7 +39,7 @@
     <br>
     <br>
 
-<fieldset>
+<fieldset style="width: 100%">
     <legend>List of your projects</legend>
 
 <!--<div id="container" class="container">-->
@@ -61,12 +61,12 @@
         <tbody align="center">
         <tr th:each="projects : ${projects}">
 
-            <td><a  th:href="${'localhost:8080/edit_project?projectId='+ projects.projectId}" cellpadding = "5">Edit No:</a></td>
+            <td><a  th:href="${'localhost:8080/user/edit_project1?projectId='+ projects.projectId}" cellpadding = "5">Edit No:</a></td>
             <td><span th:text="${projects.projectId}"> Id</span></td>
             <td><span th:text="${projects.projectName}">Name</span></td>
             <td><span th:text="${projects.ownerName}">Owner Name</span></td>
             <td><span th:text="${projects.startDate}">StartDate</span></td>
-            <td> <span th:text="${projects.deadlineDate}">Deadline</span></td>
+            <td><span th:text="${projects.deadlineDate}">Deadline</span></td>
         </tr>
         </tbody>
     </table>
@@ -79,5 +79,4 @@
 </div>
 </body>
 </div>
-<!--</div>-->
 </html>

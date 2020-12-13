@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <link rel="stylesheet" href="alfa.css">
-<div lang="en" xmlns:th="http://www.thymeleaf.org/">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Registration page</title>
-    </head>
+<!--<div lang="en" xmlns:th="http://www.thymeleaf.org/">-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>usermanagement</title>
+</head>
 
     <body>
 
     <header>
         <div class="header">
-            <h1>User management</h1>
+            <h1>User Management</h1>
         </div>
     </header>
     <ul>
@@ -26,20 +26,20 @@
         <br>
         <form  name="register" action="/registration2" method="post" th:object="${user}" >
 <!--        <form  name="register" action="/registration2" method=get th:object="${user}" >-->
-        <fieldset>
+        <fieldset style="width: 100%">
             <legend>Create a user</legend>
             <br>
             <br>
                     Type your username:<br>
-                    <input type="text" name="username" value="">
+                    <input class="inputwhite" type="text" name="username" value="">
                     <br>
                     <br>
                     Choose a password:<br>
-                    <input type="password" name="password1" value="">
+                    <input class="inputwhite" type="password" name="password1" value="">
                     <br>
                     <br>
                     Confirm your password:<br>
-                    <input type="password" name="password2" value="">
+                    <input class="inputwhite" type="password" name="password2" value="">
                     <br>
                     <br>
 

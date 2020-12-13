@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <link rel="stylesheet" href="alfa.css">
-<div lang="en" xmlns:th="http://www.thymeleaf.org/">
-    <head>
-        <meta charset="UTF-8">
-        <title>deleteconfirmation</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
+<!--<div lang="en" xmlns:th="http://www.thymeleaf.org/">-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>deletetaskconfirmation</title>
+</head>
     <body>
     <header>
         <div class="header" id="confirmation">
@@ -21,8 +21,8 @@
     </ul>
 
     <div class="container">
-        <fieldset>
-            <legend>Login</legend>
+        <fieldset style="width: 100%">
+            <legend style="color: red; background-color: white; border: 2px solid black">Caution: Deleting task!</legend>
             <br>
     are you sure you want to delete task number:  <span th:text="${task.getTaskNumber}"></span> and all its associated subtasks?
 
@@ -30,15 +30,16 @@
     <form name="delete_task" action="/delete_task_confirmation" method=POST>
 
         <br>
-        <input type="submit" value="Delete Task.  ">
+        <button class="button" type="submit" >Yes, please delete!</button>
     </form>
-    <form name="cancel" action="/delete_task" method=GET>
+        <br><br>
 
-        <br>
-        <input type="submit" value="cancel.  ">
+   <form name="cancel" action="/delete_task" method=GET>
+
+        <button class="button" type="submit" >No, please cancel</button>
     </form>
+        </fieldset>
 
-
-
+    </div>
 </body>
 </html>

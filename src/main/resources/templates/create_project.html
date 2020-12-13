@@ -2,11 +2,11 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <link rel="stylesheet" href="alfa.css">
 <!--<div lang="en" xmlns:th="http://www.thymeleaf.org/">-->
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>projectcreation</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>projectcreation</title>
+</head>
     <body>
     <header>
         <div class="header">
@@ -23,28 +23,30 @@
     <div class="container">
         <br>
 
-        <fieldset>
+        <fieldset style="width: 100%">
             <legend>Create a project</legend>
             <br>
     <form method="post" action="/create_project" th:object="${pojotransfer}">
 
     <!--    textfield String type-->
-    Type projectname:
+    New project name:&nbsp;
     <input type="text" th:field="*{projectName}" placeholder="projectname"/>
     <br>
+        <br>
 
     <!--    textfield String type-->
-    <label>Type ownername:</label>
+    <label>New ownername:&nbsp;&nbsp;&nbsp;</label>
     <input type="text" th:field="*{ownerName}"placeholder="ownername"/>
     <br>
-
+<br>
     <!--    textfield Date type-->
-    <label>Type in startDate:</label>
+    <label>Type in startDate:&nbsp;&nbsp;&nbsp;</label>
     <input type="date" th:field="*{startDate}" placeholder="yyyy-MM-dd"/>
     <br>
     <br>
+        <br>
     <!--    Button-->
-    <input type="submit"  value="Create project" name="getvalue" >
+        <button class="button" type="submit" name="getvalue" >Create project</button>
 
 </form>
         </fieldset>

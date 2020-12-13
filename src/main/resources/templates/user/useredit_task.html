@@ -2,106 +2,98 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <link rel="stylesheet" href="alfa.css">
 <div lang="en" xmlns:th="http://www.thymeleaf.org/">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>edit project</title>
-    </head>
-    <body>
-    <header>
-        <div class="header">
-            <h1>Tasks Overview</h1>
-        </div>
-    </header>
-    <ul>
-        <li><a href="/dashboard">Dashboard</a></li>
-        <li><a href="/logout">Log out</a></li>
-        <li><a href="mailto:contact@fff.dk">Contact</a></li>
-        <li><a href="mailto:support@fff.dk">Support</a></li>
-    </ul>
-
-    <div class="container">
-        <br>
-
-        <fieldset>
-            <legend>Edit task</legend>
-            <br>
-            <h2 th:text="${projectname}">edit_task</h2>
-
-            <form th:action="@{/edit_task}" method="post">
-                <label>Write task No to edit:</label>
-                <input type="text"  name="textFieldSubtaskNo" >
-                <input type="submit"  value="Get task/subtask" name="getTaskSubTask" >
-            </form>
-            <!--TaskEditLine textfields og TaskExampeLine text-->
-            <form method="post" action="/edit_task" th:object="${task}">
-
-                <br><br>
-                <div style="display:inline-block;margin-right:20px;">
-                    <label>Task no/Sub task no:</label>
-                    <!--Textfield-->
-                    <input type="text" th:field="*{taskNo}">
-                    <!--    Data from example or Task recieved-->
-                    <p th:text="${taskLine.get(0).taskNo}">taskNo</p>
-                </div>
-
-                <div style="display:inline-block;margin-right:20px;">
-                    <label>New taskname:</label>
-                    <input type="text" th:field="*{name}">
-                    <p th:text="${taskLine.get(0).name}">newtaskname</p>
-                </div>
-
-                <div style="display:inline-block;margin-right:20px;">
-                    <label>Start date:</label>
-                    <input type="date" th:field="*{startDate}"  >
-                    <p th:text="${taskLine.get(0).startDate}">newStartDate</p>
-                </div>
-
-                <div style="display:inline-block;margin-right:20px;">
-                    <label>Finish date:</label>
-                    <input type="date" th:field="*{finishDate}" >
-                    <p th:text="${taskLine.get(0).finishDate}">oldFinishedDate</p>
-                </div>
-
-                <div style="display:inline-block;margin-right:20px;">
-                    <label>Duration:</label>
-                    <input type="number" min="0" step="1" th:field="*{duration}">
-                    <p th:text="${taskLine.get(0).duration}">oldDuration</p>
-                </div>
-
-                <div style="display:inline-block;margin-right:20px;">
-                    <label>Hour Consumption:</label>
-                    <input type="text" th:field="*{taskTimeconsumption}">
-                    <p th:text="${taskLine.get(0).taskTimeconsumption}">oldTaskTimeconsumption</p>
-                </div>
-
-                <div style="display:inline-block;margin-right:20px;">
-                    <label>Number of person:</label>
-                    <input type="text" th:field="*{noOfPersons}" th:value="${taskLine.get(0).noOfPersons}">
-                    <p th:text="${taskLine.get(0).noOfPersons}">oldNoOfPersons</p>
-                </div>
-
-                <div style="display:inline-block;margin-right:20px;">
-                    <label>WorkingHoursDay:</label>
-                    <input type="text" th:field="*{workingHoursDay}">
-                    <p th:text="${taskLine.get(0).workingHoursDay}">oldWorkingHoursDay</p>
-                </div>
-                <br>
-                <br>
-
-                <div style="display:inline-block;margin-right:20px;">
-                    <input type="submit" name="updateTask" value="Update task">
-                    <p> </p>
-
-                </div>
-                <br><br><br><a href="http://localhost:8080/edit_project">Back to gantt</a><br>
-                <br>
-            </form>
-        </fieldset>
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>edittask</title>
+</head>
+<body>
+<header>
+    <div class="header">
+        <h1>Tasks/Subtasks management</h1>
     </div>
+</header>
+<ul>
+    <li><a href="/dashboard2">Dashboard</a></li>
+    <li><a href="/logout">Log out</a></li>
+    <li><a href="mailto:contact@fff.dk">Contact</a></li>
+    <li><a href="mailto:support@fff.dk">Support</a></li>
+</ul>
 
-    <table class="table" style="width:93%" align="right">
+<!--TASK-->
+<fieldset class="container">
+    <fieldset style="width: 100%">
+        <legend >Edit your tasks</legend>
+        <!--<h1 th:text="${projectname}">edit_task</h1>-->
+
+        <form th:action="@{/edit_task}" method="post">
+            <label>Edit task number:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="text"  name="textFieldSubtaskNo" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="button" type="submit">Get task/subtask</button>
+        </form>
+        <!--TaskEditLine textfields og TaskExampeLine text-->
+        <form method="post" action="/edit_task" th:object="${task}">
+
+            <br><br>
+            <div style="display:inline-block;margin-right:20px;">
+                <label>Task no/Sub task no:</label>&nbsp;
+                <!--Textfield-->
+                <input type="text" th:field="*{taskNo}">
+                <!--    Data from example or Task recieved-->
+                <p th:text="${taskLine.get(0).taskNo}">Task number:</p>
+            </div>
+
+            <div style="display:inline-block;margin-right:20px;">
+                <label>New taskname:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="text" th:field="*{name}">
+                <p th:text="${taskLine.get(0).name}">New taskname:</p>
+            </div>
+
+            <div style="display:inline-block;margin-right:20px;">
+                <label>Start date:</label>
+                <input type="date" th:field="*{startDate}"  >
+                <p th:text="${taskLine.get(0).startDate}">New startDate:</p>
+            </div>
+
+            <div style="display:inline-block;margin-right:20px;">
+                <label>Finish date:</label>
+                <input type="date" th:field="*{finishDate}" >
+                <p th:text="${taskLine.get(0).finishDate}">Old finish date:</p>
+            </div>
+
+            <div style="display:inline-block;margin-right:20px;">
+                <label>Duration:</label>
+                <input type="number" min="0" step="1" th:field="*{duration}"><br>
+                <p th:text="${taskLine.get(0).duration}">Old duration:</p>
+            </div>
+
+            <div style="display:inline-block;margin-right:20px;">
+                <label>Hour Consumption:</label>
+                <input type="text" th:field="*{taskTimeconsumption}">
+                <p th:text="${taskLine.get(0).taskTimeconsumption}">Old task time consumption:</p>
+            </div>
+
+            <div style="display:inline-block;margin-right:20px;">
+                <label>Number of person:</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="text" th:field="*{noOfPersons}" th:value="${taskLine.get(0).noOfPersons}">
+                <p th:text="${taskLine.get(0).noOfPersons}">Old number of persons:</p>
+            </div>
+
+            <div style="display:inline-block;margin-right:20px;">
+                <label>WorkingHoursDay:</label>&nbsp;
+                <input type="text" th:field="*{workingHoursDay}">
+                <p th:text="${taskLine.get(0).workingHoursDay}">Old working hours/day:</p>
+            </div><br><br><br>
+            <div style="display:inline-block;margin-right:20px;">
+                <button class="button" type="submit" name="updateTask" >Update task</button>
+
+
+            </div>
+            <br><br><a href="http://localhost:8080/edit_project">Back to gantt</a><br>
+
+        </form>
+    </fieldset>
+    <table class="table" style="width:100%" align="Center">
         <thead>
         <tr>
             <th>No</th>
@@ -131,9 +123,8 @@
         </tr>
         </tbody>
     </table>
-
-    <!--    </div>-->
-    </body>
+</fieldset>
+</body>
 </div>
 </html>
 

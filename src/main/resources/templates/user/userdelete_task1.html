@@ -1,78 +1,45 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <link rel="stylesheet" href="alfa.css">
-<div lang="en" xmlns:th="http://www.thymeleaf.org/">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>deletetask</title>
-    </head>
-    <body>
-    <header>
-        <div class="header">
-            <h1>Delete Task</h1>
-        </div>
-    </header>
-    <ul>
-        <li><a href="/dashboard">Dashboard</a></li>
-        <li><a href="/logout">Log out</a></li>
-        <li><a href="mailto:contact@fff.dk">Contact</a></li>
-        <li><a href="mailto:support@fff.dk">Support</a></li>
-    </ul>
+<!--<div lang="en" xmlns:th="http://www.thymeleaf.org/">-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>deletetask</title>
+</head>
+<body>
+<header>
+    <div class="header">
+        <h1>Tasks management</h1>
+    </div>
+</header>
+<ul>
+    <li><a href="/dashboard2">Dashboard</a></li>
+    <li><a href="/logout">Log out</a></li>
+    <li><a href="mailto:contact@fff.dk">Contact</a></li>
+    <li><a href="mailto:support@fff.dk">Support</a></li>
+</ul>
 
-    <div class="container">
+<div class="container">
+    <br>
+    <fieldset style="width: 100%" >
+        <legend style="color: red; background-color: white; border: 2px solid black">Caution: Deleting task!</legend>
         <br>
+        <form name="delete_task" action="/delete_task" method=POST>
 
-        <fieldset>
-            <legend> Write the task number you wish to remove.</legend>
+            Task number to be removed:
+            <input type="number" id="Task_number" step="0.01" name="Task_number">
+
             <br>
-    <form name="delete_task" action="/delete_task" method=POST>
-
-       <br>
-        <input type="number" id="Task_number" step="0.01" name="Task_number">
-
-        <br>
-<!--        Write Project from which you would like to delete task.-->
-<!--        <input type="number" id="Project_ID" step="1" name="Project_ID">-->
-        <br>
-        <input type="submit" value="Delete Task.  ">
-
-    </form>
-        </fieldset>
-
-        <table class="table" style="width:100%" align="Center">
-            <thead>
-            <tr>
-                <th>No</th>
-                <th>Task no</th>
-                <th>Task name</th>
-                <th>Duration</th>
-                <th>Start date</th>
-                <th>Finished date</th>
-                <th>Timeconsumption</th>
-                <th>No of persons</th>
-                <th>Working hours per day</th>
-            </tr>
-            </thead>
-
-            <tbody align="center">
-            <tr th:each="taskss : ${tasks}">
-                <td><span th:text="${taskss.getLineCounter()}">No </span></td>
-                <td><span th:text="${taskss.getTaskNo()}">Task no </span></td>
-                <td><span th:text="${taskss.getName()}">Task name </span></td>
-                <td><span th:text="${taskss.getDuration()}">Duration </span></td>
-                <td><span th:text="${taskss.getStartDate()}">Start date </span></td>
-                <td><span th:text="${taskss.getFinishDate()}">Finished date </span></td>
-                <td><span th:text="${taskss.getTaskTimeconsumption()}">timeconsumption </span></td>
-                <td><span th:text="${taskss.getNoOfPersons()}">Number of persons </span></td>
-                <td><span th:text="${taskss.getWorkingHoursDay()}">Workinghoursperday </span></td>
-            </tr>
-            </tbody>
-        </table>
-
-
+            <!--        Write Project from which you would like to delete task.-->
+            <!--        <input type="number" id="Project_ID" step="1" name="Project_ID">-->
+            <br>
+            <br>
+            <button class="button" input type="submit">Delete task</button>
+        </form>
+    </fieldset>
 </div>
 
 </body>
-    </div>
+</div>
 </html>

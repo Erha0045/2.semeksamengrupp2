@@ -4,8 +4,8 @@
 }
 
 body {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     background-color: white;
     background-attachment: fixed;
     background-size: cover;
@@ -24,12 +24,12 @@ body {
     /*pictures settings*/
     width: 100%;
     height: 15%;
-    background-color:darkgray;
+    background-color:#66757F;
     border-bottom: 2px solid red;
     /*position: sticky;*/
 }
 #confirmation{
-    background-color: #8e403b;
+    background-color: #F2D7D5;
 }
 
 ul {
@@ -37,7 +37,7 @@ ul {
     margin: 0;
     padding: 10px;
     width: 7%;
-    background-color: #dcecfd;
+    background-color: #8B9DC3;
     position: fixed;
     height: 100%;
     overflow: auto;
@@ -64,9 +64,25 @@ li a:hover{
     position:center;
     width: 93%;
     background-color: white;
+    /*display : inline-block;*/
     /*border-bottom: red;*/
 }
-
+#addtask1 {
+    /*margin-left: 7%;*/
+    padding: 10px;
+    float: left;
+    width: 50%;
+    background-color: white;
+    display: inline-block;
+}
+#addtask2 {
+    /*margin-left: 7%;*/
+    padding: 10px;
+    float: left;
+    width: 50%;
+    background-color: white;
+    display: inline-block;
+}
 h1 {
     text-align: center;
     font-size: 38px;
@@ -81,17 +97,30 @@ h2 {
 }
 
 fieldset {
-    background-color: #eeeeee;
-    width: 100%;
-    position: center;
+    background-color: #D1F2EB ;
+    float: left;
+    width: 50%;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    display : inline-block;
     border-radius: 10px;
 
+}
+#addtask{
+    height: 350px;
+    background-color: #CCD6DD;
+}
+#addsubtask {
+    height: 350px;
+    background-color: #E1E8ED;
 }
 
 .column {
     float: left;
+    width: 50%;
+    /*padding: 10px;*/
 }
-
 /* Set width length for the left, right and middle columns */
 .left {
     width: 33%;
@@ -111,7 +140,6 @@ fieldset {
     clear: both;
 }
 
-
 legend {
     font-size: 20px;
     background-color: gray;
@@ -123,6 +151,7 @@ legend {
 .inputwhite {
     margin: 5px;
     background-color: white;
+    border-radius: 10px;
 }
 #username, #password {
     background-color: white;
@@ -130,9 +159,15 @@ legend {
 
 
 .button{
-    font-size: 18px;
+    font-size: 16px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
     border-radius: 10px;
     background-color: white;
+    border-radius: 10px;
+
 
 }
 button:hover{
@@ -155,7 +190,7 @@ h4 {
 
 p {
     color: white;
-    padding-left: 25px;
+    padding-left: 0px;
     padding-right: 25px;
     margin-top: 12px;
     margin-bottom: 12px;
@@ -201,14 +236,31 @@ tr:nth-child(even) {
 
 input[type=text] {
     /*width: 100%;*/
-    padding: 12px 20px;
+    padding: 2px 2px;
     border: 1px solid black;
     border-radius: 10px;
-    background-color: #dddddd;
-    margin: 4px 0;
+    background-color: white;
+    /*margin: 4px 0;*/
     /*box-sizing: border-box;*/
 }
-
+input[type=number] {
+    /*width: 100%;*/
+    padding: 2px 2px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: white;
+    /*margin: 4px 0;*/
+    /*box-sizing: border-box;*/
+}
+input[type=date] {
+    /*width: 100%;*/
+    padding: 2px 2px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: white;
+    /*margin: 4px 0;*/
+    /*box-sizing: border-box;*/
+}
 input[type=submit] {
     /*width: 100%;*/
     padding: 12px 20px;

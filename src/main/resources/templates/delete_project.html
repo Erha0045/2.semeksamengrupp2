@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <link rel="stylesheet" href="alfa.css">
-<div lang="en" xmlns:th="http://www.thymeleaf.org/">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>deleteproject</title>
-    </head>
+<!--<div lang="en" xmlns:th="http://www.thymeleaf.org/">-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>deleteproject</title>
+</head>
     <body>
     <header>
         <div class="header">
-            <h1>Delete project</h1>
+            <h1>Project management</h1>
         </div>
     </header>
     <ul>
-
+        <li><a href="/dashboard2">Dashboard</a></li>
         <li><a href="/logout">Log out</a></li>
         <li><a href="mailto:contact@fff.dk">Contact</a></li>
         <li><a href="mailto:support@fff.dk">Support</a></li>
@@ -22,21 +22,20 @@
 
     <div class="container">
         <br>
-
-        <fieldset>
-            <legend>Caution: Deleting project!</legend>
+        <fieldset style="width: 100%" >
+            <legend style="color: red; background-color: white; border: 2px solid black">Caution: Deleting project!</legend>
             <br>
     <form name="delete_project" action="/delete_project" method=POST>
 
-        Write project number, that you would like to remove.
-        <br>
+        Project number to be removed:
+
         <input type="number" id="Project_number" min="0" step="1" name="Project_number">
 
         <br>
         <!--        Write Project from which you would like to delete task.-->
         <!--        <input type="number" id="Project_ID" step="1" name="Project_ID">-->
         <br>
-        <input type="submit" value="Delete Project">
+        <button class="button" type="submit" >Delete Project</button>
     </form>
         </fieldset>
     </div>
