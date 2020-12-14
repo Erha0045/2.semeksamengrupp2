@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <link rel="stylesheet" href="alfa.css">
-<!--<div lang="en" xmlns:th="http://www.thymeleaf.org/">-->
+<div lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,7 +14,7 @@
         </div>
     </header>
 <ul>
-    <li><a href="/dashboard2">Dashboard</a></li>
+    <li><a href="/dashboard">Dashboard</a></li>
     <li><a href="/logout">Log out</a></li>
     <li><a href="mailto:contact@fff.dk">Contact</a></li>
     <li><a href="mailto:support@fff.dk">Support</a></li>
@@ -27,7 +27,7 @@
         <fieldset style="width: 30%" id="addtask">
 
             <legend>Add a task</legend>
-                <div method="post" action="/add_task" th:object="${task}">
+                <form method="post" action="/add_task" th:object="${task}">
                     <label>Task number:</label>&nbsp;
                     <input type="number" min="1" step="1" max="999" th:field="*{taskNo}"  />
                     <br><br>
@@ -51,7 +51,7 @@
                     <br><br><br>
 
 
-                </div>
+                </form>
         </fieldset>
 
 <!--    </div>-->
@@ -64,7 +64,7 @@
             <div class="row">
                 <div class="column" style="width: 30% ">
             <!--SUB_TASK-->
-            <div method="post" action="/add_task" th:object="${task}">
+            <form method="post" action="/add_task" th:object="${task}">
                     <!--    dropdown-->
                 <select th:field="*{subTaskToName} ">
                     <label>Choose if any Task above:</label>
@@ -87,8 +87,8 @@
                 <br>
                 <label>Finish date:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="date" th:field="*{finishDate}" />
-                </div>
-                </div>
+
+
                 <br><br>
 
             <div class="column" style="width: 30% ">
@@ -107,6 +107,7 @@
                 <br><br><br><br>
                 <button class="button" type="submit" name="addsubtask" >Save subtask</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button class="button" type="submit" name="cancel" >Back</button>
+            </div>
             </form>
                     </div>
                 </div>
@@ -114,4 +115,5 @@
         </fieldset>
        </div>
 </body>
+</div>
 </html>
