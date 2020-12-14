@@ -345,7 +345,7 @@ public class melgaController {
 
         //5a Get old data for taskNo
         Task oldTaskdata = editProjectMapper.getTaskLine(projectId,transferTaskNo);
-
+        model.addAttribute("projectID", projectId);
         //6a Sends old + modified object to SQL generator which then sends data to DB
         taskHandler1.editTask(task,oldTaskdata);
        // transferTaskNo = task.getTaskNo()==0.0?0.0:task.getTaskNo(); //TODO IKKE TESTET
@@ -535,7 +535,7 @@ public class melgaController {
         FacadeTest facadeTest = new Facade();
         tasksForProjectId = facadeTest.getTaskForEditProject(projectId);
         ArrayList<Task> taskNoRounded = new ArrayList<>();
-
+        model.addAttribute("projectID", projectId);
         //Afrunder double SKAL NED I MAPPER TODO eller??
         for (int i=0; i<tasksForProjectId.size(); i++ ) {
             tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100.0)/100.0);

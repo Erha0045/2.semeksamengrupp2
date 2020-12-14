@@ -72,4 +72,16 @@ public class ProjectMapper {
             return project;
         }
 
+        public int gettaskForProject(int projectid) throws SQLException {
+            Connection con = DatabaseConnector.getConnection();
+            String SQL = "select * from task where projectid=?";
+            PreparedStatement ps = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, projectid);
+
+            ResultSet resultSet = ps.executeQuery();
+            if(resultSet.next()){
+                return 1;
+            }else return 0;
+        }
+
 }

@@ -1,5 +1,6 @@
 package com.eksamengr2.alpha.springController;
 
+import com.eksamengr2.alpha.data.DashboardMapper;
 import com.eksamengr2.alpha.data.ProjectMapper;
 import com.eksamengr2.alpha.model.Project;
 import com.eksamengr2.alpha.model.User;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Controller
 public class ProjectController {
@@ -23,7 +25,7 @@ public class ProjectController {
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
         System.out.println("usertype" + user.getUserType());
         model.addAttribute("pojotransfer", projectz);//todo den bliver ikke helt brugt???
-        return user.getUserType() + "/" + user.getUserType() + "create_project1";
+        return user.getUserType() + "/" + user.getUserType() + "create_project2";
     }
 
     //      @RequestMapping(value="/create_project", method= RequestMethod.POST, params="getvalue")
@@ -54,8 +56,9 @@ public class ProjectController {
         }
          else {
             pm.createProject(project1);
-
-            return "create_project";
+            List<Project> projectsList = new DashboardMapper().getProjectByUser(user.getUserName());
+            model.addAttribute("projects", projectsList);
+            return user.getUserType() + "/" + user.getUserType() + "dashboard2";
         }
     }
 }

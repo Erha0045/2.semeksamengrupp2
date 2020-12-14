@@ -3,6 +3,7 @@ package com.eksamengr2.alpha.data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class DeleteProjectMapper {
 //    String SQL = "SELECT * FROM project\n" +
@@ -13,17 +14,13 @@ public class DeleteProjectMapper {
     public int deleteProjectFromDB(int projectNumber) throws Exception {
 
         Connection con = DatabaseConnector.getConnection();
-//        SET SQL_SAFE_UPDATES = 0;
-//        DELETE project,task
-//        FROM project
-//        INNER JOIN task ON project.idproject = task.projectid
-//        WHERE idproject=18;
+
 
         //deleter ikke pt, nu selecter vi bare, "det" som ska deletes.
-        String SQL = "DELETE project, task\n" +
-        "FROM project\n" +
-        "INNER JOIN task ON project.idproject = task.projectid\n" +
-        "WHERE idproject = ?";
+        String SQL = "DELETE project, task \n" +
+                "        FROM project\n" +
+                "        INNER JOIN task ON project.idproject = task.projectid\n" +
+                "        WHERE idproject = ?;";
         PreparedStatement ps = con.prepareStatement(SQL);
         ps.setInt(1, projectNumber);
 
@@ -40,4 +37,20 @@ public class DeleteProjectMapper {
 
         return numberOfRowCounts;
     }
+
+    public int deleteProjectFromDBNoSubTasks(int projectNumber) throws SQLException {
+
+        Connection con = DatabaseConnector.getConnection();
+
+
+        //deleter ikke pt, nu selecter vi bare, "det" som ska deletes.
+        String SQL ="delete project from project where idproject=?";
+        PreparedStatement ps = con.prepareStatement(SQL);
+        ps.setInt(1, projectNumber);
+
+        int numberOfRowCounts = ps.executeUpdate();
+
+        return numberOfRowCounts;
+    }
+
 }
