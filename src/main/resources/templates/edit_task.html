@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<div xmlns:th="http://www.w3.org/1999/xhtml">
 <link rel="stylesheet" href="alfa.css">
 <!--<div lang="en" xmlns:th="http://www.thymeleaf.org/">-->
 <head>
@@ -52,13 +52,13 @@
         <div style="display:inline-block;margin-right:20px;">
             <label>Start date:</label>
             <input type="date" th:field="*{startDate}"  >
-             <p th:text="${taskLine.get(0).startDate}">New startDate:</p>
+             <p th:text="${taskLine.get(0).startDate}">New startdate:</p>
         </div>
 
         <div style="display:inline-block;margin-right:20px;">
             <label>Finish date:</label>
             <input type="date" th:field="*{finishDate}" >
-            <p th:text="${taskLine.get(0).finishDate}">Old finish date:</p>
+            <p th:text="${taskLine.get(0).finishDate}">Old finishdate:</p>
         </div>
 
         <div style="display:inline-block;margin-right:20px;">
@@ -72,6 +72,7 @@
             <input type="text" th:field="*{taskTimeconsumption}">
             <p th:text="${taskLine.get(0).taskTimeconsumption}">Old task time consumption:</p>
         </div>
+        <br><br><br>
 
         <div style="display:inline-block;margin-right:20px;">
             <label>Number of person:</label>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -82,7 +83,7 @@
         <div style="display:inline-block;margin-right:20px;">
             <label>WorkingHoursDay:</label>&nbsp;
             <input type="text" th:field="*{workingHoursDay}">
-            <p th:text="${taskLine.get(0).workingHoursDay}">Old working hours/day:</p>
+            <p th:text="${taskLine.get(0).workingHoursDay}">Old workinghours/day:</p>
         </div><br><br><br>
         <div style="display:inline-block;margin-right:20px;">
             <button class="button" type="submit" name="updateTask" >Update task</button>
@@ -93,6 +94,7 @@
 
     </form>
     </fieldset>
+
     <table class="table" style="width:100%" align="Center">
         <thead>
             <tr>
@@ -123,7 +125,9 @@
             </tr>
         </tbody>
     </table>
+</div>
 </body>
+</div>
 </html>
 
 <!--VIRKER-->

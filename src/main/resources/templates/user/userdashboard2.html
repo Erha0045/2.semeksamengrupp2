@@ -61,7 +61,7 @@
         <tbody align="center">
         <tr th:each="projects : ${projects}">
 
-            <td><a  th:href="${'localhost:8080/user/edit_project1?projectId='+ projects.projectId}" cellpadding = "5">Edit No:</a></td>
+            <td><a  th:href="${'localhost:8080/edit_project?projectId='+ projects.projectId}" cellpadding = "5">Edit No:</a></td>
             <td><span th:text="${projects.projectId}"> Id</span></td>
             <td><span th:text="${projects.projectName}">Name</span></td>
             <td><span th:text="${projects.ownerName}">Owner Name</span></td>
