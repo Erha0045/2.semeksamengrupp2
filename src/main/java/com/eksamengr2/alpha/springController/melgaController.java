@@ -3,6 +3,7 @@ package com.eksamengr2.alpha.springController;
 import com.eksamengr2.alpha.data.*;
 import com.eksamengr2.alpha.model.Project;
 import com.eksamengr2.alpha.model.Task;
+import com.eksamengr2.alpha.model.User;
 import com.eksamengr2.alpha.service.TaskHandler1;
 import com.eksamengr2.alpha.service.TaskhandlerEL;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -261,14 +262,15 @@ public class melgaController {
 
         //Transfers pojo info to textfields form
         model.addAttribute("task", POJO_Task);
-
-        return "edit_task";
+        User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
+//        return "edit_task";
+        return "user/" + user.getUserType() + "edit_task";
     }
 
 
     //Button "Get task/subTask"
     @RequestMapping(value="/edit_task", method= RequestMethod.POST, params="getTaskSubTask")
-    public String getTask(Model model, @RequestParam("textFieldSubtaskNo") double taskOrSubTaskNo) throws SQLException {
+    public String getTask(WebRequest request, Model model, @RequestParam("textFieldSubtaskNo") double taskOrSubTaskNo) throws SQLException {
 
 
 
@@ -306,13 +308,16 @@ public class melgaController {
         //7b) System tager Hvis okay; System opdater DB
         //8) System opdater brugers tabel
 
-        return "redirect:/edit_task";
+        User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
+
+        return  "redirect:/user/" + user.getUserType() + "edit_task";
     }
 
 
-    //Button "Update task"
+
+    //Button "Update task" //TODO bruges @RequestParam eller ej?
     @RequestMapping(value="/edit_task", method= RequestMethod.POST, params="updateTask")
-    public String saveChangesToTask(Model model, @ModelAttribute("task") Task task,
+    public String saveChangesToTask(WebRequest request, Model model, @ModelAttribute("task") Task task,
                                     @RequestParam("taskNo") double newTaskNo,
                                     @RequestParam("name") String name,
                                     @RequestParam(value = "startDate",required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate newStartDate,
@@ -349,21 +354,21 @@ public class melgaController {
         //6a Sends old + modified object to SQL generator which then sends data to DB
         taskHandler1.editTask(task,oldTaskdata);
        // transferTaskNo = task.getTaskNo()==0.0?0.0:task.getTaskNo(); //TODO IKKE TESTET
-        if (!Objects.isNull(newTaskNo)){transferTaskNo=newTaskNo;};
-        try {
-            // Using Thread.sleep() we can add delay in our
-            // application in a millisecond time. For the example
-            // below the program will take a deep breath for one
-            // second before continue to print the next value of
-            // the loop.
-            Thread.sleep(5000);
-
-            // The Thread.sleep() need to be executed inside a
-            // try-catch block and we need to catch the
-            // InterruptedException.
-        } catch (InterruptedException ie) {
-            ie.printStackTrace();
-        }
+//        if (!Objects.isNull(newTaskNo)){transferTaskNo=newTaskNo;};
+//        try {
+//            // Using Thread.sleep() we can add delay in our
+//            // application in a millisecond time. For the example
+//            // below the program will take a deep breath for one
+//            // second before continue to print the next value of
+//            // the loop.
+//            Thread.sleep(5000);
+//
+//            // The Thread.sleep() need to be executed inside a
+//            // try-catch block and we need to catch the
+//            // InterruptedException.
+//        } catch (InterruptedException ie) {
+//            ie.printStackTrace();
+//        }
 
 
         //Transfers ArrayList-data to table
@@ -426,14 +431,16 @@ public class melgaController {
 //        model.addAttribute("taskLine", taskLine);
 
         //return "/edit_task"; //TODO afslut test
-        return "redirect:/edit_task";
+        User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
+        return  "redirect:/user/" + user.getUserType() + "edit_task";
+       // return "redirect:/edit_task";
     }
 
 
 
 
     @GetMapping("add_task")
-    public String add_task(Model model) throws SQLException {
+    public String add_task(WebRequest request, Model model) throws SQLException {
         System.out.println("add_task getMapping");
         listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId); //TODO skal skiftes med en søgning på projekt nummer + No overtask
 
@@ -443,14 +450,16 @@ public class melgaController {
 
         //Indsætter værdier i dropbox muligheder
         model.addAttribute("listTitler", listTitler); //overføre liste til dropbox
-
-        return "add_task";
+        User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
+        //return "add_task";
+        return  "/user/" + user.getUserType() + "add_task";
     }
+
 
 
     //Button "save Task"
     @RequestMapping(value="/add_task", method= RequestMethod.POST, params="addtask")
-    public String saveTask(@ModelAttribute("task") Task task, Model model) throws SQLException {
+    public String saveTask(WebRequest request, @ModelAttribute("task") Task task, Model model) throws SQLException {
         //setting attribute not included in input
         task.setProjectId(projectId);
 
@@ -470,13 +479,15 @@ public class melgaController {
 
         //New task inserted to DB
         taskController.AddTaskToDB(task); //TODO METODE ER IKKE OPDATET
-
-        return "redirect:/add_task"; //TODO
+        User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
+        return  "redirect:/user/" + user.getUserType() + "add_task";
     }
+
+
 
     //Button "save subTask"
     @RequestMapping(value="/add_task", method= RequestMethod.POST, params="addsubtask")
-    public String saveSubTask(@ModelAttribute("task") Task task, Model model) throws SQLException {
+    public String saveSubTask(WebRequest request, @ModelAttribute("task") Task task, Model model) throws SQLException {
 
         //Getting and inserting data for dropbox
         listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId);
@@ -502,13 +513,14 @@ public class melgaController {
 
         //New task inserted to DB
         taskController.AddTaskToDB(task); //TODO METODE ER IKKE OPDATET
-
-        return "redirect:/add_task"; //TODO
+        User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
+        return  "redirect:/user/" + user.getUserType() + "add_task";
+//        return "redirect:/add_task"; //TODO
     }
 
 
     @RequestMapping(value="/add_task", method= RequestMethod.POST, params="cancel")
-    public String cancelAddTask(Model model) throws SQLException {
+    public String cancelAddTask(WebRequest request, Model model) throws SQLException {
 
         tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
         //Afrunder double SKAL NED I MAPPER TODO eller??
@@ -518,14 +530,15 @@ public class melgaController {
 
         model.addAttribute("tasks", tasksForProjectId);
 
-
-        return "edit_project";
+        User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
+//        return "edit_project";
+        return  "/user/" + user.getUserType() + "edit_project";
     }
 
     //Facade facade = new Facade();
 
     @GetMapping("edit_project")
-    public String editProject(Model model, @RequestParam("projectId") int urlProjectId) throws SQLException {
+    public String editProject(WebRequest request ,Model model, @RequestParam("projectId") int urlProjectId) throws SQLException {
 
         //Overføre værdi fra url
         projectId =urlProjectId;
@@ -542,7 +555,10 @@ public class melgaController {
         }
 
         model.addAttribute("tasks", tasksForProjectId);
-
-        return "edit_project";
+        User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
+//        return "edit_project";
+        return  "/user/" + user.getUserType() + "edit_project";
     }
+
+
 }
