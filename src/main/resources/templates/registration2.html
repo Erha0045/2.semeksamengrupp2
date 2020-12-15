@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>usermanagement</title>
+    <title>registration_user_management</title>
 </head>
 
     <body>
@@ -17,7 +17,7 @@
     </header>
     <ul>
 
-        <li><a href="/index">Welcome page</a></li>
+        <li><a href="/">Welcome page</a></li>
         <li><a href="mailto:contact@fff.dk">Contact</a></li>
         <li><a href="mailto:support@fff.dk">Support</a></li>
     </ul>
@@ -42,9 +42,11 @@
                     <input class="inputwhite" type="password" name="password2" value="">
                     <br>
                     <br>
-
                     <button type="submit" class="button">Create account</button>
 
+                <form name="cancel" action="/logout" method=get>
+                <button class="button" type="submit" >cancel</button>
+                </form>
         </fieldset>
         </form>
     </div>
