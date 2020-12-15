@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Controller
-public class melgaController {
+public class TaskController {
 
     private List<Task> tasksForProjectId = new ArrayList(); //Holds all tasks in a projectId
     private EditProjectMapper editProjectMapper = new EditProjectMapper();
@@ -38,6 +38,12 @@ public class melgaController {
     private TaskhandlerEL taskhandlerEL = new TaskhandlerEL();
     public static String errorString;
     private ProjectMapper projectMapper = new ProjectMapper();
+    //fra deleteTaskController
+    private  DeleteTaskMapper deleteTaskMapper = new DeleteTaskMapper();
+//    private EditProjectMapper editProjectMapper = new EditProjectMapper();
+//    private List<Task> tasksForProjectId = new ArrayList();
+//    private int projectId;
+    Project project = new Project();
 
 
 //    @GetMapping("edit_task")
@@ -264,7 +270,7 @@ public class melgaController {
         model.addAttribute("task", POJO_Task);
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
 //        return "edit_task";
-        return "user/" + user.getUserType() + "edit_task";
+        return  user.getUserType() + "/edit_task";
     }
 
 
@@ -310,7 +316,8 @@ public class melgaController {
 
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
 
-        return  "redirect:/user/" + user.getUserType() + "edit_task";
+       return user.getUserType() + "/edit_task";
+        //return  "redirect:/user/" + user.getUserType() + "edit_task";
     }
 
 
@@ -432,7 +439,8 @@ public class melgaController {
 
         //return "/edit_task"; //TODO afslut test
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
-        return  "redirect:/user/" + user.getUserType() + "edit_task";
+        return  user.getUserType() + "/edit_task";
+        //return  "redirect:/user/" + user.getUserType() + "edit_task";
        // return "redirect:/edit_task";
     }
 
@@ -452,35 +460,30 @@ public class melgaController {
         model.addAttribute("listTitler", listTitler); //overføre liste til dropbox
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
         //return "add_task";
-        return  "/user/" + user.getUserType() + "add_task";
+        return user.getUserType() + "/add_task";
     }
 
 
-
+//todo Error page til add tasks/subtasks - addtask + errormessage(s)
     //Button "save Task"
     @RequestMapping(value="/add_task", method= RequestMethod.POST, params="addtask")
     public String saveTask(WebRequest request, @ModelAttribute("task") Task task, Model model) throws SQLException {
         //setting attribute not included in input
         task.setProjectId(projectId);
 
+        User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
 
         //TODO kontrol af indtastet data
         Project project = projectMapper.getProjectFromId(projectId);
         errorString = taskhandlerEL.errorMessageTask(task, project);
         System.out.println(errorString);
         model.addAttribute("errorString", errorString);
-        if (!errorString.equals("")) return "add_task_error_page1";
+//        if (!errorString.equals("")) return user.getUserType() + "/add_task_error1";
 
-//        if (taskhandlerEL.checkTaskName(task)) return "add_task_name_error";
-//
-//        if(taskhandlerEL.checkTaskNo(task)) return "add_task_taskno_error";
-//
-//        if (!taskhandlerEL.taskStartDateBeforeFinishCheck(task)) return "add_task_date_error";
 
         //New task inserted to DB
         taskController.AddTaskToDB(task); //TODO METODE ER IKKE OPDATET
-        User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
-        return  "redirect:/user/" + user.getUserType() + "add_task";
+        return   user.getUserType() + "/add_task";
     }
 
 
@@ -508,13 +511,13 @@ public class melgaController {
 
         model.addAttribute("errorString", errorString);
         System.out.println(errorString);
-
-         if (!errorString.equals(""))return "add_task_error_page1";
+//todo
+//         if (!errorString.equals(""))return "add_task_error_page1";
 
         //New task inserted to DB
         taskController.AddTaskToDB(task); //TODO METODE ER IKKE OPDATET
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
-        return  "redirect:/user/" + user.getUserType() + "add_task";
+        return  user.getUserType() + "/add_task";
 //        return "redirect:/add_task"; //TODO
     }
 
@@ -532,7 +535,7 @@ public class melgaController {
 
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
 //        return "edit_project";
-        return  "/user/" + user.getUserType() + "edit_project";
+        return  user.getUserType() + "/edit_project";
     }
 
     //Facade facade = new Facade();
@@ -557,8 +560,60 @@ public class melgaController {
         model.addAttribute("tasks", tasksForProjectId);
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
 //        return "edit_project";
-        return  "/user/" + user.getUserType() + "edit_project";
+        return  user.getUserType() + "/edit_project";
     }
 
+    @GetMapping("/delete_task")
+    public String delete_taskView(WebRequest request ,@RequestParam("projectId") int urlProjectId, Model model) throws SQLException {
+        User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
+        projectId=urlProjectId;
+        project.setProjectId(projectId);
+        tasksForProjectId=editProjectMapper.getTaskForEditProject(projectId);
+        model.addAttribute("tasks", tasksForProjectId);
+        model.addAttribute("projectId", projectId);
+//        System.out.println("project id delete task Controller : " + tasksForProjectId.get(0).getProjectId());
+        System.out.println("LuffController user : " + user);
+        return  user.getUserType() + "/delete_task1";
+    }
+    // user.getUserType() + "/" + user.getUserType() + "create_project1";
+    @PostMapping("/delete_task")
+    public String delete_task(WebRequest request, Model model) {
+        User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
+
+        try {
+            System.out.println("delete task post mapping project id : " + projectId);
+            double taskNo = Double.parseDouble(request.getParameter("Task_number"));
+            Task task = new Task(taskNo);
+            model.addAttribute("task", task);
+            request.setAttribute("task", task, 1);
+        } catch (Exception a) {
+            System.out.println("jeg skrev ikke noget ind");
+            return user.getUserType() + "/delete_task_error_1";
+        }
+
+        return  user.getUserType() +  "/delete_task_confirmation1";
+    }
+
+    @PostMapping("/delete_task_confirmation")
+    public String delete_task_confirmation(WebRequest request,Model model) throws SQLException {
+        Task task = (Task) request.getAttribute("task", 1);
+        User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
+
+        project.setProjectId(projectId);
+        try {
+            if (deleteTaskMapper.deleteTaskFromDB(task.getTaskNumber(),projectId) == 0) {
+                return  user.getUserType() +"/delete_task_error_1";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tasksForProjectId=editProjectMapper.getTaskForEditProject(projectId);
+        model.addAttribute("tasks", tasksForProjectId);
+        model.addAttribute("projectId", projectId);
+
+        return  user.getUserType() + "/edit_project";
+//        ?projectId=" + projectId;
+        //        return "redirect:/edit_project?projectId=" + projectId;
+    }
 
 }
