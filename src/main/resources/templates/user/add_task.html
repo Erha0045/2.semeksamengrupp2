@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <link rel="stylesheet" href="alfa.css">
@@ -5,7 +6,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>projectcreation</title>
+        <title>add_task</title>
     </head>
     <body>
     <header>
@@ -27,9 +28,9 @@
         <fieldset style="width: 30%" id="addtask">
 
             <legend>Add a task</legend>
-            <form method="post" action="/add_task" th:object="${task}">
+            <div method="post" action="/add_task" th:object="${task}">
                 <label>Task number:</label>&nbsp;
-                <input type="number" min="1" step="1" max="999" th:field="*{taskNo}"  />
+                <input type="number" min="1" step="0.01" th:field="*{taskNo}"  />
                 <br><br>
                 <label>Task name:</label>&nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="text" required th:field="*{name}" maxlength="45" />
@@ -51,7 +52,7 @@
                 <br><br><br>
 
 
-            </form>
+            </div>
         </fieldset>
 
         <!--    </div>-->
@@ -61,10 +62,11 @@
 
         <fieldset style="width:70%" id="addsubtask">
             <legend>Add a subtask</legend>
+            <form method="post" action="/add_task" th:object="${task}">
             <div class="row">
                 <div class="column" style="width: 30% ">
                     <!--SUB_TASK-->
-                    <form method="post" action="/add_task" th:object="${task}">
+
                         <!--    dropdown-->
                         <select th:field="*{subTaskToName} ">
                             <label>Choose if any Task above:</label>
@@ -73,7 +75,7 @@
 
                         <br><br>
                         <label>Subtask no:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="number" min="1" required max="99" th:field="*{taskNo}"  />
+                        <input type="number" required th:field="*{taskNo}"  />
                         <br>
                         <br>
 
@@ -87,197 +89,306 @@
                         <br>
                         <label>Finish date:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <input type="date" th:field="*{finishDate}" />
-
-
-                        <br><br>
-
-                        <div class="column" style="width: 30% ">
-                            <label>Time consumption(h):</label>&nbsp;
-                            <input type="number"  required min="1" step="1"  th:field="*{taskTimeconsumption}" />
-                            <!--                <br><br><br><br>-->
-                            <br><br>
-                            <label>Subtask duration:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="number" value="0" th:field="*{duration}" />
-                            <br><br>
-                            <label>Persons on subtask:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="number" th:field="*{noOfPersons}" />
-                            <br><br>
-                            <label>Hours/day/person:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="number" step="0.01" th:field="*{workingHoursDay}" />
-                            <br><br><br><br>
-                            <button class="button" type="submit" name="addsubtask" >Save subtask</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <button class="button" type="submit" name="cancel" >Back</button>
-                        </div>
-                    </form>
                 </div>
-            </div>
+
+                <br><br>
+
+                <div class="column" style="width: 30% ">
+                    <label>Time consumption(h):</label>&nbsp;
+                    <input type="number"  required min="1" step="1"  th:field="*{taskTimeconsumption}" />
+                    <!--                <br><br><br><br>-->
+                    <br><br>
+                    <label>Subtask duration:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="number" value="0" th:field="*{duration}" />
+                    <br><br>
+                    <label>Persons on subtask:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="number" th:field="*{noOfPersons}" />
+                    <br><br>
+                    <label>Hours/day/person:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="number" step="0.01" th:field="*{workingHoursDay}" />
+                    <br><br><br>
+                    <button class="button" type="submit" name="addsubtask" >Save subtask</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button class="button" type="submit" name="cancel" >Back</button>
+                </div>
+                </div>
+
+                    </form>
+
 
         </fieldset>
     </div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-<!--<div>-->
-<!--    <table class="table" style="width:100%" align="Center">-->
-<!--        <thead>-->
-<!--        <tr id="titles">-->
-<!--            <th>No</th>-->
-<!--            <th>Task no</th>-->
-<!--            <th>Task name</th>-->
-<!--            <th>Duration</th>-->
-<!--            <th>Start date</th>-->
-<!--            <th>Finished date</th>-->
-<!--            <th>Timeconsumption</th>-->
-<!--            <th>No of persons</th>-->
-<!--            <th>Working hours per day</th>-->
-<!--        </tr>-->
-<!--        </thead>-->
-
-
-<!--        <tbody align="center">-->
-<!--        <tr th:each="taskss : ${tasks}">-->
-<!--            <td><span th:text="${taskss.getLineCounter()}">No </span></td>-->
-<!--            <td><span th:text="${taskss.getTaskNo()}">Task no </span></td>-->
-<!--            <td><span th:text="${taskss.getName()}">Task name </span></td>-->
-<!--            <td><span th:text="${taskss.getDuration()}">Duration </span></td>-->
-<!--            <td><span th:text="${taskss.getStartDate()}">Start date </span></td>-->
-<!--            <td><span th:text="${taskss.getFinishDate()}">Finished date </span></td>-->
-<!--            <td><span th:text="${taskss.getTaskTimeconsumption()}">timeconsumption </span></td>-->
-<!--            <td><span th:text="${taskss.getNoOfPersons()}">Number of persons </span></td>-->
-<!--            <td><span th:text="${taskss.getWorkingHoursDay()}">Workinghoursperday </span></td>-->
-<!--        </tr>-->
-<!--        </tbody>-->
-<!--    </table>-->
-<!--</div>-->
     </body>
 </div>
 </html>
 
+
+
 <!--<!DOCTYPE html>-->
 <!--<html xmlns:th="http://www.w3.org/1999/xhtml">-->
-<!--<link rel="stylesheet" href="alfa.css">-->
-<!--&lt;!&ndash;<div lang="en" xmlns:th="http://www.thymeleaf.org/">&ndash;&gt;-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
-<!--    <title>projectcreation</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--<header>-->
-<!--    <div class="header">-->
-<!--        <h1>Tasks/Subtasks management</h1>-->
-<!--    </div>-->
-<!--</header>-->
-<!--<ul>-->
-<!--    <li><a href="/dashboard2">Dashboard</a></li>-->
-<!--    <li><a href="/logout">Log out</a></li>-->
-<!--    <li><a href="mailto:contact@fff.dk">Contact</a></li>-->
-<!--    <li><a href="mailto:support@fff.dk">Support</a></li>-->
-<!--</ul>-->
-<!--<br>-->
-<!--&lt;!&ndash;TASK&ndash;&gt;-->
-<!--<div class="container">-->
+<!--<link rel="stylesheet" href="../../static/alfa.css">-->
+<!--<div lang="en" xmlns:th="http://www.thymeleaf.org/">-->
+<!--    <head>-->
+<!--        <meta charset="UTF-8">-->
+<!--        <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--        <title>projectcreation</title>-->
+<!--    </head>-->
+<!--    <body>-->
+<!--    <header>-->
+<!--        <div class="header">-->
+<!--            <h1>Tasks/Subtasks management</h1>-->
+<!--        </div>-->
+<!--    </header>-->
+<!--    <ul>-->
+<!--        <li><a href="/dashboard">Dashboard</a></li>-->
+<!--        <li><a href="/logout">Log out</a></li>-->
+<!--        <li><a href="mailto:contact@fff.dk">Contact</a></li>-->
+<!--        <li><a href="mailto:support@fff.dk">Support</a></li>-->
+<!--    </ul>-->
 <!--    <br>-->
+<!--    &lt;!&ndash;TASK&ndash;&gt;-->
+<!--    <div class="container">-->
+<!--        <br>-->
 
-<!--    <fieldset style="width: 30%" id="addtask">-->
+<!--        <fieldset style="width: 30%" id="addtask">-->
 
-<!--        <legend>Add a task</legend>-->
-<!--        <div method="post" action="/add_task" th:object="${task}">-->
-<!--            <label>Task number:</label>&nbsp;-->
-<!--            <input type="number" min="1" step="0.01" th:field="*{taskNo}"  />-->
-<!--            <br><br>-->
-<!--            <label>Task name:</label>&nbsp;&nbsp;&nbsp;&nbsp;-->
-<!--            <input type="text" required th:field="*{name}" maxlength="45" />-->
-<!--            <br><br>-->
-<!--            <label>Start date:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
-<!--            <input type="date" required th:field="*{startDate}" />-->
-<!--            <br><br>-->
-
-
-<!--            <label>Finish date:</label>&nbsp;&nbsp;&nbsp;-->
-<!--            <input type="date" th:field="*{finishDate}" />-->
-<!--            <br><br>-->
-<!--            <label>Duration:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
-<!--            <input type="number" value="0" th:field="*{duration}" />-->
-<!--            <br><br><br>-->
-
-<!--            <button class="button" type="submit" name="addtask" >Save task</button>&nbsp;&nbsp;&nbsp;&nbsp;-->
-<!--            <button class="button" type="submit" name="cancel" >Back</button>-->
-<!--            <br><br><br>-->
-
-
-<!--        </div>-->
-<!--    </fieldset>-->
-
-<!--    &lt;!&ndash;    </div>&ndash;&gt;-->
-
-<!--    &lt;!&ndash;    <div class="container">&ndash;&gt;-->
-
-
-<!--    <fieldset style="width:70%" id="addsubtask">-->
-<!--        <legend>Add a subtask</legend>-->
-<!--        <div class="row">-->
-<!--            <div class="column" style="width: 30% ">-->
-<!--                &lt;!&ndash;SUB_TASK&ndash;&gt;-->
-<!--                <div method="post" action="/add_task" th:object="${task}">-->
-<!--                    &lt;!&ndash;    dropdown&ndash;&gt;-->
-<!--                    <select th:field="*{subTaskToName} ">-->
-<!--                        <label>Choose if any Task above:</label>-->
-<!--                        <option th:each="p : ${listTitler}" th:value="${p.getName()}" th:text="${p.getName()}" />-->
-<!--                    </select>-->
-
-<!--                    <br><br>-->
-<!--                    <label>Subtask no:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
-<!--                    <input type="number" required th:field="*{taskNo}"  />-->
-<!--                    <br>-->
-<!--                    <br>-->
-
-<!--                    <label>Subtask name:</label>&nbsp;-->
-<!--                    <input type="text" required th:field="*{name}" maxlength="45" />-->
-<!--                    <br>-->
-<!--                    <br>-->
-<!--                    <label>Start date:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
-<!--                    <input type="date" required th:field="*{startDate}" />-->
-<!--                    <br>-->
-<!--                    <br>-->
-<!--                    <label>Finish date:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
-<!--                    <input type="date" th:field="*{finishDate}" />-->
-<!--&lt;!&ndash;                </div>&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-<!--            <br><br>-->
-
-<!--            <div class="column" style="width: 30% ">-->
-<!--                <label>Time consumption(h):</label>&nbsp;-->
-<!--                <input type="number"  required min="1" step="1"  th:field="*{taskTimeconsumption}" />-->
-<!--                &lt;!&ndash;                <br><br><br><br>&ndash;&gt;-->
+<!--            <legend>Add a task</legend>-->
+<!--            <form method="post" action="/add_task" th:object="${task}">-->
+<!--                <label>Task number:</label>&nbsp;-->
+<!--                <input type="number" min="1" step="1" max="999" th:field="*{taskNo}"  />-->
 <!--                <br><br>-->
-<!--                <label>Subtask duration:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+<!--                <label>Task name:</label>&nbsp;&nbsp;&nbsp;&nbsp;-->
+<!--                <input type="text" required th:field="*{name}" maxlength="45" />-->
+<!--                <br><br>-->
+<!--                <label>Start date:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+<!--                <input type="date" required th:field="*{startDate}" />-->
+<!--                <br><br>-->
+<!--                <label>Finish date:</label>&nbsp;&nbsp;&nbsp;-->
+<!--                <input type="date" th:field="*{finishDate}" />-->
+<!--                <br><br>-->
+<!--                <label>Duration:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
 <!--                <input type="number" value="0" th:field="*{duration}" />-->
-<!--                <br><br>-->
-<!--                <label>Persons on subtask:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
-<!--                <input type="number" th:field="*{noOfPersons}" />-->
-<!--                <br><br>-->
-<!--                <label>Hours/day/person:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
-<!--                <input type="number" step="0.01" th:field="*{workingHoursDay}" />-->
-<!--                <br><br><br><br>-->
-<!--                <button class="button" type="submit" name="addsubtask" >Save subtask</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
-<!--                <button class="button" type="submit" name="cancel" >Back</button>-->
-<!--                </form>-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-<!--        </div>-->
+<!--                <br><br><br>-->
 
-<!--    </fieldset>-->
+<!--                <button class="button" type="submit" name="addtask" >Save task</button>&nbsp;&nbsp;&nbsp;&nbsp;-->
+
+<!--                <br><br><br>-->
+<!--            </form>-->
+
+<!--        </fieldset>-->
+
+<!--        &lt;!&ndash;    </div>&ndash;&gt;-->
+
+<!--        &lt;!&ndash;    <div class="container">&ndash;&gt;-->
+
+
+<!--        <fieldset style="width:70%" id="addsubtask">-->
+<!--            <legend>Add a subtask</legend>-->
+<!--            <div class="row">-->
+<!--                <div class="column" style="width: 30% ">-->
+<!--                    &lt;!&ndash;SUB_TASK&ndash;&gt;-->
+<!--                    <form method="post" action="/add_task" th:object="${task}">-->
+<!--                        &lt;!&ndash;    dropdown&ndash;&gt;-->
+<!--                        <select th:field="*{subTaskToName} ">-->
+<!--                            <label>Choose if any Task above:</label>-->
+<!--                            <option th:each="p : ${listTitler}" th:value="${p.getName()}" th:text="${p.getName()}" />-->
+<!--                        </select>-->
+
+<!--                        <br><br>-->
+<!--                        <label>Subtask no:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+<!--                        <input type="number" min="1" required max="99" th:field="*{taskNo}"  />-->
+<!--                        <br>-->
+<!--                        <br>-->
+
+<!--                        <label>Subtask name:</label>&nbsp;-->
+<!--                        <input type="text" required th:field="*{name}" maxlength="45" />-->
+<!--                        <br>-->
+<!--                        <br>-->
+<!--                        <label>Start date:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+<!--                        <input type="date" required th:field="*{startDate}" />-->
+<!--                        <br>-->
+<!--                        <br>-->
+<!--                        <label>Finish date:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+<!--                        <input type="date" th:field="*{finishDate}" />-->
+
+
+<!--                        <br><br>-->
+
+<!--                        <div class="column" style="width: 70% ">-->
+<!--                            <label>Time consumption(h):</label>&nbsp;-->
+<!--                            <input type="number"  required min="1" step="1"  th:field="*{taskTimeconsumption}" />-->
+<!--                            &lt;!&ndash;                <br><br><br><br>&ndash;&gt;-->
+<!--                            <br><br>-->
+<!--                            <label>Subtask duration:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+<!--                            <input type="number" value="0" th:field="*{duration}" />-->
+<!--                            <br><br>-->
+<!--                            <label>Persons on subtask:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+<!--                            <input type="number" th:field="*{noOfPersons}" />-->
+<!--                            <br><br>-->
+<!--                            <label>Hours/day/person:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+<!--                            <input type="number" step="0.01" th:field="*{workingHoursDay}" />-->
+<!--                            <br><br><br><br>-->
+<!--                            <button class="button" type="submit" name="addsubtask" >Save subtask</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+<!--                        </div>-->
+
+<!--                    </form>-->
+<!--                    <form name="cancel" action="/dashboard" method=get>-->
+<!--                        <button class="button" type="submit" >cancel</button>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--        </fieldset>-->
+<!--    </div>-->
+
+<!--&lt;!&ndash;<div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <table class="table" style="width:100%" align="Center">&ndash;&gt;-->
+<!--&lt;!&ndash;        <thead>&ndash;&gt;-->
+<!--&lt;!&ndash;        <tr id="titles">&ndash;&gt;-->
+<!--&lt;!&ndash;            <th>No</th>&ndash;&gt;-->
+<!--&lt;!&ndash;            <th>Task no</th>&ndash;&gt;-->
+<!--&lt;!&ndash;            <th>Task name</th>&ndash;&gt;-->
+<!--&lt;!&ndash;            <th>Duration</th>&ndash;&gt;-->
+<!--&lt;!&ndash;            <th>Start date</th>&ndash;&gt;-->
+<!--&lt;!&ndash;            <th>Finished date</th>&ndash;&gt;-->
+<!--&lt;!&ndash;            <th>Timeconsumption</th>&ndash;&gt;-->
+<!--&lt;!&ndash;            <th>No of persons</th>&ndash;&gt;-->
+<!--&lt;!&ndash;            <th>Working hours per day</th>&ndash;&gt;-->
+<!--&lt;!&ndash;        </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;        </thead>&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;        <tbody align="center">&ndash;&gt;-->
+<!--&lt;!&ndash;        <tr th:each="taskss : ${tasks}">&ndash;&gt;-->
+<!--&lt;!&ndash;            <td><span th:text="${taskss.getLineCounter()}">No </span></td>&ndash;&gt;-->
+<!--&lt;!&ndash;            <td><span th:text="${taskss.getTaskNo()}">Task no </span></td>&ndash;&gt;-->
+<!--&lt;!&ndash;            <td><span th:text="${taskss.getName()}">Task name </span></td>&ndash;&gt;-->
+<!--&lt;!&ndash;            <td><span th:text="${taskss.getDuration()}">Duration </span></td>&ndash;&gt;-->
+<!--&lt;!&ndash;            <td><span th:text="${taskss.getStartDate()}">Start date </span></td>&ndash;&gt;-->
+<!--&lt;!&ndash;            <td><span th:text="${taskss.getFinishDate()}">Finished date </span></td>&ndash;&gt;-->
+<!--&lt;!&ndash;            <td><span th:text="${taskss.getTaskTimeconsumption()}">timeconsumption </span></td>&ndash;&gt;-->
+<!--&lt;!&ndash;            <td><span th:text="${taskss.getNoOfPersons()}">Number of persons </span></td>&ndash;&gt;-->
+<!--&lt;!&ndash;            <td><span th:text="${taskss.getWorkingHoursDay()}">Workinghoursperday </span></td>&ndash;&gt;-->
+<!--&lt;!&ndash;        </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;        </tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;    </table>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--    </body>-->
 <!--</div>-->
-<!--</body>-->
 <!--</html>-->
+
+<!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
+<!--&lt;!&ndash;<html xmlns:th="http://www.w3.org/1999/xhtml">&ndash;&gt;-->
+<!--&lt;!&ndash;<link rel="stylesheet" href="alfa.css">&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;<div lang="en" xmlns:th="http://www.thymeleaf.org/">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta charset="UTF-8">&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta name="viewport" content="width=device-width, initial-scale=1">&ndash;&gt;-->
+<!--&lt;!&ndash;    <title>projectcreation</title>&ndash;&gt;-->
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
+<!--&lt;!&ndash;<body>&ndash;&gt;-->
+<!--&lt;!&ndash;<header>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="header">&ndash;&gt;-->
+<!--&lt;!&ndash;        <h1>Tasks/Subtasks management</h1>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</header>&ndash;&gt;-->
+<!--&lt;!&ndash;<ul>&ndash;&gt;-->
+<!--&lt;!&ndash;    <li><a href="/dashboard2">Dashboard</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;    <li><a href="/logout">Log out</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;    <li><a href="mailto:contact@fff.dk">Contact</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;    <li><a href="mailto:support@fff.dk">Support</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;</ul>&ndash;&gt;-->
+<!--&lt;!&ndash;<br>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;TASK&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="container">&ndash;&gt;-->
+<!--&lt;!&ndash;    <br>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <fieldset style="width: 30%" id="addtask">&ndash;&gt;-->
+
+<!--&lt;!&ndash;        <legend>Add a task</legend>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div method="post" action="/add_task" th:object="${task}">&ndash;&gt;-->
+<!--&lt;!&ndash;            <label>Task number:</label>&nbsp;&ndash;&gt;-->
+<!--&lt;!&ndash;            <input type="number" min="1" step="0.01" th:field="*{taskNo}"  />&ndash;&gt;-->
+<!--&lt;!&ndash;            <br><br>&ndash;&gt;-->
+<!--&lt;!&ndash;            <label>Task name:</label>&nbsp;&nbsp;&nbsp;&nbsp;&ndash;&gt;-->
+<!--&lt;!&ndash;            <input type="text" required th:field="*{name}" maxlength="45" />&ndash;&gt;-->
+<!--&lt;!&ndash;            <br><br>&ndash;&gt;-->
+<!--&lt;!&ndash;            <label>Start date:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&ndash;&gt;-->
+<!--&lt;!&ndash;            <input type="date" required th:field="*{startDate}" />&ndash;&gt;-->
+<!--&lt;!&ndash;            <br><br>&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;            <label>Finish date:</label>&nbsp;&nbsp;&nbsp;&ndash;&gt;-->
+<!--&lt;!&ndash;            <input type="date" th:field="*{finishDate}" />&ndash;&gt;-->
+<!--&lt;!&ndash;            <br><br>&ndash;&gt;-->
+<!--&lt;!&ndash;            <label>Duration:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&ndash;&gt;-->
+<!--&lt;!&ndash;            <input type="number" value="0" th:field="*{duration}" />&ndash;&gt;-->
+<!--&lt;!&ndash;            <br><br><br>&ndash;&gt;-->
+
+<!--&lt;!&ndash;            <button class="button" type="submit" name="addtask" >Save task</button>&nbsp;&nbsp;&nbsp;&nbsp;&ndash;&gt;-->
+<!--&lt;!&ndash;            <button class="button" type="submit" name="cancel" >Back</button>&ndash;&gt;-->
+<!--&lt;!&ndash;            <br><br><br>&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    </fieldset>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    &lt;!&ndash;    </div>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;    &lt;!&ndash;    <div class="container">&ndash;&gt;&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;    <fieldset style="width:70%" id="addsubtask">&ndash;&gt;-->
+<!--&lt;!&ndash;        <legend>Add a subtask</legend>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="row">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="column" style="width: 30% ">&ndash;&gt;-->
+<!--&lt;!&ndash;                &lt;!&ndash;SUB_TASK&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                <div method="post" action="/add_task" th:object="${task}">&ndash;&gt;-->
+<!--&lt;!&ndash;                    &lt;!&ndash;    dropdown&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                    <select th:field="*{subTaskToName} ">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <label>Choose if any Task above:</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <option th:each="p : ${listTitler}" th:value="${p.getName()}" th:text="${p.getName()}" />&ndash;&gt;-->
+<!--&lt;!&ndash;                    </select>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    <br><br>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <label>Subtask no:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&ndash;&gt;-->
+<!--&lt;!&ndash;                    <input type="number" required th:field="*{taskNo}"  />&ndash;&gt;-->
+<!--&lt;!&ndash;                    <br>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <br>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                    <label>Subtask name:</label>&nbsp;&ndash;&gt;-->
+<!--&lt;!&ndash;                    <input type="text" required th:field="*{name}" maxlength="45" />&ndash;&gt;-->
+<!--&lt;!&ndash;                    <br>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <br>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <label>Start date:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&ndash;&gt;-->
+<!--&lt;!&ndash;                    <input type="date" required th:field="*{startDate}" />&ndash;&gt;-->
+<!--&lt;!&ndash;                    <br>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <br>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <label>Finish date:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&ndash;&gt;-->
+<!--&lt;!&ndash;                    <input type="date" th:field="*{finishDate}" />&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;            <br><br>&ndash;&gt;-->
+
+<!--&lt;!&ndash;            <div class="column" style="width: 30% ">&ndash;&gt;-->
+<!--&lt;!&ndash;                <label>Time consumption(h):</label>&nbsp;&ndash;&gt;-->
+<!--&lt;!&ndash;                <input type="number"  required min="1" step="1"  th:field="*{taskTimeconsumption}" />&ndash;&gt;-->
+<!--&lt;!&ndash;                &lt;!&ndash;                <br><br><br><br>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                <br><br>&ndash;&gt;-->
+<!--&lt;!&ndash;                <label>Subtask duration:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&ndash;&gt;-->
+<!--&lt;!&ndash;                <input type="number" value="0" th:field="*{duration}" />&ndash;&gt;-->
+<!--&lt;!&ndash;                <br><br>&ndash;&gt;-->
+<!--&lt;!&ndash;                <label>Persons on subtask:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&ndash;&gt;-->
+<!--&lt;!&ndash;                <input type="number" th:field="*{noOfPersons}" />&ndash;&gt;-->
+<!--&lt;!&ndash;                <br><br>&ndash;&gt;-->
+<!--&lt;!&ndash;                <label>Hours/day/person:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&ndash;&gt;-->
+<!--&lt;!&ndash;                <input type="number" step="0.01" th:field="*{workingHoursDay}" />&ndash;&gt;-->
+<!--&lt;!&ndash;                <br><br><br><br>&ndash;&gt;-->
+<!--&lt;!&ndash;                <button class="button" type="submit" name="addsubtask" >Save subtask</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&ndash;&gt;-->
+<!--&lt;!&ndash;                <button class="button" type="submit" name="cancel" >Back</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                </form>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            </div>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    </fieldset>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+<!--&lt;!&ndash;</html>&ndash;&gt;-->
