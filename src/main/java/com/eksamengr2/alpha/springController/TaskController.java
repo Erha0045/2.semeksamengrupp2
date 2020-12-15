@@ -33,17 +33,12 @@ public class TaskController {
     private TaskHandler taskHandler = new TaskHandler();
     private ArrayList<Task> arrTaskLine = new ArrayList<>();
     Task objTaskLine;
-
-
     private TaskHandler taskhandler = new TaskHandler();
     public static String errorString;
     private ProjectMapper projectMapper = new ProjectMapper();
-    //fra deleteTaskController
     private  DeleteTaskMapper deleteTaskMapper = new DeleteTaskMapper();
-//    private EditProjectMapper editProjectMapper = new EditProjectMapper();
-//    private List<Task> tasksForProjectId = new ArrayList();
-//    private int projectId;
     Project project = new Project();
+    TaskMapper taskMapper = new TaskMapper();
 
 
 //    @GetMapping("edit_task")
@@ -229,6 +224,9 @@ public class TaskController {
         ArrayList<Task> taskLine = new ArrayList<>();
         System.out.println("I getmapping: " + transferTaskNo);
 
+        //Get usertype for login session
+        User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
+
         if (transferTaskNo==0.0){
             taskLine = taskHandler.ExampelForTaskLine();
         }else{
@@ -253,7 +251,6 @@ public class TaskController {
         model.addAttribute("taskLine", taskLine);
 
         //Get tasks-data from DB as ArrayList
-        System.out.println("projectId: " + projectId);
         tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
 
         //Round off...SKAL NED I MAPPER TODO eller??
@@ -268,23 +265,41 @@ public class TaskController {
 
         //Transfers pojo info to textfields form
         model.addAttribute("task", POJO_Task);
-        User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
+
 //        return "edit_task";
         return  user.getUserType() + "/edit_task";
     }
 
 
-    //Button "Get task/subTask"
-    @RequestMapping(value="/edit_task", method= RequestMethod.POST, params="getTaskSubTask")
+    //Button "Get task/subTask" on edit_task page
+    @RequestMapping(value="/edit_task", method= RequestMethod.POST, params="textFieldSubtaskNo")
     public String getTask(WebRequest request, Model model, @RequestParam("textFieldSubtaskNo") double taskOrSubTaskNo) throws SQLException {
 
+        //Gets usertype for login session
+        User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
 
+        //transfer Pojo to html
+        model.addAttribute("task", POJO_Task);
+
+        //Gets taskLine-data from DB when user push Button "Get task/subtask"
+        objTaskLine = editProjectMapper.getTaskLine(projectId, Math.round(taskOrSubTaskNo*100.00)/100.00d);
+        arrTaskLine.clear();
+        arrTaskLine.add(objTaskLine);
+        model.addAttribute("taskLine", arrTaskLine);
+
+        //Get tasks-data from DB as ArrayList
+        tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
+
+        //Round off...SKAL NED I MAPPER TODO eller??
+        for (int i=0; i<tasksForProjectId.size(); i++ ) {
+            tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100)/100d);
+        }
+
+        //Transfers task-data to table
+        model.addAttribute("tasks", tasksForProjectId);
 
         //Transfers taskNo from input to class attribute for sharing between @PostMappings
         transferTaskNo = Math.round(taskOrSubTaskNo*100.00)/100.00d; //TODO ÆNDRET HER IKKE TESTET
-
-        //Transfers pojo info to textfields form
-//        model.addAttribute("task", POJO_Task);
 
         //Transfer data to TaskNo exampel
        //TODO virker vist?? model.addAttribute("taskLine", editProjectMapper.getTaskLine(projectId,Math.round(taskOrSubTaskNo*100)/100d));
@@ -297,24 +312,7 @@ public class TaskController {
 //        }
 //        model.addAttribute("tasks", tasksForProjectId); //tabel insert
 
-        //Gets taskLinePOJO-data from DB when user push Button TODO GRIMT
-//        objTaskLine = editProjectMapper.getTaskLine(projectId, transferTaskNo); //lige hentet
-//        arrTaskLine.add(objTaskLine);
-//        model.addAttribute("taskLine", arrTaskLine);
 
-
-
-        //1)Udfyld tabel
-        //2) exampel line udfyldes med dummy
-        //3) Bruger henter task udfra taskNo
-        //4) exampel line udfyldes med DB data
-        //5) Bruger udfylder redigeringsfelter
-        //6) Bruger sender ønske til System
-        //7a) System tjekker input data
-        //7b) System tager Hvis okay; System opdater DB
-        //8) System opdater brugers tabel
-
-        User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
 
        return user.getUserType() + "/edit_task";
         //return  "redirect:/user/" + user.getUserType() + "edit_task";
@@ -324,17 +322,65 @@ public class TaskController {
 
     //Button "Update task" //TODO bruges @RequestParam eller ej?
     @RequestMapping(value="/edit_task", method= RequestMethod.POST, params="updateTask")
-    public String saveChangesToTask(WebRequest request, Model model, @ModelAttribute("task") Task task,
-                                    @RequestParam("taskNo") double newTaskNo,
-                                    @RequestParam("name") String name,
-                                    @RequestParam(value = "startDate",required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate newStartDate,
-                                    @RequestParam(value = "finishDate",required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate newFinishedDate,
-                                    @RequestParam("duration") int duration,
-                                    @RequestParam("taskTimeconsumption") int taskTimeconsumption,
-                                    @RequestParam("noOfPersons") int noOfPersons,
-                                    @RequestParam("workingHoursDay") double newDuration) throws SQLException {
+    public String saveChangesToTask(WebRequest request, Model model, @ModelAttribute("task") Task task) throws SQLException {
+//    public String saveChangesToTask(WebRequest request, Model model, @ModelAttribute("task") Task task,
+//                                    @RequestParam("taskNo") double newTaskNo,
+//                                    @RequestParam("name") String name,
+//                                    @RequestParam(value = "startDate",required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate newStartDate,
+//                                    @RequestParam(value = "finishDate",required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate newFinishedDate,
+//                                    @RequestParam("duration") int duration,
+//                                    @RequestParam("taskTimeconsumption") int taskTimeconsumption,
+//                                    @RequestParam("noOfPersons") int noOfPersons,
+//                                    @RequestParam("workingHoursDay") double newDuration) throws SQLException {
 
-        System.out.println("newTaskNo: " + newTaskNo);
+        //Get usertype for login session
+        User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
+
+        //Get the previus data for selected taskno/subTaskNo
+        Task oldTaskdata = editProjectMapper.getTaskLine(projectId,transferTaskNo); //TODO kan bare hente oldTaskData?? uden for scope
+
+        //resets transferTaskNo
+        transferTaskNo=0;
+
+        //Sends old + edited object data to DB
+        taskHandler.editTask(task,oldTaskdata);
+
+        //Get tasks-data from DB as ArrayList
+        tasksForProjectId.clear();
+        tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
+
+        //Round off...SKAL NED I MAPPER TODO eller??
+        for (int i=0; i<tasksForProjectId.size(); i++ ) {
+            tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100)/100d);
+        }
+
+        //Transfers task-data to table
+        model.addAttribute("tasks", tasksForProjectId); //TODO noget galt med TaskNo er den gamle data der indsættes
+
+        if (transferTaskNo==0.0){
+            taskLine = taskHandler.ExampelForTaskLine();
+        }else{
+            //Hvis transferTaskNo er != 0.0 så hentes taskLine fra database
+            System.out.println("I ELSE**************************************************");
+            System.out.println("*********************************************************");
+            System.out.println("Før objTaskLine: " + objTaskLine);
+            System.out.println("projectId før: "+ projectId);
+            System.out.println("transferTaskNo før: "+ transferTaskNo);
+
+            objTaskLine = editProjectMapper.getTaskLine(projectId, transferTaskNo); //lige hentet
+            System.out.println("Efter objTaskLine: " + objTaskLine);
+            System.out.println("Før arrTaskLine: " + objTaskLine);
+            arrTaskLine.clear();
+            System.out.println("Efter arrTaskLine: " + objTaskLine);
+            arrTaskLine.add(objTaskLine);
+            taskLine=arrTaskLine;
+            System.out.println("taskLine"+taskLine);
+        }
+
+        //Transfer data to TaskNo-exampel
+        model.addAttribute("taskLine", taskLine);
+
+
        // System.out.println("name: " + name);
 
         //1Transfer projectname to Headline in UI
@@ -356,10 +402,9 @@ public class TaskController {
         //TODO
 
         //5a Get old data for taskNo
-        Task oldTaskdata = editProjectMapper.getTaskLine(projectId,transferTaskNo);
-        model.addAttribute("projectID", projectId);
-        //6a Sends old + modified object to SQL generator which then sends data to DB
-        taskHandler.editTask(task,oldTaskdata);
+
+        //model.addAttribute("projectID", projectId);
+
        // transferTaskNo = task.getTaskNo()==0.0?0.0:task.getTaskNo(); //TODO IKKE TESTET
 //        if (!Objects.isNull(newTaskNo)){transferTaskNo=newTaskNo;};
 //        try {
@@ -438,7 +483,7 @@ public class TaskController {
 //        model.addAttribute("taskLine", taskLine);
 
         //return "/edit_task"; //TODO afslut test
-        User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
+
         return  user.getUserType() + "/edit_task";
         //return  "redirect:/user/" + user.getUserType() + "edit_task";
        // return "redirect:/edit_task";
@@ -450,16 +495,29 @@ public class TaskController {
     @GetMapping("add_task")
     public String add_task(WebRequest request, Model model) throws SQLException {
         System.out.println("add_task getMapping");
-        listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId); //TODO skal skiftes med en søgning på projekt nummer + No overtask
-
-
-        //Person person = new Person();
-        model.addAttribute("task", POJO_Task); //overføre model klasse
-
-        //Indsætter værdier i dropbox muligheder
-        model.addAttribute("listTitler", listTitler); //overføre liste til dropbox
+        //Gets usetype
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
-        //return "add_task";
+
+        //Gets names for tasks under projectId
+        listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId);
+
+        //transfer Pojo to html
+        model.addAttribute("task", POJO_Task);
+
+        //Populate dropbox
+        model.addAttribute("listTitler", listTitler);
+
+        //Get tasks-data from DB as ArrayList
+        tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
+
+        //Round off...SKAL NED I MAPPER TODO eller??
+        for (int i=0; i<tasksForProjectId.size(); i++ ) {
+            tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100)/100d);
+        }
+
+        //Transfers task-data to table
+        model.addAttribute("tasks", tasksForProjectId);
+
         return user.getUserType() + "/add_task";
     }
 
@@ -468,21 +526,41 @@ public class TaskController {
     //Button "save Task"
     @RequestMapping(value="/add_task", method= RequestMethod.POST, params="addtask")
     public String saveTask(WebRequest request, @ModelAttribute("task") Task task, Model model) throws SQLException {
-        //setting attribute not included in input
-        task.setProjectId(projectId);
-
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
 
+        //Setting attribute not included in input
+        task.setProjectId(projectId);
+
         //TODO kontrol af indtastet data
-        Project project = projectMapper.getProjectFromId(projectId);
-        errorString = taskhandler.errorMessageTask(task, project);
-        System.out.println(errorString);
-        model.addAttribute("errorString", errorString);
+//        Project project = projectMapper.getProjectFromId(projectId);
+//        errorString = taskhandler.errorMessageTask(task, project);
+//        System.out.println(errorString);
+//        model.addAttribute("errorString", errorString);
 //        if (!errorString.equals("")) return user.getUserType() + "/add_task_error1";
 
-
         //New task inserted to DB
-        taskController.AddTaskToDB(task); //TODO METODE ER IKKE OPDATET
+        taskController.AddTaskToDB(task);
+
+        //Gets names for tasks under projectId
+        listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId);
+
+        //transfer Pojo to html
+        model.addAttribute("task", POJO_Task);
+
+        //Populate dropbox
+        model.addAttribute("listTitler", listTitler);
+
+        //Get tasks-data from DB as ArrayList
+        tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
+
+        //Round off...SKAL NED I MAPPER TODO eller??
+        for (int i=0; i<tasksForProjectId.size(); i++ ) {
+            tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100)/100d);
+        }
+
+        //Transfers task-data to table
+        model.addAttribute("tasks", tasksForProjectId);
+
         return   user.getUserType() + "/add_task";
     }
 
@@ -492,49 +570,93 @@ public class TaskController {
     @RequestMapping(value="/add_task", method= RequestMethod.POST, params="addsubtask")
     public String saveSubTask(WebRequest request, @ModelAttribute("task") Task task, Model model) throws SQLException {
 
-        //Getting and inserting data for dropbox
-        listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId);
-        model.addAttribute("listTitler", listTitler);
+        //Get usertype for user
+        User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
 
-        //setting attribute not included in input
+//        //Getting and inserting data for dropbox
+//        listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId);
+//        model.addAttribute("listTitler", listTitler);
+
+        //setting attribute not included in input //TODO HER??
         task.setProjectId(projectId);
-       //skal vel rykkes op i toppen af klassen?
-        TaskMapper taskMapper = new TaskMapper();
 
         //testing insertet data
-        Project project = projectMapper.getProjectFromId(projectId);
+       // Project project = projectMapper.getProjectFromId(projectId);
         //
-        double overTaskNo = editProjectMapper.getTaskNo(projectId, task.getSubTaskToName());
-        Task overTask = taskMapper.getTask(overTaskNo, projectId);
+        //double overTaskNo = editProjectMapper.getTaskNo(projectId, task.getSubTaskToName()); //TODO HVORFOR VAR DEN HER
+        //Task overTask = taskMapper.getTask(overTaskNo, projectId);
 
-        String errorString = taskhandler.errorMessageSubtask(task, project, overTask);
+        //String errorString = taskhandler.errorMessageSubtask(task, project, overTask);
 
-        model.addAttribute("errorString", errorString);
-        System.out.println(errorString);
+//        model.addAttribute("errorString", errorString);
+//        System.out.println(errorString);
 //todo
 //         if (!errorString.equals(""))return "add_task_error_page1";
 
         //New task inserted to DB
-        taskController.AddTaskToDB(task); //TODO METODE ER IKKE OPDATET
-        User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
-        return  user.getUserType() + "/add_task";
-//        return "redirect:/add_task"; //TODO
-    }
+        //Opdates DB with new subTask
+        taskController.AddTaskToDB(task);
 
+        //Gets names for tasks under projectId for view
+        listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId);
 
-    @RequestMapping(value="/add_task", method= RequestMethod.POST, params="cancel")
-    public String cancelAddTask(WebRequest request, Model model) throws SQLException {
+        //transfer Pojo to html
+        model.addAttribute("task", POJO_Task);
 
+        //Populate dropbox
+        model.addAttribute("listTitler", listTitler);
+
+        //Get tasks-data from DB as ArrayList
         tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
-        //Afrunder double SKAL NED I MAPPER TODO eller??
+
+        //Round off...SKAL NED I MAPPER TODO eller??
         for (int i=0; i<tasksForProjectId.size(); i++ ) {
             tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100)/100d);
         }
 
+        //Transfers task-data to table
         model.addAttribute("tasks", tasksForProjectId);
 
+        return  user.getUserType() + "/add_task";
+
+    }
+
+
+    @RequestMapping(value="/add_task", method= RequestMethod.POST, params="cancel")
+    public String cancelAddTask(WebRequest request, Model model, @ModelAttribute("task") Task task) throws SQLException {
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
-//        return "edit_project";
+//        tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
+//        //Afrunder double SKAL NED I MAPPER TODO eller??
+//        for (int i=0; i<tasksForProjectId.size(); i++ ) {
+//            tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100)/100d);
+//        }
+
+//        model.addAttribute("tasks", tasksForProjectId);
+//Gets names for tasks under projectId
+
+        //Opdates DB with new subTask
+        taskController.AddTaskToDB(task);
+
+        //Gets names for tasks under projectId for view
+        listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId);
+
+        //transfer Pojo to html
+        model.addAttribute("task", POJO_Task);
+
+        //Populate dropbox
+        model.addAttribute("listTitler", listTitler);
+
+        //Get tasks-data from DB as ArrayList
+        tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
+
+        //Round off...SKAL NED I MAPPER TODO eller??
+        for (int i=0; i<tasksForProjectId.size(); i++ ) {
+            tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100)/100d);
+        }
+
+        //Transfers task-data to table
+        model.addAttribute("tasks", tasksForProjectId);
+
         return  user.getUserType() + "/edit_project";
     }
 
