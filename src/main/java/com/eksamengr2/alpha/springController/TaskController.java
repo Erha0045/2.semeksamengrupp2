@@ -4,8 +4,8 @@ import com.eksamengr2.alpha.data.*;
 import com.eksamengr2.alpha.model.Project;
 import com.eksamengr2.alpha.model.Task;
 import com.eksamengr2.alpha.model.User;
-import com.eksamengr2.alpha.service.TaskHandler1;
-import com.eksamengr2.alpha.service.TaskhandlerEL;
+import com.eksamengr2.alpha.service.TaskHandler;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,14 +16,13 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Controller
 public class TaskController {
 
     private List<Task> tasksForProjectId = new ArrayList(); //Holds all tasks in a projectId
     private EditProjectMapper editProjectMapper = new EditProjectMapper();
-    private TaskHandler1 taskController = new TaskHandler1();
+    private TaskHandler taskController = new TaskHandler();
     private List<Task> listTitler;
     private ArrayList<Task> taskLine = new ArrayList<>();
     private String projectName="Xxxxxxxx"; //TODO TEST SKAL HENTES FRA LINKVALG PÅ PROJECT OVERVIEW
@@ -31,11 +30,12 @@ public class TaskController {
     private static double transferTaskNo=0.0;
     private Task POJO_Task = new Task();
     private ArrayList<Task> modifiedTaskList = new ArrayList<>();
-    private TaskHandler1 taskHandler1 = new TaskHandler1();
+    private TaskHandler taskHandler = new TaskHandler();
     private ArrayList<Task> arrTaskLine = new ArrayList<>();
     Task objTaskLine;
 
-    private TaskhandlerEL taskhandlerEL = new TaskhandlerEL();
+
+    private TaskHandler taskhandler = new TaskHandler();
     public static String errorString;
     private ProjectMapper projectMapper = new ProjectMapper();
     //fra deleteTaskController
@@ -51,7 +51,7 @@ public class TaskController {
 //        //taskLine.add(new Task("Taskname", LocalDate.of(1900,1,1),LocalDate.of(1900,1,1),0,0,"yes",(float) 0.0,0));
 //
 //       //Transfer data to TaskNo-exampel
-//        model.addAttribute("taskLine", taskHandler1.ExampelForTaskLine());
+//        model.addAttribute("taskLine", taskHandler.ExampelForTaskLine());
 //
 //        //Get tasks-data from DB as ArrayList
 //        tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
@@ -70,7 +70,7 @@ public class TaskController {
 //        model.addAttribute("task", POJO_Task);
 //
 //        //Transfer data to exampel line
-//        model.addAttribute("taskLine", taskHandler1.ExampelForTaskLine());
+//        model.addAttribute("taskLine", taskHandler.ExampelForTaskLine());
 //
 //        return "edit_task";
 //    }
@@ -156,7 +156,7 @@ public class TaskController {
 //        Task oldTaskdata = editProjectMapper.getTaskLine(projectId,transferTaskNo);
 //
 //        //6a Sends old + modified object to SQL generator which then sends data to DB
-//        taskHandler1.editTask(task,oldTaskdata);
+//        taskHandler.editTask(task,oldTaskdata);
 //        transferTaskNo = task.getTaskNo()==0.0?0.0:task.getTaskNo(); //TODO IKKE TESTET
 //
 //
@@ -208,7 +208,7 @@ public class TaskController {
 ////        //ArrayList<Task> oldTaskdata = editProjectMapper.getTaskLine(projectId,transferTaskNo); TODO
 ////
 ////        //Updater DB Overføre arraylist til TaskController1
-////        // taskHandler1.UserInput_FromEditTask_UpdateTaskInDB(modifiedTaskList,oldTaskdata); TODO
+////        // taskHandler.UserInput_FromEditTask_UpdateTaskInDB(modifiedTaskList,oldTaskdata); TODO
 ////
 ////        //Transfers ArrayList-data to table after update of DB
 ////        tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
@@ -230,7 +230,7 @@ public class TaskController {
         System.out.println("I getmapping: " + transferTaskNo);
 
         if (transferTaskNo==0.0){
-            taskLine =taskHandler1.ExampelForTaskLine();
+            taskLine = taskHandler.ExampelForTaskLine();
         }else{
             //Hvis transferTaskNo er != 0.0 så hentes taskLine fra database
             System.out.println("I ELSE**************************************************");
@@ -359,7 +359,7 @@ public class TaskController {
         Task oldTaskdata = editProjectMapper.getTaskLine(projectId,transferTaskNo);
         model.addAttribute("projectID", projectId);
         //6a Sends old + modified object to SQL generator which then sends data to DB
-        taskHandler1.editTask(task,oldTaskdata);
+        taskHandler.editTask(task,oldTaskdata);
        // transferTaskNo = task.getTaskNo()==0.0?0.0:task.getTaskNo(); //TODO IKKE TESTET
 //        if (!Objects.isNull(newTaskNo)){transferTaskNo=newTaskNo;};
 //        try {
@@ -426,7 +426,7 @@ public class TaskController {
 //        //ArrayList<Task> oldTaskdata = editProjectMapper.getTaskLine(projectId,transferTaskNo); TODO
 //
 //        //Updater DB Overføre arraylist til TaskController1
-//        // taskHandler1.UserInput_FromEditTask_UpdateTaskInDB(modifiedTaskList,oldTaskdata); TODO
+//        // taskHandler.UserInput_FromEditTask_UpdateTaskInDB(modifiedTaskList,oldTaskdata); TODO
 //
 //        //Transfers ArrayList-data to table after update of DB
 //        tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
@@ -475,7 +475,7 @@ public class TaskController {
 
         //TODO kontrol af indtastet data
         Project project = projectMapper.getProjectFromId(projectId);
-        errorString = taskhandlerEL.errorMessageTask(task, project);
+        errorString = taskhandler.errorMessageTask(task, project);
         System.out.println(errorString);
         model.addAttribute("errorString", errorString);
 //        if (!errorString.equals("")) return user.getUserType() + "/add_task_error1";
@@ -507,7 +507,7 @@ public class TaskController {
         double overTaskNo = editProjectMapper.getTaskNo(projectId, task.getSubTaskToName());
         Task overTask = taskMapper.getTask(overTaskNo, projectId);
 
-        String errorString = taskhandlerEL.errorMessageSubtask(task, project, overTask);
+        String errorString = taskhandler.errorMessageSubtask(task, project, overTask);
 
         model.addAttribute("errorString", errorString);
         System.out.println(errorString);

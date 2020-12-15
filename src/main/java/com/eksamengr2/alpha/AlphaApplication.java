@@ -1,15 +1,7 @@
 package com.eksamengr2.alpha;
 
-import com.eksamengr2.alpha.data.ProjectMapper;
-import com.eksamengr2.alpha.data.RegistrationsMapper;
-import com.eksamengr2.alpha.model.Project;
-import com.eksamengr2.alpha.model.Task;
-import com.eksamengr2.alpha.model.User;
-import com.eksamengr2.alpha.service.TaskHandler1;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.time.LocalDate;
 
 @SpringBootApplication
 public class AlphaApplication {

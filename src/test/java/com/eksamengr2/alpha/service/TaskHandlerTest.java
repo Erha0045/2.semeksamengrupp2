@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 
-class TaskHandler1Test {
+class TaskHandlerTest {
 
 
     //Denne skal laves med kontrolleret DB eller virker den ikke
@@ -26,7 +26,7 @@ class TaskHandler1Test {
         ArrayList<Task> old = new ArrayList<>(); //Parameter
         ArrayList<Task> exp = new ArrayList<>(); //Return
         ArrayList<Task> actual; //Actual -resultat af test
-        TaskHandler1 taskHandler1 = new TaskHandler1();
+        TaskHandler taskHandler = new TaskHandler();
          //
         //**************************************************************************************************************
         //                       TEST 1: StartDate i changed-->  OKAY
@@ -127,7 +127,7 @@ class TaskHandler1Test {
 //        //Burde blive dette
 //        exp.add(new Task("newname", LocalDate.of(1900,1,1),LocalDate.of(1900,1,7),7,0,"yes",(float) 0.0,0));
 
-//        actual = taskHandler1.UserInput_FromEditTask_UpdateTaskInDB(mod, old);
+//        actual = taskHandler.UserInput_FromEditTask_UpdateTaskInDB(mod, old);
 //        assertEquals(exp, actual);
 
     }
@@ -140,8 +140,8 @@ class TaskHandler1Test {
 //            "14, 2.0, 2.2, yes, BEGIN WORK; START TRANSACTION; UPDATE alfasolutionsdb.task SET taskno =2.2 WHERE idtask=32; COMMIT;"
     })
     void createsSqlStringForUpdatingTaskNo(int projectId, float oldTaskNo, float newTaskNo, String isSubTask, String expected) {
-        TaskHandler1 taskHandler1 = new TaskHandler1();
-        String actual = taskHandler1.updateTaskNos(projectId, oldTaskNo, newTaskNo, isSubTask);
+        TaskHandler taskHandler = new TaskHandler();
+        String actual = taskHandler.updateTaskNos(projectId, oldTaskNo, newTaskNo, isSubTask);
 
         assertEquals(expected,actual);
 
@@ -152,7 +152,7 @@ class TaskHandler1Test {
     @Test
     @DisplayName("TEST 1: StartDate i changed")
     void editTask1() throws SQLException {
-        TaskHandler1 taskHandler1 = new TaskHandler1();
+        TaskHandler taskHandler = new TaskHandler();
 
         //Parameters1
         Task old = new Task("Taskname", LocalDate.of(2020,1,2),
@@ -172,7 +172,7 @@ class TaskHandler1Test {
                 1.4, 0, 74,
                 100, 3, 10, "");
 
-        Task actual = taskHandler1.editTask(mod, old);
+        Task actual = taskHandler.editTask(mod, old);
 
         //Assert
         assertEquals(exp, actual);
@@ -183,7 +183,7 @@ class TaskHandler1Test {
     @Test
     @DisplayName("TEST 2: TimeConsumption is changed")
     void editTask2() throws SQLException {
-        TaskHandler1 taskHandler1 = new TaskHandler1();
+        TaskHandler taskHandler = new TaskHandler();
 
         //Parameters1
         Task old = new Task("Taskname", LocalDate.of(2020,1,1),
@@ -203,7 +203,7 @@ class TaskHandler1Test {
                 1.4, 0, 74,
                 50, 2, 10, "");
 
-        Task actual = taskHandler1.editTask(mod, old);
+        Task actual = taskHandler.editTask(mod, old);
 
         //Assert
         assertEquals(exp, actual);
@@ -214,7 +214,7 @@ class TaskHandler1Test {
     @Test
     @DisplayName("TEST 3: FinishDate is changed")
     void editTask3() throws SQLException {
-        TaskHandler1 taskHandler1 = new TaskHandler1();
+        TaskHandler taskHandler = new TaskHandler();
 
         //Parameters1
         Task old = new Task("Taskname", LocalDate.of(2020,1,1),
@@ -234,7 +234,7 @@ class TaskHandler1Test {
                 1.4, 0, 74,
                 560, 10, 10, "");
 
-        Task actual = taskHandler1.editTask(mod, old);
+        Task actual = taskHandler.editTask(mod, old);
 
         //Assert
         assertEquals(exp, actual);
@@ -243,7 +243,7 @@ class TaskHandler1Test {
     @Test
     @DisplayName("TEST 4: Duration is changed")
     void editTask4() throws SQLException {
-        TaskHandler1 taskHandler1 = new TaskHandler1();
+        TaskHandler taskHandler = new TaskHandler();
 
         //Parameters1
         Task old = new Task("Taskname", LocalDate.of(2020,1,1),
@@ -263,7 +263,7 @@ class TaskHandler1Test {
                 1.4, 0, 74,
                 844, 12, 7.5, "");
 
-        Task actual = taskHandler1.editTask(mod, old);
+        Task actual = taskHandler.editTask(mod, old);
 
         //Assert
         assertEquals(exp, actual);
@@ -272,7 +272,7 @@ class TaskHandler1Test {
     @Test
     @DisplayName("TEST 5: personsOnTask is changed")
     void editTask5() throws SQLException {
-        TaskHandler1 taskHandler1 = new TaskHandler1();
+        TaskHandler taskHandler = new TaskHandler();
 
         //Parameters1
         Task old = new Task("Taskname", LocalDate.of(2020,1,1),
@@ -293,7 +293,7 @@ class TaskHandler1Test {
                 741, 10, 7.41, "");
 
         //Actual result
-        Task actual = taskHandler1.editTask(mod, old);
+        Task actual = taskHandler.editTask(mod, old);
 
         //Assert
         assertEquals(exp, actual);
@@ -302,7 +302,7 @@ class TaskHandler1Test {
     @Test
     @DisplayName("TEST 6: workingHoursDay is changed")
     void editTask6() throws SQLException {
-        TaskHandler1 taskHandler1 = new TaskHandler1();
+        TaskHandler taskHandler = new TaskHandler();
 
         //Parameters1
         Task old = new Task("Taskname", LocalDate.of(2020,1,1),
@@ -323,7 +323,7 @@ class TaskHandler1Test {
                 654, 10, 6.0, "");
 
         //Actual result
-        Task actual = taskHandler1.editTask(mod, old);
+        Task actual = taskHandler.editTask(mod, old);
 
         //Assert
         assertEquals(exp, actual);
@@ -332,7 +332,7 @@ class TaskHandler1Test {
     @Test
     @DisplayName("TEST 7: nothing is changed")
     void editTask7() throws SQLException {
-        TaskHandler1 taskHandler1 = new TaskHandler1();
+        TaskHandler taskHandler = new TaskHandler();
 
         //Parameters1
         Task old = new Task("Taskname", LocalDate.of(2020,1,1),
@@ -353,7 +353,7 @@ class TaskHandler1Test {
                 654, 8, 7.25, "");
 
         //Actual result
-        Task actual = taskHandler1.editTask(mod, old);
+        Task actual = taskHandler.editTask(mod, old);
 
         //Assert
         assertEquals(exp, actual);
@@ -361,7 +361,7 @@ class TaskHandler1Test {
 
     @Test
     void updateTaskNos() {
-        TaskHandler1 taskHandler1 = new TaskHandler1();
+        TaskHandler taskHandler = new TaskHandler();
         int projectId=1;
         double oldTaskNo=14.00;
         double newTaskNo=15.00;
@@ -370,7 +370,7 @@ class TaskHandler1Test {
                         " UPDATE alfasolutionsdb.task SET taskno =15.25 WHERE idtask=55;" +
                         " UPDATE alfasolutionsdb.task SET taskno =15.3 WHERE idtask=56; COMMIT;";
 
-        String actual=  taskHandler1.updateTaskNos(projectId,oldTaskNo,newTaskNo,isSubtask);
+        String actual=  taskHandler.updateTaskNos(projectId,oldTaskNo,newTaskNo,isSubtask);
 
         assertEquals(expected, actual);
 
@@ -384,7 +384,7 @@ class TaskHandler1Test {
     @Test
     @DisplayName("TEST a: TASK duration entered")
     void addTaskToDBa() throws SQLException {
-        TaskHandler1 taskHandler1 = new TaskHandler1();
+        TaskHandler taskHandler = new TaskHandler();
 
         //parameter Task
         Task input = new Task("BAD", LocalDate.of(2020,1,1),
@@ -399,7 +399,7 @@ class TaskHandler1Test {
                 0, 0, 0.0, "");
 
         //Actual result
-        Task actual = taskHandler1.AddTaskToDB(input);
+        Task actual = taskHandler.AddTaskToDB(input);
 
         //Assert
         assertEquals(exp, actual);
@@ -408,7 +408,7 @@ class TaskHandler1Test {
     @Test
     @DisplayName("TEST b: TASK finishDate entered")
     void addTaskToDBb() throws SQLException {
-        TaskHandler1 taskHandler1 = new TaskHandler1();
+        TaskHandler taskHandler = new TaskHandler();
 
         //parameter Task
         Task input = new Task("BAD", LocalDate.of(2020,1,1),
@@ -423,7 +423,7 @@ class TaskHandler1Test {
                 0, 0, 0.0, "");
 
         //Actual result
-        Task actual = taskHandler1.AddTaskToDB(input);
+        Task actual = taskHandler.AddTaskToDB(input);
 
         //Assert
         assertEquals(exp, actual);
@@ -443,7 +443,7 @@ class TaskHandler1Test {
     @Test
     @DisplayName("TEST 1: subTask: Finishdate entered")
     void addTaskToDB1() throws SQLException {
-        TaskHandler1 taskHandler1 = new TaskHandler1();
+        TaskHandler taskHandler = new TaskHandler();
 
         //parameter- subTask
         Task input = new Task("BAD_sub2", LocalDate.of(2020,12,1),
@@ -458,7 +458,7 @@ class TaskHandler1Test {
                 1500, 5, 7.5, "BAD77");
 
         //Actual result
-        Task actual = taskHandler1.AddTaskToDB(input);
+        Task actual = taskHandler.AddTaskToDB(input);
 
         //Assert
         assertEquals(exp, actual);
@@ -469,7 +469,7 @@ class TaskHandler1Test {
     @Test
     @DisplayName("TEST 1a: subTask: Duration entered")
     void addTaskToDB1a() throws SQLException {
-        TaskHandler1 taskHandler1 = new TaskHandler1();
+        TaskHandler taskHandler = new TaskHandler();
 
         //parameter- subTask
         Task input = new Task("BAD_sub3", LocalDate.of(2020,12,1),
@@ -484,7 +484,7 @@ class TaskHandler1Test {
                 1000, 9, 7.5, "BAD77");
 
         //Actual result
-        Task actual = taskHandler1.AddTaskToDB(input);
+        Task actual = taskHandler.AddTaskToDB(input);
 
         //Assert
         assertEquals(exp, actual);
@@ -495,7 +495,7 @@ class TaskHandler1Test {
     @Test
     @DisplayName("TEST 2: subTask: personOnTask entered")
     void addTaskToDB2() throws SQLException {
-        TaskHandler1 taskHandler1 = new TaskHandler1();
+        TaskHandler taskHandler = new TaskHandler();
 
         //parameter- subTask
         Task input = new Task("BAD_sub2", LocalDate.of(2020,12,1),
@@ -510,7 +510,7 @@ class TaskHandler1Test {
                 1000, 9, 8.4, "BAD77");
 
         //Actual result
-        Task actual = taskHandler1.AddTaskToDB(input);
+        Task actual = taskHandler.AddTaskToDB(input);
 
         //Assert
         assertEquals(exp, actual);
@@ -521,7 +521,7 @@ class TaskHandler1Test {
     @Test
     @DisplayName("TEST 3: subTask: workingHoursDay entered")
     void addTaskToDB3() throws SQLException {
-        TaskHandler1 taskHandler1 = new TaskHandler1();
+        TaskHandler taskHandler = new TaskHandler();
 
         //parameter- subTask
         Task input = new Task("BAD_sub3", LocalDate.of(2020,12,1),
@@ -536,7 +536,7 @@ class TaskHandler1Test {
                 1000, 1, 7.5, "BAD77");
 
         //Actual result
-        Task actual = taskHandler1.AddTaskToDB(input);
+        Task actual = taskHandler.AddTaskToDB(input);
 
         //Assert
         assertEquals(exp, actual);
@@ -547,7 +547,7 @@ class TaskHandler1Test {
     @Test
     @DisplayName("TEST 4: subTask: finishDate and personOnTask entered")
     void addTaskToDB4() throws SQLException {
-        TaskHandler1 taskHandler1 = new TaskHandler1();
+        TaskHandler taskHandler = new TaskHandler();
 
         //parameter- subTask
         Task input = new Task("BAD_sub4", LocalDate.of(2020,12,1),
@@ -562,7 +562,7 @@ class TaskHandler1Test {
                 1000, 9, 7.41, "BAD77");
 
         //Actual result
-        Task actual = taskHandler1.AddTaskToDB(input);
+        Task actual = taskHandler.AddTaskToDB(input);
 
         //Assert
         assertEquals(exp, actual);
@@ -573,7 +573,7 @@ class TaskHandler1Test {
     @Test
     @DisplayName("TEST 5: subTask: finishDate duration and personOnTask entered")
     void addTaskToDB5() throws SQLException {
-        TaskHandler1 taskHandler1 = new TaskHandler1();
+        TaskHandler taskHandler = new TaskHandler();
 
         //parameter- subTask
         Task input = new Task("BAD_sub5", LocalDate.of(2020,12,1),
@@ -588,7 +588,7 @@ class TaskHandler1Test {
                 1000, 10, 7.50, "BAD77");
 
         //Actual result
-        Task actual = taskHandler1.AddTaskToDB(input);
+        Task actual = taskHandler.AddTaskToDB(input);
 
         //Assert
         assertEquals(exp, actual);
@@ -599,7 +599,7 @@ class TaskHandler1Test {
     @Test
     @DisplayName("TEST 6: subTask: personOnTask and workingHoursDay entered")
     void addTaskToDB6() throws SQLException {
-        TaskHandler1 taskHandler1 = new TaskHandler1();
+        TaskHandler taskHandler = new TaskHandler();
 
         //parameter- subTask
         Task input = new Task("BAD_sub6", LocalDate.of(2020,12,1),
@@ -614,7 +614,7 @@ class TaskHandler1Test {
                 1000, 6, 8.0, "BAD77");
 
         //Actual result
-        Task actual = taskHandler1.AddTaskToDB(input);
+        Task actual = taskHandler.AddTaskToDB(input);
 
         //Assert
         assertEquals(exp, actual);
@@ -625,7 +625,7 @@ class TaskHandler1Test {
     @Test
     @DisplayName("TEST 7: subTask: All entered")
     void addTaskToDB7() throws SQLException {
-        TaskHandler1 taskHandler1 = new TaskHandler1();
+        TaskHandler taskHandler = new TaskHandler();
 
         //parameter- subTask
         Task input = new Task("BAD_sub7", LocalDate.of(2020,12,1),
@@ -640,7 +640,7 @@ class TaskHandler1Test {
                 1000, 6, 8.0, "BAD77");
 
         //Actual result
-        Task actual = taskHandler1.AddTaskToDB(input);
+        Task actual = taskHandler.AddTaskToDB(input);
 
         //Assert
         assertEquals(exp, actual);
@@ -651,7 +651,7 @@ class TaskHandler1Test {
     @Test
     @DisplayName("TEST 8: subTask: none entered")
     void addTaskToDB8() throws SQLException {
-        TaskHandler1 taskHandler1 = new TaskHandler1();
+        TaskHandler taskHandler = new TaskHandler();
 
         //parameter- subTask
         Task input = new Task("BAD_sub8", LocalDate.of(2020,12,1),
@@ -666,7 +666,7 @@ class TaskHandler1Test {
                 1000, 1, 7.5, "BAD77");
 
         //Actual result
-        Task actual = taskHandler1.AddTaskToDB(input);
+        Task actual = taskHandler.AddTaskToDB(input);
 
         //Assert
         assertEquals(exp, actual);

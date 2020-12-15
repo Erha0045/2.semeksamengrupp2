@@ -38,6 +38,12 @@ public class Project {
         this.startDate = startDate;
     }
 
+    public Project(String projectName, LocalDate startDate, LocalDate deadlineDate) {
+        this.projectName = projectName;
+        this.startDate = startDate;
+        this.deadlineDate = deadlineDate;
+    }
+
     public Project(String projectName, String ownerName, LocalDate startDate, LocalDate deadlineDate) {
         this.projectName = projectName;
         this.ownerName = ownerName;

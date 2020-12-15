@@ -10,8 +10,8 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TaskhandlerELTest {
-    TaskhandlerEL taskhandlerEL = new TaskhandlerEL();
+class TaskhandlerTest {
+    TaskHandler taskhandler = new TaskHandler();
     Task task = new Task();
     Project project = new Project();
 
@@ -25,7 +25,7 @@ class TaskhandlerELTest {
         project.setStartDate(LocalDate.of(2020, 1, 1));
         project.setDeadlineDate(LocalDate.of(2020, 2, 1));
 
-        Boolean svar0 = taskhandlerEL.taskDatesAreWithinProjectDatesCheck(task, project);
+        Boolean svar0 = taskhandler.taskDatesAreWithinProjectDatesCheck(task, project);
 
         assertTrue(svar0);
     }
@@ -41,7 +41,7 @@ class TaskhandlerELTest {
         project.setStartDate(LocalDate.of(2020, 1, 1));
         project.setDeadlineDate(LocalDate.of(2020, 2, 1));
 
-        Boolean svar = taskhandlerEL.taskDatesAreWithinProjectDatesCheck(task, project);
+        Boolean svar = taskhandler.taskDatesAreWithinProjectDatesCheck(task, project);
 
         assertFalse(svar);
     }
@@ -58,7 +58,7 @@ class TaskhandlerELTest {
         project.setStartDate(LocalDate.of(2020, 1, 1));
         project.setDeadlineDate(LocalDate.of(2020, 2, 1));
 
-        Boolean svar2 = taskhandlerEL.taskDatesAreWithinProjectDatesCheck(task, project);
+        Boolean svar2 = taskhandler.taskDatesAreWithinProjectDatesCheck(task, project);
 
         assertFalse(svar2);
     }
@@ -74,7 +74,7 @@ class TaskhandlerELTest {
         project.setStartDate(LocalDate.of(2020, 1, 1));
         project.setDeadlineDate(LocalDate.of(2020, 2, 1));
 
-        Boolean svar3 = taskhandlerEL.taskDatesAreWithinProjectDatesCheck(task, project);
+        Boolean svar3 = taskhandler.taskDatesAreWithinProjectDatesCheck(task, project);
 
         assertFalse(svar3);
     }
@@ -90,7 +90,7 @@ class TaskhandlerELTest {
         project.setStartDate(LocalDate.of(2020, 1, 1));
         project.setDeadlineDate(LocalDate.of(2020, 2, 1));
 
-        boolean svar4 = taskhandlerEL.taskDatesAreWithinProjectDatesCheck(task, project);
+        boolean svar4 = taskhandler.taskDatesAreWithinProjectDatesCheck(task, project);
         assertFalse(svar4);
     }
 
@@ -98,24 +98,25 @@ class TaskhandlerELTest {
     void createTaskInputDateCheck(){
         //test1
         // tester hvis : task.FinishDate.isBefore(task.startDate)
-        TaskhandlerEL taskhandlerEL = new TaskhandlerEL();
+//        Taskhandler taskhandler = new Taskhandler();
+
         Task task = new Task();
         task.setStartDate(LocalDate.of(2020, 1, 1));
         task.setFinishDate(LocalDate.of(2019, 1, 1));
-        assertFalse(taskhandlerEL.taskStartDateBeforeFinishCheck(task));
+        assertFalse(taskhandler.taskStartDateBeforeFinishCheck(task));
     }
 
     @Test
 
     void CreateTaskInputChecksIfDurationIsOverFinishDateMinusStartdate(){
-        TaskhandlerEL taskhandlerEL = new TaskhandlerEL();
+
         Task task = new Task();
 
         task.setDuration(3);
         task.setStartDate(LocalDate.of(2020,1,1));
         task.setFinishDate(LocalDate.of(2020,1,2));
 
-        assertFalse(taskhandlerEL.durationIsOverFinishDateMinusStartdateCheck(task));
+        assertFalse(taskhandler.durationIsOverFinishDateMinusStartdateCheck(task));
         //assertTrue(taskhandlerEL.CreateTaskInputChecksIfDurationIsOverFinishDateMinusStartdate(task));
 
     }
@@ -158,12 +159,12 @@ class TaskhandlerELTest {
     @DisplayName("check if name exists on projectId")
     void checkTaskName() throws SQLException {
             //arrange
-        TaskhandlerEL taskhandlerEL = new TaskhandlerEL();
+
         Task task = new Task();
         task.setName("blah");
         task.setProjectId(34);
             //act
-        boolean actual = taskhandlerEL.checkTaskName(task);
+        boolean actual = taskhandler.checkTaskName(task);
             //assert
         assertTrue(actual);
 
@@ -172,12 +173,12 @@ class TaskhandlerELTest {
     @DisplayName("check if taskno exists on projectId")
     void checkTaskNo() throws SQLException {
             //arrange
-        TaskhandlerEL taskhandlerEL = new TaskhandlerEL();
+
         Task task = new Task();
         task.setTaskNo(1);
         task.setProjectId(34);
             //act
-        boolean actual = taskhandlerEL.checkTaskNo(task);
+        boolean actual = taskhandler.checkTaskNo(task);
             //assert
         assertTrue(actual);
 
