@@ -251,7 +251,8 @@ public class TaskController {
         model.addAttribute("taskLine", taskLine);
 
         //Get tasks-data from DB as ArrayList
-        tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
+        //tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
+        tasksForProjectId = taskHandler.viewForEditProject(projectId);
 
         //Round off...SKAL NED I MAPPER TODO eller??
         for (int i=0; i<tasksForProjectId.size(); i++ ) {
@@ -285,10 +286,12 @@ public class TaskController {
         objTaskLine = editProjectMapper.getTaskLine(projectId, Math.round(taskOrSubTaskNo*100.00)/100.00d);
         arrTaskLine.clear();
         arrTaskLine.add(objTaskLine);
+        System.out.println("arrTaskLine" + arrTaskLine);
         model.addAttribute("taskLine", arrTaskLine);
 
         //Get tasks-data from DB as ArrayList
-        tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
+        //tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
+        tasksForProjectId = taskHandler.viewForEditProject(projectId);
 
         //Round off...SKAL NED I MAPPER TODO eller??
         for (int i=0; i<tasksForProjectId.size(); i++ ) {
@@ -347,13 +350,15 @@ public class TaskController {
 
         //Get tasks-data from DB as ArrayList
         tasksForProjectId.clear();
-        tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
+       // tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
+        tasksForProjectId = taskHandler.viewForEditProject(projectId);
 
         //Round off...SKAL NED I MAPPER TODO eller??
         for (int i=0; i<tasksForProjectId.size(); i++ ) {
             tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100)/100d);
         }
 
+        System.out.println("TaskNo lige før tabel" );
         //Transfers task-data to table
         model.addAttribute("tasks", tasksForProjectId); //TODO noget galt med TaskNo er den gamle data der indsættes
 
@@ -378,6 +383,7 @@ public class TaskController {
         }
 
         //Transfer data to TaskNo-exampel
+        System.out.println("arrTaskLine" + arrTaskLine);
         model.addAttribute("taskLine", taskLine);
 
 
@@ -508,7 +514,8 @@ public class TaskController {
         model.addAttribute("listTitler", listTitler);
 
         //Get tasks-data from DB as ArrayList
-        tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
+        //tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
+        tasksForProjectId = taskHandler.viewForEditProject(projectId);
 
         //Round off...SKAL NED I MAPPER TODO eller??
         for (int i=0; i<tasksForProjectId.size(); i++ ) {
@@ -524,6 +531,7 @@ public class TaskController {
 
 //todo Error page til add tasks/subtasks - addtask + errormessage(s)
     //Button "save Task"
+    //Button "Save task"
     @RequestMapping(value="/add_task", method= RequestMethod.POST, params="addtask")
     public String saveTask(WebRequest request, @ModelAttribute("task") Task task, Model model) throws SQLException {
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
@@ -531,15 +539,21 @@ public class TaskController {
         //Setting attribute not included in input
         task.setProjectId(projectId);
 
-        //TODO kontrol af indtastet data
-//        Project project = projectMapper.getProjectFromId(projectId);
-//        errorString = taskhandler.errorMessageTask(task, project);
-//        System.out.println(errorString);
-//        model.addAttribute("errorString", errorString);
-//        if (!errorString.equals("")) return user.getUserType() + "/add_task_error1";
+        //Get project object
+        Project project = projectMapper.getProjectFromId(projectId);
 
-        //New task inserted to DB
-        taskController.AddTaskToDB(task);
+
+        //Handles errors for user input
+        if (taskHandler.errorMessageTask(task,project).equals("")) {
+            taskController.AddTaskToDB(task); //New task inserted to DB
+        }
+        else {
+            //System.out.println(errorString = taskhandler.errorMessageTask(task, project));
+            errorString = taskhandler.errorMessageTask(task, project);
+            model.addAttribute("errorMsg", errorString);
+        }
+
+
 
         //Gets names for tasks under projectId
         listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId);
@@ -551,7 +565,8 @@ public class TaskController {
         model.addAttribute("listTitler", listTitler);
 
         //Get tasks-data from DB as ArrayList
-        tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
+        //tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
+        tasksForProjectId = taskHandler.viewForEditProject(projectId);
 
         //Round off...SKAL NED I MAPPER TODO eller??
         for (int i=0; i<tasksForProjectId.size(); i++ ) {
@@ -563,7 +578,6 @@ public class TaskController {
 
         return   user.getUserType() + "/add_task";
     }
-
 
 
     //Button "save subTask"
@@ -581,10 +595,9 @@ public class TaskController {
         task.setProjectId(projectId);
 
         //testing insertet data
-       // Project project = projectMapper.getProjectFromId(projectId);
+        Project project = projectMapper.getProjectFromId(projectId);
         //
-        //double overTaskNo = editProjectMapper.getTaskNo(projectId, task.getSubTaskToName()); //TODO HVORFOR VAR DEN HER
-        //Task overTask = taskMapper.getTask(overTaskNo, projectId);
+
 
         //String errorString = taskhandler.errorMessageSubtask(task, project, overTask);
 
@@ -595,7 +608,23 @@ public class TaskController {
 
         //New task inserted to DB
         //Opdates DB with new subTask
-        taskController.AddTaskToDB(task);
+
+        //Handles errors for user input
+
+        double overTaskNo = editProjectMapper.getTaskNo(projectId, task.getSubTaskToName()); //TODO HVORFOR VAR DEN HER
+        Task overTask = taskMapper.getTask(overTaskNo, projectId);
+
+        if (taskHandler.errorMessageSubtask(task,project, overTask).equals("")) {
+            taskController.AddTaskToDB(task); //New task inserted to DB
+        }
+        else {
+            //System.out.println(errorString = taskhandler.errorMessageTask(task, project));
+            errorString = taskhandler.errorMessageTask(task, project);
+            model.addAttribute("errorMsg", errorString);
+        }
+
+
+       // taskController.AddTaskToDB(task);
 
         //Gets names for tasks under projectId for view
         listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId);
@@ -607,7 +636,8 @@ public class TaskController {
         model.addAttribute("listTitler", listTitler);
 
         //Get tasks-data from DB as ArrayList
-        tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
+        //tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
+        tasksForProjectId = taskHandler.viewForEditProject(projectId);
 
         //Round off...SKAL NED I MAPPER TODO eller??
         for (int i=0; i<tasksForProjectId.size(); i++ ) {
@@ -647,7 +677,8 @@ public class TaskController {
         model.addAttribute("listTitler", listTitler);
 
         //Get tasks-data from DB as ArrayList
-        tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
+        //tasksForProjectId = editProjectMapper.getTaskForEditProject(projectId);
+        tasksForProjectId = taskHandler.viewForEditProject(projectId);
 
         //Round off...SKAL NED I MAPPER TODO eller??
         for (int i=0; i<tasksForProjectId.size(); i++ ) {
@@ -665,14 +696,19 @@ public class TaskController {
     @GetMapping("edit_project")
     public String editProject(WebRequest request ,Model model, @RequestParam("projectId") int urlProjectId) throws SQLException {
 
+        //get usertype for login session
+        User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
+
         //Overføre værdi fra url
         projectId =urlProjectId;
 
        // tasksForProjectId = facade.getTaskForEditProject(projectId);
 
         FacadeTest facadeTest = new Facade();
-        tasksForProjectId = facadeTest.getTaskForEditProject(projectId);
-        ArrayList<Task> taskNoRounded = new ArrayList<>();
+        //tasksForProjectId = facadeTest.getTaskForEditProject(projectId); //TODO denne skal indføres facade
+        tasksForProjectId = taskHandler.viewForEditProject(projectId);
+
+        // ArrayList<Task> taskNoRounded = new ArrayList<>();
         model.addAttribute("projectID", projectId);
         //Afrunder double SKAL NED I MAPPER TODO eller??
         for (int i=0; i<tasksForProjectId.size(); i++ ) {
@@ -680,7 +716,7 @@ public class TaskController {
         }
 
         model.addAttribute("tasks", tasksForProjectId);
-        User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
+
 //        return "edit_project";
         return  user.getUserType() + "/edit_project";
     }
@@ -690,14 +726,15 @@ public class TaskController {
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
         projectId=urlProjectId;
         project.setProjectId(projectId);
-        tasksForProjectId=editProjectMapper.getTaskForEditProject(projectId);
+       // tasksForProjectId=editProjectMapper.getTaskForEditProject(projectId);
+        tasksForProjectId = taskHandler.viewForEditProject(projectId);
         model.addAttribute("tasks", tasksForProjectId);
         model.addAttribute("projectId", projectId);
 //        System.out.println("project id delete task Controller : " + tasksForProjectId.get(0).getProjectId());
         System.out.println("LuffController user : " + user);
         return  user.getUserType() + "/delete_task1";
     }
-    // user.getUserType() + "/" + user.getUserType() + "create_project1";
+
     @PostMapping("/delete_task")
     public String delete_task(WebRequest request, Model model) {
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
@@ -729,7 +766,8 @@ public class TaskController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        tasksForProjectId=editProjectMapper.getTaskForEditProject(projectId);
+       // tasksForProjectId=editProjectMapper.getTaskForEditProject(projectId);
+        tasksForProjectId = taskHandler.viewForEditProject(projectId);
         model.addAttribute("tasks", tasksForProjectId);
         model.addAttribute("projectId", projectId);
 

@@ -11,6 +11,82 @@ import java.util.ArrayList;
 
 public class TaskMapper {
 
+    /** Return all TaskNo(overtask) for project
+     *
+     * @param
+     * @return  The sum of all tasktimeconsumption under one Task(overtask)
+     * @throws SQLException
+     */
+    public ArrayList<Task> getAllTaskNoForProject(int projectId) throws SQLException {
+        Connection con = DatabaseConnector.getConnection();
+        Task task = new Task();
+
+        ArrayList<Task> listTaskTimeSum = new ArrayList<>();
+        String SQL = "SELECT taskno FROM alfasolutionsdb.task where projectid=? AND isSubTask='no';";
+        PreparedStatement ps = con.prepareStatement(SQL);
+        ps.setInt(1, projectId);
+
+
+        ResultSet resultSet = ps.executeQuery();
+        while (resultSet.next())  {
+            task = new Task("",
+                    null,
+                    null,
+                    0,
+                    0,
+                    "",
+                    Math.round(resultSet.getDouble("taskno")*100.00)/100.00d,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0.0,
+                    "");
+
+            listTaskTimeSum.add(task);
+        }
+        return listTaskTimeSum;
+    }
+
+    /** return sum of tasktimeconsumption for one Task
+     *
+     * @param projectId
+     * @param taskNo
+     * @return
+     * @throws SQLException
+     */
+    public Task getSumOfTaskTimeConsumptionForTask(int projectId, double taskNo) throws SQLException {
+        Connection con = DatabaseConnector.getConnection();
+        Task task = new Task();
+
+        ArrayList<Task> listTaskTimeSum = new ArrayList<>();
+        String SQL = "SELECT taskno, SUM(tasktimeconsumption) as tasktimeconsumption FROM alfasolutionsdb.task where projectid=? AND taskno>=? AND taskno <?+1;";
+        PreparedStatement ps = con.prepareStatement(SQL);
+        ps.setInt(1, projectId);
+        ps.setDouble(2, Math.round(taskNo * 100.00) / 100d);
+        ps.setDouble(3, Math.round(taskNo * 100.00) / 100d);
+
+        ResultSet resultSet = ps.executeQuery();
+        while (resultSet.next()) {
+            task = new Task("",
+                    null,
+                    null,
+                    0,
+                    0,
+                    "",
+                    Math.round(resultSet.getDouble("taskno")*100.00)/100.00d,
+                    0,
+                    0,
+                    resultSet.getInt("tasktimeconsumption"),
+                    0,
+                    0.0,
+                    "");
+
+            //listTaskTimeSum.add(task);
+        }
+        return task;
+    }
+
     public ArrayList<Task> findTasksSubTasks(Task task) throws SQLException {
         Connection con = DatabaseConnector.getConnection();
         ArrayList<Task> taskArrayList = new ArrayList<>();

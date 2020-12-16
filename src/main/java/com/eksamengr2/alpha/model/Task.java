@@ -69,6 +69,11 @@ public class Task {
         this.idtask = idtask;
     }
 
+    public Task(int taskTimeconsumption, double taskNo) {
+        this.taskTimeconsumption = taskTimeconsumption;
+        this.taskNo = taskNo;
+    }
+
     public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask,
                 double taskNo, int lineCounter, int idtask) {
         this.name = name;

@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.time.temporal.ChronoUnit;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class TaskHandler {
@@ -428,6 +429,44 @@ public class TaskHandler {
         return task.getTaskTimeconsumption() < totalWorkTimeHours;
 
     }
+
+    public ArrayList<Task> viewForEditProject(int projectId) throws SQLException {
+
+//        ArrayList<Task> viewList = new ArrayList<>();
+
+        ArrayList<Task> bigList = (ArrayList<Task>) editProjectMapper.getTaskForEditProject(projectId);
+        List<Task> smallList = getTaskNoAndSumOfTimeConsumptionPerTask(projectId);
+
+        for (Task small: smallList     ) {
+
+            for (int i=0; i<bigList.size();i++)
+            if (bigList.get(i).getTaskNo()==small.getTaskNo()){
+
+                bigList.get(i).setTaskTimeconsumption(small.getTaskTimeconsumption());
+
+            }
+        }
+        return bigList;
+    }
+
+    public ArrayList<Task> getTaskNoAndSumOfTimeConsumptionPerTask(int projetcId) throws SQLException {
+        TaskMapper taskMapper = new TaskMapper();
+        ArrayList<Task> list = new ArrayList<>();
+        Task taskSum = new Task(); //Constructor Task[(SumTaskTimeConsumption, taskNo)]
+
+        ArrayList<Task> taskNoList = taskMapper.getAllTaskNoForProject(projetcId);
+
+        int counter=0;
+        for (Task t: taskNoList) {
+            //Makes a arrylist with TaskNo + sumOf(TaskTimeConsumption)
+            taskSum = taskMapper.getSumOfTaskTimeConsumptionForTask(projetcId,t.getTaskNo());
+            list.add(new Task(taskSum.getTaskTimeconsumption(), taskNoList.get(counter).getTaskNo()));
+
+            counter++;
+        }
+        return list;
+    }
+
 
     //skal bruge heltal, men er vel ikke et problem?
     public int taskTimeConsumptionSum(Task task) throws SQLException {
