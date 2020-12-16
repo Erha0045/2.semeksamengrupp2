@@ -722,9 +722,9 @@ public class TaskController {
     }
 
     @GetMapping("/delete_task")
-    public String delete_taskView(WebRequest request ,@RequestParam("projectId") int urlProjectId, Model model) throws SQLException {
+    public String delete_taskView(WebRequest request , Model model) throws SQLException {
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
-        projectId=urlProjectId;
+
         project.setProjectId(projectId);
        // tasksForProjectId=editProjectMapper.getTaskForEditProject(projectId);
         tasksForProjectId = taskHandler.viewForEditProject(projectId);
