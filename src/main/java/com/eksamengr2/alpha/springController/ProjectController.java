@@ -24,26 +24,28 @@ public class ProjectController {
     private Project projectz = new Project();
     private List<Project> projectsList = new ArrayList<>();
     private DashboardMapper dashboardMapper = new DashboardMapper();
+    private String errorString;
 
 
     @GetMapping("/create_project")
     public String createProject(WebRequest request, Model model) throws Exception {
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
+        model.addAttribute("errorString", errorString);
         System.out.println("usertype" + user.getUserType());
         model.addAttribute("pojotransfer", projectz);//todo den bliver ikke helt brugt???
-        return  user.getUserType() + "/create_project2";
+        return user.getUserType() + "/create_project2";
     }
     //      @RequestMapping(value="/create_project", method= RequestMethod.POST, params="getvalue")
 
     @PostMapping("/create_project")
-
+//ToDO skal nok renames
     public String createNewUser2(Model model, WebRequest request,
                                  @RequestParam("projectName") String projectname,
                                  @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startdate,
                                  @RequestParam("deadlineDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate deadlinedate) throws Exception {
         model.addAttribute("pojotransfer", projectz);
 
-        ProjectHandler projectHandler1 = new ProjectHandler();
+
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
 
         System.out.println("String fra felt " + projectname);
@@ -52,21 +54,27 @@ public class ProjectController {
 
         ProjectMapper pm = new ProjectMapper();
         Project project1 = new Project(projectname, user.getUserName(), startdate, deadlinedate);
-        projectHandler1.createProjectInputDateCheck(project1);
-        //todo 1 error page.
-        if (projectHandler1.createProjectInputDateCheck(project1) == 0) {
-            return  user.getUserType() + "/create_project1_finishdateerror";
-        }
-        projectHandler1.createProjectInputNameCheck(project1, user);
-        if (projectHandler1.createProjectInputNameCheck(project1, user) == 0) {
-            return  user.getUserType() + "/create_project1_nameerror";
-        } else {
+
+        //TODO error ting til project, error message skal adders til add project side, og vises hvis relevant
+        ProjectHandler projectHandler = new ProjectHandler();
+        errorString = projectHandler.errorMessageCreateProject(project1, user);
+        model.addAttribute("errorString", errorString);
+        if (!errorString.equals("")) return user.getUserType() + "/create_project2";
+
+
+//        if (projectHandler1.createProjectInputDateCheck(project1) == 0) {
+//            return user.getUserType() + "/create_project1_finishdateerror";
+//        }
+//        projectHandler1.createProjectInputNameCheck(project1, user);
+//        if (projectHandler1.createProjectInputNameCheck(project1, user) == 0) {
+//            return user.getUserType() + "/create_project1_nameerror";
+//        } else {
             pm.createProject(project1);
             List<Project> projectsList = new DashboardMapper().getProjectByUser(user.getUserName());
             model.addAttribute("projects", projectsList);
-            return  user.getUserType() + "/dashboard2";
+            return user.getUserType() + "/dashboard2";
         }
-    }
+
 
     @GetMapping("/delete_project")
     public String delete_taskView(WebRequest request) {
@@ -85,11 +93,11 @@ public class ProjectController {
             model.addAttribute("project", project);
             request.setAttribute("project", project, 1);
         } catch (Exception a) {
-            return  user.getUserType() + "/delete_project_error_2";
+            return user.getUserType() + "/delete_project_error_2";
 
         }
 
-        return  user.getUserType() + "/delete_project_confirmation1";
+        return user.getUserType() + "/delete_project_confirmation1";
     }
 
     @PostMapping("/delete_project_confirmation")
@@ -116,7 +124,7 @@ public class ProjectController {
             e.printStackTrace();
         }
 
-        return  user.getUserType() + "/dashboard2";
+        return user.getUserType() + "/dashboard2";
 
     }
 
@@ -142,7 +150,7 @@ public class ProjectController {
         projectsList = dashboardMapper.getProjectByUser(user.getUserName());
         model.addAttribute("projects", projectsList);
         System.out.println("testing i refresh på dashboard html");
-        return  user.getUserType() + "/dashboard2";
+        return user.getUserType() + "/dashboard2";
 
     }
 }

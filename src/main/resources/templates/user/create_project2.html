@@ -19,7 +19,6 @@
         <li><a href="mailto:contact@fff.dk">Contact</a></li>
         <li><a href="mailto:support@fff.dk">Support</a></li>
     </ul>
-
     <div class="container">
         <br>
 
@@ -27,21 +26,22 @@
             <legend>Create a project</legend>
             <br>
 
+            <span  style="color: red" th:text="${errorString != null} ? ${errorString} "></span>
             <form method="post" action="/create_project" th:object="${pojotransfer}">
 
                 <label>Type a projectname:</label>
-                <input  class="inputwhite" type="text" th:field="*{projectName}" placeholder="projectname"/>
+                <input  class="inputwhite" type="text" required th:field="*{projectName}" placeholder="projectname"/>
                 <br>
                 <br>
                 <!--    textfield Date type-->
                 <label>Type in a startDate:</label>
-                <input type="date" th:field="*{startDate}" placeholder="yyyy-MM-dd"/>
+                <input type="date" th:field="*{startDate}" required placeholder="yyyy-MM-dd"/>
                 <br>
                 <br>
 
                 <!--    textfield Date type-->
                 <label>Type in a deadlineDate:</label>
-                <input type="date" th:field="*{deadlineDate}" placeholder="yyyy-MM-dd"/>
+                <input type="date" th:field="*{deadlineDate}" required placeholder="yyyy-MM-dd"/>
                 <br>
                 <br>
                 <br>

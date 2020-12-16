@@ -20,10 +20,10 @@
         <li><a href="mailto:support@fff.dk">Support</a></li>
     </ul>
     <!--TASK-->
+
     <div class="container">
-
+        <span style="color: red" th:text="${errorMsg != null} ? ${errorMsg} "></span>
         <fieldset style="width: 30%" id="addtask">
-
             <legend>Add a task</legend>
             <form method="post" action="/add_task" th:object="${task}">
                 <label>Task number:</label>&nbsp;
@@ -62,7 +62,7 @@
                         <!--    dropdown-->
                         <select th:field="*{subTaskToName} ">
                             <label>Choose if any Task above:</label>
-                            <option th:each="p : ${listTitler}" th:value="${p.getName()}" th:text="${p.getName()}" />
+                            <option  th:each="p : ${listTitler}" th:value="${p.getName()}" th:text="${p.getName()}" />
                         </select>
 
                         <br><br>

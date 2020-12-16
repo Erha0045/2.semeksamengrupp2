@@ -14,13 +14,13 @@ import java.util.ArrayList;
 public class ProjectHandler {
     ProjectMapper projectMapper = new ProjectMapper();
 
-    ProjectController projectController = new ProjectController();
 
     public int createProjectInputDateCheck(Project project) {
         if (project.getDeadlineDate().isBefore(project.getStartDate())) {
             return 0;
         } else return 1;
     }
+
     public int projectTimeConsumptionSum(Project project) throws SQLException {
         TaskMapper taskMapper = new TaskMapper();
         ArrayList<Task> taskArrayList = taskMapper.findProjectTask(project);
@@ -37,11 +37,23 @@ public class ProjectHandler {
         while (resultSet.next()) {
             String pname = resultSet.getString("projectname");
             if (project.getProjectName().equals(pname)) {
-                System.out.println("handlerprojectname " + project.getProjectName());
-                System.out.println("handler pname " + pname);
+//                System.out.println("handlerprojectname " + project.getProjectName());
+//                System.out.println("handler pname " + pname);
                 return 0;
             }
         }
         return 1;
+    }
+
+    public String errorMessageCreateProject(Project project, User user) throws SQLException {
+
+        String error = "";
+        if (createProjectInputNameCheck(project, user) == 0) {
+            error += " - The name you've entered already exists. please try another ";
+        }
+        if (createProjectInputDateCheck(project) == 0) {
+            error += " - your start date needs to be before your Deadline date.";
+        }
+        return error;
     }
 }

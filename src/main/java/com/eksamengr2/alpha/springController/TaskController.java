@@ -503,7 +503,7 @@ public class TaskController {
         System.out.println("add_task getMapping");
         //Gets usetype
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
-
+        model.addAttribute("errorMsg", errorString);
         //Gets names for tasks under projectId
         listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId);
 
@@ -619,7 +619,7 @@ public class TaskController {
         }
         else {
             //System.out.println(errorString = taskhandler.errorMessageTask(task, project));
-            errorString = taskhandler.errorMessageTask(task, project);
+            errorString = taskhandler.errorMessageSubtask(task,project,overTask);
             model.addAttribute("errorMsg", errorString);
         }
 
