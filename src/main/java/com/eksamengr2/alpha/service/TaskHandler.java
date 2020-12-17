@@ -1,6 +1,7 @@
 package com.eksamengr2.alpha.service;
 
 import com.eksamengr2.alpha.data.EditProjectMapper;
+import com.eksamengr2.alpha.data.ProjectMapper;
 import com.eksamengr2.alpha.data.TaskMapper;
 import com.eksamengr2.alpha.model.Project;
 import com.eksamengr2.alpha.model.Task;
@@ -374,6 +375,8 @@ public class TaskHandler {
         returnList.add(taskExampel);
         return returnList;
     }
+
+
     public boolean taskStartDateBeforeFinishCheck(Task task) {
 
         if (task.getFinishDate() != null) {
@@ -384,6 +387,7 @@ public class TaskHandler {
         else return true;
 
     }
+
 
     public boolean subTaskDatesWithInTaskDates(Task task, Task overTask) {
         if (task.getFinishDate() != null) {
@@ -479,6 +483,142 @@ public class TaskHandler {
         }
         return timeConsumptionSum;
     }
+    //***************************************************************************
+    //***************************************************************************
+    //***                   TIME CALCULATION                                  ***
+    //***************************************************************************
+    //***************************************************************************
+
+    /**
+     *
+     * @param projectId
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList<Project> hoursPerDayCalculation(int projectId) throws SQLException {
+        ProjectMapper projectMapper = new ProjectMapper();
+        TaskMapper taskMapper = new TaskMapper();
+        ArrayList<Project> resultList = new ArrayList<>();
+
+        //Gets project metadate from DB
+        Project project = projectMapper.getProjectFromId(projectId);
+
+        //Creates the masterList
+        ArrayList<Project> masterList= createFullMasterList(project);
+
+        //Gets all subtasks start, finish and hours worked per day from DB
+        ArrayList<Task> subTaskList = taskMapper.getStartFinishWorkingHoursDayForSubTask(projectId);
+
+        //Creates fullsubtaskList [date, hoursWorked] for all subtasks and days in one ArrayList
+        ArrayList<Task> fullSubList = createFullSubTaskList(subTaskList);
+
+        //populate masterList with values from subTaskList
+        resultList = joinArrayListValues(masterList, fullSubList);
+
+        return resultList;
+    }
+
+
+    /**Creates masterList for tabel fill with hours worked per day
+     *
+     * @param project
+     * @return
+     */
+    public ArrayList<Project> createFullMasterList(Project project) {
+        System.out.println("FULL MASTERLIST");
+        ArrayList<Project> masterList = new ArrayList<>();
+        LocalDate startDate = project.getStartDate();
+        LocalDate finishdate = project.getDeadlineDate();
+
+        long i = 0;
+        for (LocalDate tempDate = startDate; tempDate.isBefore(finishdate.plusDays(1)); tempDate = startDate.plusDays(i) ){
+
+            masterList.add(new Project(tempDate,null,0.0));
+            System.out.println("tempDate" + tempDate + " time: " + project.getTimeProject() );
+            i++;
+        }
+
+        return masterList;
+    }
+
+
+    /**
+     *
+     * @param subTaskList
+     * @return
+     */
+    public ArrayList<Task> createFullSubTaskList(ArrayList<Task> subTaskList) {
+        System.out.println("FULL SUBLIST");
+        ArrayList<Task> subFullList = new ArrayList<>();
+
+        for (int y = 0; y < subTaskList.size(); y++) {
+
+            long i = 0;
+            for (LocalDate tempDate = subTaskList.get(y).getStartDate(); tempDate.isBefore(subTaskList.get(y).getFinishDate().plusDays(1)); tempDate = subTaskList.get(y).getStartDate().plusDays(i)) {
+
+                subFullList.add(new Task(tempDate, null, subTaskList.get(y).getWorkingHoursDay()));
+                System.out.println("tempDate" + tempDate + " time: " + subTaskList.get(y).getWorkingHoursDay());
+                i++;
+            }
+        }
+        return subFullList;
+    }
+
+
+    /**
+     *
+     * @param masterList
+     * @param subTaskList
+     * @return
+     */
+    public ArrayList<Project> joinArrayListValues(ArrayList<Project> masterList, ArrayList<Task> subTaskList) {
+            ArrayList<Project> returnList = masterList;
+        System.out.println("subTaskList: " + subTaskList);
+            //int index=0;
+        int g=0;
+        for (Project tempMaster: masterList) {
+
+            for (Task tempSub : subTaskList ) {
+                //adds the workingHours from subs to masterList
+                //Hvis sub har samme
+                //System.out.println("tempMasterStart: "+tempMaster.getStartDate()+" tempSub "+tempSub.getStartDate());
+
+                if (tempMaster.getStartDate().isEqual(tempSub.getStartDate())){
+                    //System.out.println("IN IF");
+                    tempMaster.setTimeProject(tempMaster.getTimeProject()+tempSub.getWorkingHoursDay());
+                    //fanger index hvor = "tempmaster.date"  og sætter værdi til
+                    //index = masterList.indexOf(tempMaster.getStartDate()); //TODO kan teste med den
+                    //index = getIndexByAttribute(tempMaster.getStartDate(),masterList);
+
+                    //System.out.println("index:" + index);
+//                    System.out.println("returnList.get(g).getTimeProject():" + returnList.get(g).getTimeProject());
+//                    System.out.println("tempSub.getWorkingHoursDay():" + tempSub.getWorkingHoursDay());
+
+                    //double timeProject = returnList.get(g).getTimeProject() + tempSub.getWorkingHoursDay();
+                    returnList.get(g).setTimeProject(tempMaster.getTimeProject());
+                }
+
+            }
+            g++;
+        }
+        System.out.println("EXIT Join");
+        return returnList;
+    }
+
+    private int getIndexByAttribute(LocalDate startDate, ArrayList<Project> masterList) {
+        for (int i = 0; i < masterList.size(); i++) {
+            if (masterList.get(i).getStartDate() !=null && masterList.get(i).getStartDate().isEqual(startDate)) {
+                return i;
+            }
+        }
+        return -1;// not there is list
+    }
+
+    //***************************************************************************
+    //***************************************************************************
+    //***    TIME CALCULATION FINISHED                                        ***
+    //***************************************************************************
+    //***************************************************************************
 
     //TODO muligvis dobbeltgænger?? possible 4 på krav listen?
     public Task createTaskTimeConsumption(Task task) {

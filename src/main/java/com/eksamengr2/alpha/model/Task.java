@@ -29,6 +29,12 @@ public class Task {
         this.finishDate = finishDate;
     }
 
+    public Task(LocalDate startDate, LocalDate finishDate, double workingHoursDay) {
+        this.startDate = startDate;
+        this.finishDate = finishDate;
+        this.workingHoursDay = workingHoursDay;
+    }
+
     public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask,
                 double taskNo, int lineCounter, int idtask,
                 int taskTimeconsumption, int noOfPersons, double workingHoursDay, String subTaskToName) {

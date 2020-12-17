@@ -13,12 +13,21 @@ public class Project {
     private LocalDate startDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd") //for at matche formattering fra bruger flade
     private LocalDate deadlineDate;
+    private double timeProject;
 
     //todo j-unit med startdato før deadlinedato
     //todo j-unit med tjek af projektname ikke eksisterer (ikke relevant alligevel da alle brugere kan have deres egne projecter)
 
 
-    public Project() {
+
+
+    public Project()  {
+    }
+
+    public Project(LocalDate startDate, LocalDate deadlineDate, double timeProject) {
+        this.startDate = startDate;
+        this.deadlineDate = deadlineDate;
+        this.timeProject = timeProject;
     }
 
     public Project(int projectId){
@@ -99,6 +108,14 @@ public class Project {
         this.startDate = startDate;
     }
 
+    public double getTimeProject() {
+        return timeProject;
+    }
+
+    public void setTimeProject(double timeProject) {
+        this.timeProject = timeProject;
+    }
+
     @Override
     public String toString() {
         return "Project{" +
@@ -106,6 +123,8 @@ public class Project {
                 ", projectName='" + projectName + '\'' +
                 ", ownerName='" + ownerName + '\'' +
                 ", startDate=" + startDate +
+                ", deadlineDate=" + deadlineDate +
+                ", timeProject=" + timeProject +
                 '}';
     }
 }

@@ -342,7 +342,7 @@ public class EditProjectMapper {
     }//Method
 
 
-    //TODO ER IKKE TESTET efter connector er rettet
+
     public List<Task> getTaskForEditProject(int projectId) throws SQLException {
         Task task1=null;
         Connection conn = DatabaseConnector.getConnection();

@@ -1,5 +1,6 @@
 package com.eksamengr2.alpha.service;
 
+import com.eksamengr2.alpha.model.Project;
 import com.eksamengr2.alpha.model.Task;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -670,6 +671,33 @@ class TaskHandlerTest {
 
         //Assert
         assertEquals(exp, actual);
+
+
+    }
+
+    @Test
+    void joinArrayListValues() {
+        TaskHandler taskHandler = new TaskHandler();
+
+        //Parameter master
+        Project project = new Project(LocalDate.of(2020,1,1),LocalDate.of(2020,1,8),0.0);
+        ArrayList<Project> masterList = taskHandler.createFullMasterList(project);
+
+        //Parameter sub685
+        ArrayList<Task> sublist1 = new ArrayList<>();
+        sublist1.add(new Task(LocalDate.of(2020,01,01), LocalDate.of(2020,01,6),1.0 ));
+        sublist1.add(new Task(LocalDate.of(2020,01,02), LocalDate.of(2020,01,5),2.0 ));
+
+        ArrayList<Task> sublist = taskHandler.createFullSubTaskList(sublist1);
+
+        //Expected
+        ArrayList<Project> expected = new ArrayList<>();
+
+        //Actual
+        ArrayList<Project> actual = taskHandler.joinArrayListValues(masterList, sublist);
+
+        //assert test
+        assertEquals(expected, actual);
 
 
     }

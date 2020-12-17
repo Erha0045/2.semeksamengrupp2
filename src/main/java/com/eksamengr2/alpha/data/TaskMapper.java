@@ -11,6 +11,44 @@ import java.util.ArrayList;
 
 public class TaskMapper {
 
+    /** Return StartDate, FinishDate and workingHoursDay*noOfPersons for all subtasks in a project
+     *
+     * @param
+     * @return  List(startdate, finishdate, workinghoursday)
+     * @throws SQLException
+     */
+    public ArrayList<Task> getStartFinishWorkingHoursDayForSubTask(int projectId) throws SQLException {
+        Connection con = DatabaseConnector.getConnection();
+        ArrayList<Task> list = new ArrayList<>();
+        Task task;
+
+        String SQL = "SELECT startdate, finishdate, noOfPersons* workinghoursday as workinghoursday FROM alfasolutionsdb.task WHERE isSubTask='yes' AND projectid=?;";
+
+        PreparedStatement ps = con.prepareStatement(SQL);
+        ps.setInt(1, projectId);
+
+
+        ResultSet resultSet = ps.executeQuery();
+        while (resultSet.next())  {
+            task = new Task("",
+                    resultSet.getDate("startdate").toLocalDate(),
+                    resultSet.getDate("finishdate").toLocalDate(),
+                    0,
+                    0,
+                    "",
+                    0.0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    Math.round(resultSet.getDouble("workinghoursday")*100.00)/100.00d,
+                    "");
+
+            list.add(task);
+        }
+        return list;
+    }
+
     /** Return all TaskNo(overtask) for project
      *
      * @param
