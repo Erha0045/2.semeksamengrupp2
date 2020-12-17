@@ -14,7 +14,7 @@
     </div>
 </header>
 <ul>
-    <li><a href="/dashboard2">Dashboard</a></li>
+    <li><a href="/dashboard">Dashboard</a></li>
     <li><a href="/logout">Log out</a></li>
     <li><a href="mailto:contact@fff.dk">Contact</a></li>
     <li><a href="mailto:support@fff.dk">Support</a></li>
@@ -85,12 +85,14 @@
                 <p th:text="${taskLine.get(0).workingHoursDay}">Old working hours/day:</p>
             </div><br><br><br>
             <div style="display:inline-block;margin-right:20px;">
-                <button class="button" type="submit" name="updateTask" >Update task</button>
+                <button class="button" type="submit" name="updateTask" >Update task</button>&nbsp;
 
-
+                <br>
             </div>
             <br><br><a href="http://localhost:8080/edit_project">Back to gantt</a><br>
-
+        </form>
+        <form name="cancel" action="/dashboard" method=get>
+            <button class="button" type="submit" >cancel</button>
         </form>
     </fieldset>
     <table class="table" style="width:100%" align="Center">

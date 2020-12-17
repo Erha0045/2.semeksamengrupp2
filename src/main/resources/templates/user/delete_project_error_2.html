@@ -5,16 +5,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ERROR deleteproject</title>
+    <title>error_deleteproject</title>
 </head>
 <body>
 <header style="background-color: darkred">
-    <div class="header">
+    <div class="header" id="errorheader">
         <h1>Delete project ERROR page</h1>
     </div>
 </header>
 <ul>
-    <li><a href="/dashboard2">Dashboard</a></li>
+    <li><a href="/dashboard">Dashboard</a></li>
     <li><a href="/logout">Log out</a></li>
     <li><a href="mailto:contact@fff.dk">Contact</a></li>
     <li><a href="mailto:support@fff.dk">Support</a></li>
@@ -37,6 +37,9 @@
             <!--        <input type="number" id="Project_ID" step="1" name="Project_ID">-->
             <br>
             <button class="button" type="submit" >Delete project</button>
+            <form name="cancel" action="/delete_project" method=get>
+                <button class="button" type="submit" >cancel</button>
+        </form>
         </form>
     </fieldset>
 </div>

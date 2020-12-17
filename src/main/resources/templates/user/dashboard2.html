@@ -29,18 +29,19 @@
             </form>
 <br>
         <form name="gotodeleteproject" action ="/delete_project" method="get">
-            <button class="button">delete project</button>
+            <button class="button">Delete project</button>
         </form>
     <br>
         <form name="refreshprojectlist" action ="/dashboard" method="get">
-            <button class="button">refresh list</button>
+            <button class="button">Refresh list</button>
         </form>
     </fieldset>
     <br>
     <br>
+    <br>
 
 <fieldset style="width: 100%">
-    <legend>List of your projects</legend>
+    <legend>Projects List</legend>
 
 <!--<div id="container" class="container">-->
     <div th:if="${not #lists.isEmpty(projects)}">

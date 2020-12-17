@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>project_creation</title>
+        <title>create_project</title>
     </head>
     <body>
     <header>
@@ -14,7 +14,7 @@
         </div>
     </header>
     <ul>
-        <li><a href="/dashboard2">Dashboard</a></li>
+        <li><a href="/dashboard">Dashboard</a></li>
         <li><a href="/logout">Log out</a></li>
         <li><a href="mailto:contact@fff.dk">Contact</a></li>
         <li><a href="mailto:support@fff.dk">Support</a></li>
@@ -22,40 +22,42 @@
     <div class="container">
         <br>
 
-        <fieldset>
+        <fieldset style="width: 100%">
             <legend>Create a project</legend>
             <br>
 
             <span  style="color: red" th:text="${errorString != null} ? ${errorString} "></span>
             <form method="post" action="/create_project" th:object="${pojotransfer}">
 
-                <label>Type a projectname:</label>
+                <label>Type a projectname:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input  class="inputwhite" type="text" required th:field="*{projectName}" placeholder="projectname"/>
                 <br>
                 <br>
                 <!--    textfield Date type-->
-                <label>Type in a startDate:</label>
+                <label>Type in a startDate:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="date" th:field="*{startDate}" required placeholder="yyyy-MM-dd"/>
                 <br>
                 <br>
 
                 <!--    textfield Date type-->
-                <label>Type in a deadlineDate:</label>
+                <label>Type in a finishdate:</label>&nbsp;
                 <input type="date" th:field="*{deadlineDate}" required placeholder="yyyy-MM-dd"/>
                 <br>
                 <br>
                 <br>
                 <br>
                 <!--    Button-->
-                <button class="button" type="submit" >Create project</button>
+                <button class="button" type="submit" >Create project</button>&nbsp;
 
+            </form>
+
+            <form name="cancel" action="/dashboard" method=get>
+                <button class="button" type="submit" >cancel</button>
             </form>
             <br>
 
 
-            <form name="cancel" action="/dashboard" method=GET>
-                <button class="button" type="submit" >cancel</button>
-            </form>
+
             <br>
         </fieldset>
 

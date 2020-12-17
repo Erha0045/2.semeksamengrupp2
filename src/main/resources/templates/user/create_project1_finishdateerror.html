@@ -1,34 +1,33 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
-<link rel="stylesheet" href="../static/alfa.css">
+<link rel="stylesheet" href="alfa.css">
 <!--<div lang="en" xmlns:th="http://www.thymeleaf.org/">-->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ERROR creat project finifh date</title>
+    <title>error_create_project_finishdate</title>
 </head>
 <body>
-<header>
-    <div class="header">
-        <h1>Welcome Menu</h1>
+<header >
+    <div class="header" id="errorheader">
+        <h1>Create project finishdate ERROR page</h1>
     </div>
 </header>
 <ul>
+    <li><a href="/dashboard">Dashboard</a></li>
     <li><a href="mailto:contact@fff.dk">Contact</a></li>
     <li><a href="mailto:support@fff.dk">Support</a></li>
 </ul>
 <div class="container">
 
     <fieldset style="width: 100%;">
+        <legend style="color: red; background-color: white; border: 2px solid black">Finishdate error</legend>
         <br>
+        <div style="color: red"> finishdate is before startdate! check your input!</div>
 <form method="post" action="/create_project" th:object="${pojotransfer}">
 
     <!--    textfield String type-->
-    <label>Type a projectname:</label>
-    <input type="text" th:field="*{projectName}" placeholder="projectname"/>
-    <br>
-
-    <!--    textfield String type-->
+      <!--    textfield String type-->
     <!--    <label>Type a ownername:</label>-->
     <!--    <input type="text" th:field="*{ownerName}"placeholder="ownername"/>-->
     <br>
@@ -39,17 +38,23 @@
     <br>
     <br>
 
-    finishdate is before startdate! check your input!
+
     <br>
     <!--    textfield Date type-->
-    <label>Type in a deadlineDate:</label>
+    <label>Type in new finisdate:</label>
     <input type="date" th:field="*{deadlineDate}" placeholder="yyyy-MM-dd"/>
     <br>
     <br>
     <!--    Button-->
-    <button class="button" type="submit" name="getvalue">Create project</button>
+    <button class="button" type="submit" name="getvalue">Create project</button>&nbsp;
+
+    <form name="cancel" action="/edit_project" method=get>
+        <button class="button" type="submit" >cancel</button>
+
+    </form>
 
 </form>
+
     </fieldset>
 </div>
 

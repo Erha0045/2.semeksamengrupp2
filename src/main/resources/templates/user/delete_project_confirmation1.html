@@ -23,15 +23,15 @@
 <div class="container">
     <br>
     <fieldset style="width: 100%" >
-        <legend style="color: red; background-color: white; border: 2px solid black">Caution: Deleting task!</legend>
+        <legend style="color: red; background-color: white; border: 2px solid black">Caution: Deleting project!</legend>
         <br>
         <div style="font-size: 18px">
-            <p style="color: black">are you sure you want to delete project number:  <span th:text="${project.getProjectId()}"></span>&nbsp;&nbsp; and all its associated tasks?</p>
+            <p style="color: black">are you sure you want to delete project number:  <span style="color: red; font-size: 22px" th:text="${project.getProjectId()}"></span>&nbsp;&nbsp; and all its associated tasks?</p>
         </div>
         <form name="delete_project" action="/delete_project_confirmation" method=POST>
 
             <br>
-            <button class="button" type="submit">Yes, delete my project </button>
+            <button class="button" type="submit">Yes, delete my project! </button>
         </form>
         <form name="cancel" action="/delete_project" method=GET>
 

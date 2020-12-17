@@ -1,26 +1,27 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
-<link rel="stylesheet" href="../static/alfa.css">
+<link rel="stylesheet" href="alfa.css">
 <!--<div lang="en" xmlns:th="http://www.thymeleaf.org/">-->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ERROR creat project finifh date</title>
+    <title>error_create_project_finishdate</title>
 </head>
 <body>
-<header>
-    <div class="header">
-        <h1>Welcome Menu</h1>
+<header >
+    <div class="header" id="errorheader">
+        <h1>Project name error page</h1>
     </div>
 </header>
 <ul>
+    <li><a href="/dashboard">Dashboard</a></li>
     <li><a href="mailto:contact@fff.dk">Contact</a></li>
     <li><a href="mailto:support@fff.dk">Support</a></li>
 </ul>
 <div class="container">
 
     <fieldset style="width: 100%;">
-        <legend> Error: Projectname already exist!!</legend>
+        <legend style="color: red; background-color: white; border: 2px solid black"> Error: Projectname already exist!!</legend>
         <br>
 
 
@@ -29,7 +30,7 @@
 
     <br>
     <!--    textfield String type-->
-    <label>Type a projectname:</label>
+    <label>Type a new projectname:</label>
     <input type="text" th:field="*{projectName}" placeholder="projectname"/>
     <br>
 
@@ -39,18 +40,12 @@
     <br>
 
     <!--    textfield Date type-->
-    <label>Type in a startDate:</label>
-    <input type="date" th:field="*{startDate}" placeholder="yyyy-MM-dd"/>
-    <br>
-    <br>
 
-    <!--    textfield Date type-->
-    <label>Type in a deadlineDate:</label>
-    <input type="date" th:field="*{deadlineDate}" placeholder="yyyy-MM-dd"/>
-    <br>
-    <br>
     <!--    Button-->
-    <button class="button" type="submit" name="getvalue">Create project"</button>
+    <button class="button" type="submit" name="getvalue">Try again</button>&nbsp;
+    <form name="cancel" action="/create_project" method=get>
+        <button class="button" type="submit" >cancel</button>
+    </form>
 
 </form>
     </fieldset>

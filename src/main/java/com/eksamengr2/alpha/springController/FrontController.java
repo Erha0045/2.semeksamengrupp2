@@ -88,7 +88,7 @@ public class FrontController {
             setSessionInfo(request, user);
             registrationsMapper.registerUser(user);
 
-            return user.getUserType() + "/userdashboard2";
+            return"/login";
 
         } else { // If passwords don't match, an exception is thrown
             throw new Exception("Adgangskode skal være éns.");

@@ -14,7 +14,7 @@
     </div>
 </header>
 <ul>
-    <li><a href="/dashboard2">Dashboard</a></li>
+    <li><a href="/dashboard">Dashboard</a></li>
     <li><a href="/logout">Log out</a></li>
     <li><a href="mailto:contact@fff.dk">Contact</a></li>
     <li><a href="mailto:support@fff.dk">Support</a></li>
@@ -35,7 +35,11 @@
             <!--        <input type="number" id="Project_ID" step="1" name="Project_ID">-->
             <br>
             <br>
-            <button class="button" input type="submit">Delete task</button>
+            <button class="button" input type="submit">Delete task</button>&nbsp;
+
+            <form name="cancel" action="/dashboard" method=get>
+                <button class="button" type="submit" >cancel</button>
+        </form>
         </form>
     </fieldset>
 </div>
