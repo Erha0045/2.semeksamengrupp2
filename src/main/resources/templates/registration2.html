@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <link rel="stylesheet" href="alfa.css">
-<!--<div lang="en" xmlns:th="http://www.thymeleaf.org/">-->
+<div lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,31 +23,33 @@
     </ul>
 
     <div class="container">
+        <span  style="color: red" th:text="${errorMsg != null} ? ${errorMsg} "></span>
         <br>
         <form  name="register" action="/registration2" method="post" th:object="${user}" >
-<!--        <form  name="register" action="/registration2" method=get th:object="${user}" >-->
+
         <fieldset style="width: 100%">
             <legend>Create a user</legend>
+
             <br>
             <br>
                     Type your username:<br>
-                    <input class="inputwhite" type="text" name="username" value="">
+                    <input class="inputwhite" required type="text" name="username" value="">
                     <br>
                     <br>
                     Choose a password:<br>
-                    <input class="inputwhite" type="password" name="password1" value="">
+                    <input class="inputwhite" required type="password" name="password1" value="">
                     <br>
                     <br>
                     Confirm your password:<br>
-                    <input class="inputwhite" type="password" name="password2" value="">
+                    <input class="inputwhite" required type="password" name="password2" value="">
                     <br>
                     <br>
                     <button type="submit" class="button">Create account</button>
 
-                <form name="cancel" action="/logout" method=get>
+            <form name="cancel" action="/logout" method=get>
                 <button class="button" type="submit" >cancel</button>
-                </form>
-        </fieldset>
+            </form>
+            </fieldset>
         </form>
     </div>
 </body>
