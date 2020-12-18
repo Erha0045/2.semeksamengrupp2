@@ -11,58 +11,12 @@ import java.util.List;
 
 public class DashboardMapper {
 
-
-//    public static ArrayList<Project> getProjectsFromDB() throws Exception {
-//        ResultSet rs = null;
-//
-//        ArrayList<Project> arrProjects = new ArrayList<>();
-//        Project project = new Project();
-//        try {
-//            Connection con = DatabaseConnector.getConnection();
-//            String SQL = "SELECT * FROM project  ";
-//            PreparedStatement ps = con.prepareStatement(SQL);
-//            //5) excecuter sql statement
-//            rs = ps.executeQuery();
-//
-//            while (rs.next()) //true så længe der er mere data i sql tabel
-//            {
-//                //laver et object med en resultat række
-//                project = new Project(
-//                        rs.getInt("idproject"),
-//                        rs.getString("name"),
-//                        rs.getString("ownername"),
-//                        rs.getDate("startdate").toLocalDate());
-//
-//                //7) fylder ArrayList med data
-//                arrProjects.add(project);
-//            }
-//
-//
-//        } catch (SQLException ex) {
-//            throw new Exception(ex.getMessage());
-//        }
-//    return arrProjects;
-//    }
-
-//    public User fetchUserToRetrieveProject(String username) throws LoginSampleException {
-//        try {
-//            Connection con = DatabaseConnector.getConnection();
-//            String SQL = "SELECT username=? FROM userinfo ";
-//
-//            PreparedStatement ps = con.prepareStatement(SQL);
-//            ps.setString(1, username);
-//            ResultSet rs = ps.executeQuery();
-//            if (rs.next()) {
-//                User user = new User(username);
-//                return user;
-//            } else {
-//                throw new LoginSampleException("Could not validate user");
-//            }
-//        } catch (SQLException ex) {
-//            throw new LoginSampleException(ex.getMessage());
-//        }
-//    }
-
+    /**Gets prjects data by ownername
+     *
+     * @param ownerName
+     * @return
+     * @throws Exception
+     */
     public List<Project> getProjectByUser(String ownerName) throws Exception {
         Project search = null;
         Project project = new Project();
@@ -73,14 +27,11 @@ public class DashboardMapper {
             Connection con = DatabaseConnector.getConnection();
             String SQL = "SELECT * FROM project "
                     + "WHERE ownername=?";
-//            Date sqlStartDate = Date.valueOf(project.getStartDate());
-//            Date sqlDeadlineDate = Date.valueOf(project.getDeadlineDate());
             ps = con.prepareStatement(SQL);
             ps.setString(1, ownerName);
 
             rs = ps.executeQuery();
             while (rs.next()) {
-//                Project mapperProject = new Project();
                 search = new Project(
                         rs.getInt("idproject"),
                         rs.getString("projectname"),
@@ -90,9 +41,6 @@ public class DashboardMapper {
 
                 //7) fylder ArrayList med data
                 projectList.add(search);
-//
-//            } else {
-//                throw new Exception("Could not finde project");
            }
         } catch (SQLException ex) {
             throw new Exception(ex.getMessage());

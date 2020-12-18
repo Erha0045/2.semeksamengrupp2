@@ -105,19 +105,6 @@ public class Task {
         this.lineCounter = lineCounter;
     }
 
-    //bruges til måske edit_project
-//    public Task(String name, LocalDate startDate, LocalDate finishDate, int duration, int projectId, String isSubTask,
-//                double taskNo, int lineCounter) {
-//        this.name = name;
-//        this.startDate = startDate;
-//        this.finishDate = finishDate;
-//        this.duration = duration;
-//        this.projectId = projectId;
-//        this.isSubTask = isSubTask;
-//        this.taskNo = taskNo;
-//        this.lineCounter=lineCounter;
-//    }
-
     public Task(String name) {
         this.name = name;
     }
@@ -196,25 +183,6 @@ public class Task {
         result = 31 * result + (subTaskToName != null ? subTaskToName.hashCode() : 0);
         return result;
     }
-
-    //    @Override
-//    public int hashCode() {
-//        int result;
-//        long temp;
-//        result = name != null ? name.hashCode() : 0;
-//        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
-//        result = 31 * result + (finishDate != null ? finishDate.hashCode() : 0);
-//        result = 31 * result + duration;
-//        result = 31 * result + projectId;
-//        result = 31 * result + (isSubTask != null ? isSubTask.hashCode() : 0);
-//        result = 31 * result + (taskNo != +0.0f ? Float.floatToIntBits(taskNo) : 0);
-//        result = 31 * result + lineCounter;
-//        result = 31 * result + (NewTaskName != null ? NewTaskName.hashCode() : 0);
-//        result = 31 * result + idtask;
-//        temp = Double.doubleToLongBits(taskNumber);
-//        result = 31 * result + (int) (temp ^ (temp >>> 32));
-//        return result;
-//    }
 
     public String getName() {
         return name;

@@ -15,12 +15,6 @@ public class Project {
     private LocalDate deadlineDate;
     private double timeProject;
 
-    //todo j-unit med startdato før deadlinedato
-    //todo j-unit med tjek af projektname ikke eksisterer (ikke relevant alligevel da alle brugere kan have deres egne projecter)
-
-
-
-
     public Project()  {
     }
 

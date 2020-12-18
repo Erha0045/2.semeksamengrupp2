@@ -24,7 +24,7 @@
 <fieldset class="container">
     <fieldset style="width: 100%">
         <legend >Edit your tasks</legend>
-        <!--<h1 th:text="${projectname}">edit_task</h1>-->
+
 
         <form th:action="@{/edit_task}" method="post">
             <label>Edit task number:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -129,89 +129,3 @@
 </body>
 </div>
 </html>
-
-<!--VIRKER-->
-<!--<!DOCTYPE html>-->
-<!--<html lang="en" xmlns:th="http://www.thymeleaf.org/">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>edit_task</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--<h1 th:text="${projectname}">edit_task</h1>-->
-
-<!--<form th:action="@{/edit_task}" method="post">-->
-<!--    <label>Write task No:</label>-->
-<!--    <input type="text"  name="textFieldSubtaskNo" >-->
-<!--    <input type="submit"  value="Get task/subtask" name="getTaskSubTask" >-->
-<!--</form>-->
-
-<!--<form method="post" action="/edit_task" th:object="${task}">-->
-
-<!--    <br><br>-->
-<!--    <div style="display:inline-block;margin-right:20px;">-->
-<!--        <label>Task no/Sub task no:</label>-->
-<!--        &lt;!&ndash;Textfield&ndash;&gt;-->
-<!--        <input type="text" th:field="*{taskNo}">-->
-<!--        &lt;!&ndash;    Data from Dummy or Task existing&ndash;&gt;-->
-<!--        <p th:text="${taskLine.get(0).taskNo}">taskNo</p>-->
-<!--    </div>-->
-
-<!--    <div style="display:inline-block;margin-right:20px;">-->
-<!--        <label>Task name:</label>-->
-<!--        <input type="text" th:field="*{name}" >-->
-<!--        <p th:text="${taskLine.get(0).name}">oldTaskName</p>-->
-<!--    </div>-->
-
-<!--    <div style="display:inline-block;margin-right:20px;">-->
-<!--        <label>Start date:</label>-->
-<!--        <input type="date" th:field="*{startDate}"  >-->
-<!--        <p th:text="${taskLine.get(0).startDate}">newStartDate</p>-->
-<!--    </div>-->
-
-<!--    <div style="display:inline-block;margin-right:20px;">-->
-<!--        <label>Finish date:</label>-->
-<!--        <input type="date" th:field="*{finishDate}" >-->
-<!--        <p th:text="${taskLine.get(0).finishDate}">oldFinishedDate</p>-->
-<!--    </div>-->
-
-<!--    <div style="display:inline-block;margin-right:20px;">-->
-<!--        <label>Duration:</label>-->
-<!--        <input type="text" th:field="*{duration}">-->
-<!--        <p th:text="${taskLine.get(0).duration}">oldDuration</p>-->
-<!--    </div>-->
-<!--    <div style="display:inline-block;margin-right:20px;">-->
-<!--        <input type="submit" name="updateTask" value="Update task">-->
-<!--        <p> </p>-->
-
-<!--    </div>-->
-<!--    <br><br><br><a href="http://localhost:8080/edit_project">Back to gantt</a><br>-->
-<!--    <br>-->
-
-<!--</form>-->
-
-<!--<table class="table" style="width:50%" align="Center">-->
-<!--    <thead>-->
-<!--    <tr>-->
-<!--        <th>No</th>-->
-<!--        <th>Task no</th>-->
-<!--        <th>Task name</th>-->
-<!--        <th>Duration</th>-->
-<!--        <th>Start date</th>-->
-<!--        <th>Finished date</th>-->
-<!--    </tr>-->
-<!--    </thead>-->
-
-<!--    <tbody align="center">-->
-<!--    <tr th:each="taskss : ${tasks}">-->
-<!--        <td><span th:text="${taskss.getLineCounter()}">No </span></td>-->
-<!--        <td><span th:text="${taskss.getTaskNo()}">Task no </span></td>-->
-<!--        <td><span th:text="${taskss.getName()}">Task name </span></td>-->
-<!--        <td><span th:text="${taskss.getDuration()}">Duration </span></td>-->
-<!--        <td><span th:text="${taskss.getStartDate()}">Start date </span></td>-->
-<!--        <td><span th:text="${taskss.getFinishDate()}">Finished date </span></td>-->
-<!--    </tr>-->
-<!--    </tbody>-->
-<!--</table>-->
-<!--</body>-->
-<!--</html>-->

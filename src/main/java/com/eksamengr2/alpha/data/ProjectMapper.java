@@ -1,20 +1,21 @@
 package com.eksamengr2.alpha.data;
 
-
 import com.eksamengr2.alpha.model.Project;
 import com.eksamengr2.alpha.model.User;
-
 import java.sql.*;
-import java.util.Set;
 
 public class ProjectMapper {
 
+        /**Data inserted for new project
+         *
+         * @param project
+         * @throws Exception
+         */
         public void createProject(Project project) throws Exception {
             try {
                 Connection con = DatabaseConnector.getConnection();
                 String SQL = "INSERT INTO Project (projectname, ownername, startdate, deadlinedate) VALUES (?, ?, ?, ?)";
 
-//                java.sql.Date sqlStartDate = java.sql.Date.valueOf(project.getStartDate());
                 Date sqlStartDate = Date.valueOf(project.getStartDate());
                 Date sqlDeadlineDate = Date.valueOf(project.getDeadlineDate());
 
@@ -26,15 +27,18 @@ public class ProjectMapper {
                 ps.setDate(4,sqlDeadlineDate);
 
                 ps.executeUpdate();
-//                ResultSet ids = ps.getGeneratedKeys();
-//                ids.next();
-//                int id = ids.getInt(1);
-//                project.setId(id);
             } catch (SQLException ex) {
                 throw new Exception(ex.getMessage());
             }
         }
 
+
+        /**Gets project metadata by ownername
+     *
+     * @param user
+     * @return
+     * @throws SQLException
+     */
         public ResultSet getProjectNames(User user) throws SQLException {
             Connection con = DatabaseConnector.getConnection();
 
@@ -48,7 +52,14 @@ public class ProjectMapper {
 
         }
 
-        public Project getProjectFromId(int projectid) throws SQLException {
+
+        /**Gets project by projectId
+         *
+         * @param projectid
+         * @return
+         * @throws SQLException
+         */
+        public Project getProjectFromId(int projectid)  {
             Project project = null;
             try {
                 Connection con = DatabaseConnector.getConnection();
@@ -72,6 +83,13 @@ public class ProjectMapper {
             return project;
         }
 
+
+        /**Get task data by projectId
+     *
+     * @param projectid
+     * @return
+     * @throws SQLException
+     */
         public int gettaskForProject(int projectid) throws SQLException {
             Connection con = DatabaseConnector.getConnection();
             String SQL = "select * from task where projectid=?";

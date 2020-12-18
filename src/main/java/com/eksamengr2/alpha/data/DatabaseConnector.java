@@ -28,33 +28,8 @@ public class DatabaseConnector {
         try {
             con = DriverManager.getConnection(url, user, password);
         } catch (SQLException ex) {
-            //Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Vi fik ikke connection=" + ex.getMessage());
         }
         return con;
     }
 }
-
-
-//    private static final String URL = "";
-//    private static final String USER = "";
-//    private static final String PASSWORD = "";
-//    private static Connection con;
-//
-//    private DatabaseConnector(){
-//    }
-//
-//    public static Connection getConnection() {
-//        if (con == null) {
-//            try {
-//                con = DriverManager.getConnection(
-//                        URL,
-//                        USER,
-//                        PASSWORD);
-//            } catch (SQLException ex) {
-//                //Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, ex);
-//                System.out.println("Vi fik ikke connection=" + ex.getMessage());
-//            }
-//        }
-//        return con;
-//    }

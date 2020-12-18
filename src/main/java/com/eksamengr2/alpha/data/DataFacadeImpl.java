@@ -13,7 +13,7 @@ public class DataFacadeImpl implements DataFacade {
     }
 
 
-    public User createUser(User user) throws LoginSampleException {
+    public User createUser(User user)  {
         return user;
     }
 }

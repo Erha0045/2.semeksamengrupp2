@@ -6,17 +6,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DeleteProjectMapper {
-//    String SQL = "SELECT * FROM project\n" +
-//            "INNER JOIN task\n" +
-//            "ON projectid = idproject\n" +
-//            "where idproject=?;";
 
+    /**Deletes project from DB
+     *
+     * @param projectNumber
+     * @return
+     * @throws Exception
+     */
     public int deleteProjectFromDB(int projectNumber) throws Exception {
 
         Connection con = DatabaseConnector.getConnection();
 
 
-        //deleter ikke pt, nu selecter vi bare, "det" som ska deletes.
         String SQL = "DELETE project, task \n" +
                 "        FROM project\n" +
                 "        INNER JOIN task ON project.idproject = task.projectid\n" +
@@ -27,13 +28,6 @@ public class DeleteProjectMapper {
 
         //hvis executeUpdate returnere 0, er intet ændret, altså den kan ikke finde en task med nummeret.
        int numberOfRowCounts = ps.executeUpdate();
-//        ResultSet resultSet = ps.executeQuery();
-//
-//        int rc = 0;
-//        while (resultSet.next()) {
-//            rc++;
-//        }
-//        System.out.println(rc);
 
         return numberOfRowCounts;
     }
@@ -42,8 +36,6 @@ public class DeleteProjectMapper {
 
         Connection con = DatabaseConnector.getConnection();
 
-
-        //deleter ikke pt, nu selecter vi bare, "det" som ska deletes.
         String SQL ="delete project from project where idproject=?";
         PreparedStatement ps = con.prepareStatement(SQL);
         ps.setInt(1, projectNumber);

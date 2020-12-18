@@ -30,16 +30,16 @@ public class ProjectController {
     @GetMapping("/create_project")
     public String createProject(WebRequest request, Model model) throws Exception {
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
+
         model.addAttribute("errorString", errorString);
-        System.out.println("usertype" + user.getUserType());
         model.addAttribute("pojotransfer", projectz);//todo den bliver ikke helt brugt???
+
         return user.getUserType() + "/create_project2";
     }
-    //      @RequestMapping(value="/create_project", method= RequestMethod.POST, params="getvalue")
+
 
     @PostMapping("/create_project")
-//ToDO skal nok renames
-    public String createNewUser2(Model model, WebRequest request,
+    public String createNewProject(Model model, WebRequest request,
                                  @RequestParam("projectName") String projectname,
                                  @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startdate,
                                  @RequestParam("deadlineDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate deadlinedate) throws Exception {
@@ -48,27 +48,15 @@ public class ProjectController {
 
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
 
-        System.out.println("String fra felt " + projectname);
-        System.out.println("LocalDate fra felt " + startdate);
-        System.out.println("LocalDate fra felt " + deadlinedate);
-
         ProjectMapper pm = new ProjectMapper();
         Project project1 = new Project(projectname, user.getUserName(), startdate, deadlinedate);
 
-        //TODO error ting til project, error message skal adders til add project side, og vises hvis relevant
         ProjectHandler projectHandler = new ProjectHandler();
         errorString = projectHandler.errorMessageCreateProject(project1, user);
         model.addAttribute("errorString", errorString);
         if (!errorString.equals("")) return user.getUserType() + "/create_project2";
 
 
-//        if (projectHandler1.createProjectInputDateCheck(project1) == 0) {
-//            return user.getUserType() + "/create_project1_finishdateerror";
-//        }
-//        projectHandler1.createProjectInputNameCheck(project1, user);
-//        if (projectHandler1.createProjectInputNameCheck(project1, user) == 0) {
-//            return user.getUserType() + "/create_project1_nameerror";
-//        } else {
             pm.createProject(project1);
             List<Project> projectsList = new DashboardMapper().getProjectByUser(user.getUserName());
             model.addAttribute("projects", projectsList);
@@ -83,11 +71,11 @@ public class ProjectController {
         return user.getUserType() + "/delete_project1";
     }
 
+
     @PostMapping("/delete_project")
     public String delete_task(WebRequest request, Model model) {
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
         try {
-//            int projectID = Integer.parseInt(request.getParameter("Project_ID"));
             int projectNo = Integer.parseInt(request.getParameter("Project_number"));
             Project project = new Project(projectNo);
             model.addAttribute("project", project);
@@ -96,9 +84,9 @@ public class ProjectController {
             return user.getUserType() + "/delete_project_error_2";
 
         }
-
         return user.getUserType() + "/delete_project_confirmation1";
     }
+
 
     @PostMapping("/delete_project_confirmation")
     public String delete_Project_confirmation(WebRequest request) {
@@ -123,35 +111,31 @@ public class ProjectController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return user.getUserType() + "/dashboard2";
-
     }
 
 
     @GetMapping("dashboard")
     public String projectoverview(WebRequest request, Model model) throws Exception {
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
-        //        int projectId =1;
-        System.out.println("BAMBOOOOOLA!" + user);
+
         projectsList = dashboardMapper.getProjectByUser(user.getUserName());
+
         model.addAttribute("projects", projectsList);
-        System.out.println("DashboarduserTestProjectList" + projectsList);
 
         return user.getUserType() + "/dashboard2";
-
     }
+
 
     @RequestMapping(value = "dashboard2", method = RequestMethod.POST, params = "refreshprojectlist")
     public String refreshList(WebRequest request, Model model) throws Exception {
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
-        System.out.println("DashboarduserTestRequestMapping" + user);
 
         projectsList = dashboardMapper.getProjectByUser(user.getUserName());
-        model.addAttribute("projects", projectsList);
-        System.out.println("testing i refresh på dashboard html");
-        return user.getUserType() + "/dashboard2";
 
+        model.addAttribute("projects", projectsList);
+
+        return user.getUserType() + "/dashboard2";
     }
 }
 

@@ -8,6 +8,12 @@ import java.util.List;
 
 public class EditProjectMapper {
 
+    /**Gets taskNo from task tabel by name, projectId
+     *
+     * @param projectId
+     * @param name
+     * @return
+     */
     public double getTaskNo(int projectId, String name) {
         double returnTaskNo=0.0;
 
@@ -31,12 +37,17 @@ public class EditProjectMapper {
         } catch (SQLException ex) {
             System.out.println("get_idtask_TaskNo: " + ex);
         }
-            System.out.println("Hentet taskNo: " +returnTaskNo);
+
 
         return returnTaskNo;
     }
 
-    //TODO ER IKKE TJEKKET
+
+    /**Uddates a task or subTask
+     *
+     * @param task
+     * @throws SQLException
+     */
     public void updateTask(Task task) throws SQLException {
         Connection conn=DatabaseConnector.getConnection();
 
@@ -75,6 +86,11 @@ public class EditProjectMapper {
     }//Method
 
 
+    /**Updates taskNos by a SqlString
+     *
+     * @param SqlUpdateString
+     * @throws SQLException
+     */
     public void updateTaskNos(String SqlUpdateString) throws SQLException {
         Connection conn=DatabaseConnector.getConnection();
         conn.setAutoCommit(false);
@@ -94,6 +110,12 @@ public class EditProjectMapper {
     }//Method
 
 
+    /**Gets idtask and taskno by projectID and taskno
+     *
+     * @param projectId
+     * @param taskNo
+     * @return
+     */
     public ArrayList<Task> getIdtasks_subTaskNo_FromTask(int projectId, double taskNo) {
         ArrayList<Task> list = new ArrayList<>();
         Task task;
@@ -113,28 +135,25 @@ public class EditProjectMapper {
             while (resultSet.next()) //true så længe der er mere data i sql tabel
             {
                 //laver et object med en resultat række
-
-
                 task = new Task((Math.round((resultSet.getDouble("taskno")*100.00))/100.00d),
                         resultSet.getInt("idtask"));
 
-                //7) fylder ArrayList med data
-                //System.out.println("taskid: "+task.getIdtask());
-
+                //Populater list
                 list.add(new Task(task.getTaskNo(),task.getIdtask()));
             }
         } catch (SQLException ex) {
             System.out.println("get_idtask_TaskNo: " + ex);
         }
-//        for (Task a: list) {
-//            System.out.println(a);
-//
-//        }
-
         return list;
     }
 
 
+    /**Gets subTask-taskumbers from one overtask
+     *
+     * @param projectId
+     * @param taskNo
+     * @return
+     */
     public ArrayList<Task> get_idtasks_TaskNos(int projectId, double taskNo) {
         ArrayList<Task> list = new ArrayList<>();
         Task task;
@@ -154,38 +173,33 @@ public class EditProjectMapper {
             while (resultSet.next()) //true så længe der er mere data i sql tabel
             {
                 //laver et object med en resultat række
-
-
                 task = new Task((Math.round((resultSet.getDouble("taskno")*100.00))/100.00d),
                         resultSet.getInt("idtask"));
-
-                //7) fylder ArrayList med data
-                //System.out.println("taskid: "+task.getIdtask());
 
                 list.add(new Task(task.getTaskNo(),task.getIdtask()));
             }
         } catch (SQLException ex) {
             System.out.println("get_idtask_TaskNo: " + ex);
         }
-//        for (Task a: list) {
-//            System.out.println(a);
-//
-//        }
-
         return list;
     }
 
 
+    /**Gets one task
+     *
+     * @param projectId
+     * @param taskNo
+     * @return
+     * @throws SQLException
+     */
     public Task getTaskLine(int projectId, double taskNo) throws SQLException {
         Task taskLine = new Task();
         ResultSet resultSet = null; //dataflow 1 linie ad gangen
         PreparedStatement preparedStatement=null;
-        System.out.println("fra mapper projectId: "+projectId);
-        System.out.println("fra mapper taskNo: "+ taskNo);
 
         try {
-            Connection conn = DatabaseConnector.getConnection();
             // 1) Connect to the database
+            Connection conn = DatabaseConnector.getConnection();
 
             //2) Create a string that holds the query with ? as user input
             String sqlString = "SELECT * FROM alfasolutionsdb.task WHERE projectid=? AND taskno=?;";
@@ -201,7 +215,6 @@ public class EditProjectMapper {
             resultSet = preparedStatement.executeQuery();
 
             //6) Fylder ArrayList med data fra mySQL database tabel "Person"
-
             while (resultSet.next()) //true så længe der er mere data i sql tabel
             {
                 //laver et object med en resultat række
@@ -218,20 +231,15 @@ public class EditProjectMapper {
                                     resultSet.getInt("noofpersons"),
                         Math.round(resultSet.getDouble("workinghoursday")*100)/100d,
                         "");
-                        //resultSet.getString("subtasktoname"));
             }
         }//try
         catch (Exception e) {
             System.err.println(e.getMessage());
-
         }
-        System.out.println("Task i mapper: " + taskLine);
-
         return taskLine;
     }//Method
 
 
-    //TODO ER IKKE TJEKKET
     /**Modtager data fra addTask og indsætter i tabellen "task"
      *
      * @param newTask Task()
@@ -282,13 +290,10 @@ public class EditProjectMapper {
      */
     public List<Task> getTasksForAddTaskDropbox(int projectId) throws SQLException  {
         Task task=new Task("No overtask");
-
-
         Connection conn = null; //forbindelse
         ResultSet resultSet = null; //dataflow 1 linie ad gangen
         List<Task> arrDaters = new ArrayList<>();
         PreparedStatement preparedStatement=null;
-
 
         try {
             // 1) Connect to the database
@@ -335,20 +340,18 @@ public class EditProjectMapper {
             if (conn != null)
                 conn.close();
         }
-        //TEST PRINT
-        //for(Task a : arrDaters ) { System.out.println(a.getName()); }
-
         return arrDaters;
     }//Method
 
 
-
-    public List<Task> getTaskForEditProject(int projectId) throws SQLException {
+    /**Get task for
+     *
+     * @param projectId
+     * @return
+     * @throws SQLException
+     */
+    public List<Task> getTaskWithCounter(int projectId) throws SQLException {
         Task task1=null;
-        Connection conn = DatabaseConnector.getConnection();
-
-
-//        Connection conn = null; //forbindelse
         ResultSet resultSet = null; //dataflow 1 linie ad gangen
         List<Task> listTasks = new ArrayList<>();
         PreparedStatement preparedStatement=null;
@@ -356,8 +359,7 @@ public class EditProjectMapper {
 
         try {
             // 1) Connect to the database
-
-//            conn = DriverManager.getConnection("jdbc:mysql://den1.mysql3.gear.host/alfasolutionsdb?autoReconnect=true&useSSL=false", "alfasolutionsdb", "Ga9Q_!89hJab");
+            Connection conn = DatabaseConnector.getConnection();
 
             //2) Create a string that holds the query with ? as user input
             String sqlString = "SELECT * FROM alfasolutionsdb.task WHERE projectid=? ORDER BY taskno;";
@@ -401,17 +403,6 @@ public class EditProjectMapper {
             System.err.println(e.getMessage());
 
         }
-//        finally //kode der skal køres selvom den bugger (lukke connection)
-//        {
-//            if (preparedStatement != null)
-//                preparedStatement.close();
-//
-//            if (conn != null)
-//                conn.close();
-//        }
-        //TEST PRINT
-        //for (Task a : listTasks ) { System.out.println(a.getName() +" taskno: "+a.getTaskNo() + "working hours day" + a.getWorkingHoursDay()) ; }
-
         return listTasks;
     }//Method
 }

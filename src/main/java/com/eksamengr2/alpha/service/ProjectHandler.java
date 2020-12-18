@@ -5,7 +5,6 @@ import com.eksamengr2.alpha.data.TaskMapper;
 import com.eksamengr2.alpha.model.Project;
 import com.eksamengr2.alpha.model.Task;
 import com.eksamengr2.alpha.model.User;
-import com.eksamengr2.alpha.springController.ProjectController;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,9 +20,10 @@ public class ProjectHandler {
         } else return 1;
     }
 
+    //TODO Nice to have integre hvis tid
     public int projectTimeConsumptionSum(Project project) throws SQLException {
         TaskMapper taskMapper = new TaskMapper();
-        ArrayList<Task> taskArrayList = taskMapper.findProjectTask(project);
+        ArrayList<Task> taskArrayList = taskMapper.findProjectTasksTimeConsumption(project);
         int timeConsumptionSum = 0;
 
         for (Task task : taskArrayList) {

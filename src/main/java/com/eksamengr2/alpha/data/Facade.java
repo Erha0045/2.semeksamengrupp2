@@ -11,7 +11,7 @@ public class Facade implements FacadeTest {
 
 
     public List<Task> getTaskForEditProject(int projectId) throws SQLException{
-        return editProjectMapper.getTaskForEditProject(projectId);
+        return editProjectMapper.getTaskWithCounter(projectId);
     }
 
 

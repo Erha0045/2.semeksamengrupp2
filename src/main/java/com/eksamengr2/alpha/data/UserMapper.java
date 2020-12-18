@@ -9,6 +9,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserMapper {
+
+    /**Gets user from if username and password is correct
+     *
+     * @param username
+     * @param password
+     * @return
+     * @throws LoginSampleException
+     */
     public User login(String username, String password) throws LoginSampleException {
         try {
             Connection con = DatabaseConnector.getConnection();

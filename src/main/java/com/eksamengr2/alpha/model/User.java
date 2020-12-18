@@ -50,34 +50,5 @@ public class User {
                 ", userName='" + userName + '\'' +
                 '}';
     }
-
-    //    public User(String password, String email) {
-//        this.password = password;
-//        this.userName = email;
-//    }
-//
-//    public String getPassword() {
-//        return password;
-//    }
-//
-//    public void setPassword(String password) {
-//        this.password = password;
-//    }
-//
-//    public String getEmail() {
-//        return userName;
-//    }
-//
-//    public void setEmail(String email) {
-//        this.userName = email;
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "User{" +
-//                "password='" + password + '\'' +
-//                ", email='" + userName + '\'' +
-//                '}';
-//    }
 }
 

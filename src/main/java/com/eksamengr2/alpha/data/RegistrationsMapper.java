@@ -5,6 +5,8 @@ import com.eksamengr2.alpha.model.User;
 import java.sql.*;
 
 public class RegistrationsMapper {
+
+
     public void registerUser(User user) throws Exception {
         try {
             Connection con = DatabaseConnector.getConnection();

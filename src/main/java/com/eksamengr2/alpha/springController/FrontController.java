@@ -45,15 +45,10 @@ public class FrontController {
       }
         setSessionInfo(request, user);
         user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
-        System.out.println("usertype: " + user.getUserType());
         List<Project> projectsList = new DashboardMapper().getProjectByUser(user.getUserName());
         model.addAttribute("projects", projectsList);
 
-        System.out.println("username, password: " + username + password);
-        System.out.println(user);
         return user.getUserType() + "/dashboard2";
-
-
     }
 
 

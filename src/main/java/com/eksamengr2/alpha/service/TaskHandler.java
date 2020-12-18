@@ -427,18 +427,11 @@ public class TaskHandler {
         return task.getDuration() == ChronoUnit.DAYS.between(task.getStartDate(), task.getFinishDate()) + 1;
     }
 
-    public boolean createTaskTotalWorkTCalculation(Task task) {
-        double totalWorkTimeHours = task.getDuration() * task.getNoOfPersons() * task.getWorkingHoursDay();
-
-        return task.getTaskTimeconsumption() < totalWorkTimeHours;
-
-    }
-
     public ArrayList<Task> viewForEditProject(int projectId) throws SQLException {
 
 //        ArrayList<Task> viewList = new ArrayList<>();
 
-        ArrayList<Task> bigList = (ArrayList<Task>) editProjectMapper.getTaskForEditProject(projectId);
+        ArrayList<Task> bigList = (ArrayList<Task>) editProjectMapper.getTaskWithCounter(projectId);
         List<Task> smallList = getTaskNoAndSumOfTimeConsumptionPerTask(projectId);
 
         for (Task small: smallList     ) {
@@ -472,17 +465,6 @@ public class TaskHandler {
     }
 
 
-    //skal bruge heltal, men er vel ikke et problem?
-    public int taskTimeConsumptionSum(Task task) throws SQLException {
-        TaskMapper taskMapper = new TaskMapper();
-        ArrayList<Task> taskArrayList = taskMapper.findTasksSubTasks(task);
-        int timeConsumptionSum = 0;
-
-        for (Task value : taskArrayList) {
-            timeConsumptionSum += value.getTaskTimeconsumption();
-        }
-        return timeConsumptionSum;
-    }
     //***************************************************************************
     //***************************************************************************
     //***                   TIME CALCULATION                                  ***

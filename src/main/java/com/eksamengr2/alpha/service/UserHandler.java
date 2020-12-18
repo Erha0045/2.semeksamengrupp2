@@ -7,17 +7,14 @@ import com.eksamengr2.alpha.model.User;
 import java.sql.SQLException;
 
 public class UserHandler {
- private RegistrationsMapper registrationsMapper = new RegistrationsMapper();
+    private RegistrationsMapper registrationsMapper = new RegistrationsMapper();
 
 
     public boolean checkIfUsernameAlreadyExists(String userName) throws SQLException {
-
-
         return registrationsMapper.checkIfUserNameExists(userName);
     }
 
     public boolean checkIfPasswordsAreEqual(String pass1, String pass2){
-
         return pass1.equals(pass2);
     }
 
