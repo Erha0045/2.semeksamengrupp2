@@ -503,7 +503,7 @@ public class TaskHandler {
         //Gets project metadate from DB
         Project project = projectMapper.getProjectFromId(projectId);
 
-        //Creates the masterList
+        //Creates the masterList with metadata
         ArrayList<Project> masterList= createFullMasterList(project);
 
         //Gets all subtasks start, finish and hours worked per day from DB
@@ -525,7 +525,7 @@ public class TaskHandler {
      * @return
      */
     public ArrayList<Project> createFullMasterList(Project project) {
-        System.out.println("FULL MASTERLIST");
+        //System.out.println("FULL MASTERLIST");
         ArrayList<Project> masterList = new ArrayList<>();
         LocalDate startDate = project.getStartDate();
         LocalDate finishdate = project.getDeadlineDate();
@@ -534,7 +534,7 @@ public class TaskHandler {
         for (LocalDate tempDate = startDate; tempDate.isBefore(finishdate.plusDays(1)); tempDate = startDate.plusDays(i) ){
 
             masterList.add(new Project(tempDate,null,0.0));
-            System.out.println("tempDate" + tempDate + " time: " + project.getTimeProject() );
+//            System.out.println("tempDate" + tempDate + " time: " + project.getTimeProject() );
             i++;
         }
 
@@ -548,7 +548,7 @@ public class TaskHandler {
      * @return
      */
     public ArrayList<Task> createFullSubTaskList(ArrayList<Task> subTaskList) {
-        System.out.println("FULL SUBLIST");
+//        System.out.println("FULL SUBLIST");
         ArrayList<Task> subFullList = new ArrayList<>();
 
         for (int y = 0; y < subTaskList.size(); y++) {
@@ -557,7 +557,7 @@ public class TaskHandler {
             for (LocalDate tempDate = subTaskList.get(y).getStartDate(); tempDate.isBefore(subTaskList.get(y).getFinishDate().plusDays(1)); tempDate = subTaskList.get(y).getStartDate().plusDays(i)) {
 
                 subFullList.add(new Task(tempDate, null, subTaskList.get(y).getWorkingHoursDay()));
-                System.out.println("tempDate" + tempDate + " time: " + subTaskList.get(y).getWorkingHoursDay());
+//                System.out.println("tempDate" + tempDate + " time: " + subTaskList.get(y).getWorkingHoursDay());
                 i++;
             }
         }
@@ -573,7 +573,7 @@ public class TaskHandler {
      */
     public ArrayList<Project> joinArrayListValues(ArrayList<Project> masterList, ArrayList<Task> subTaskList) {
             ArrayList<Project> returnList = masterList;
-        System.out.println("subTaskList: " + subTaskList);
+//        System.out.println("subTaskList: " + subTaskList);
             //int index=0;
         int g=0;
         for (Project tempMaster: masterList) {
@@ -601,7 +601,7 @@ public class TaskHandler {
             }
             g++;
         }
-        System.out.println("EXIT Join");
+//        System.out.println("EXIT Join");
         return returnList;
     }
 
@@ -616,7 +616,7 @@ public class TaskHandler {
 
     //***************************************************************************
     //***************************************************************************
-    //***    TIME CALCULATION FINISHED                                        ***
+    //***               INPUT CHECK                                           ***
     //***************************************************************************
     //***************************************************************************
 
