@@ -23,7 +23,8 @@ public class UserMapper {
                 User user = new User(password, username, userType);
                 return user;
             } else {
-                throw new LoginSampleException("Could not validate user");
+                User user = new User();
+                return user;
             }
         } catch (SQLException ex) {
             throw new LoginSampleException(ex.getMessage());

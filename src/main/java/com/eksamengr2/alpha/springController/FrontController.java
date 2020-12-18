@@ -37,6 +37,12 @@ public class FrontController {
 
         //delegate work + data to login controller
         User user = loginController.login(username, password);
+        System.out.println(user.getUserName());
+      if(user.getUserName()==null){
+          errorMsg="no user exists with that name and that password";
+          model.addAttribute("errorMsg",errorMsg);
+          return "Login";
+      }
         setSessionInfo(request, user);
         user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
         System.out.println("usertype: " + user.getUserType());

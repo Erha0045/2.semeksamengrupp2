@@ -17,7 +17,7 @@
     </header>
     <ul>
 
-        <li><a href="/">Welcome page</a></li>
+        <li><a href="/">Index</a></li>
         <li><a href="mailto:contact@fff.dk">Contact</a></li>
         <li><a href="mailto:support@fff.dk">Support</a></li>
     </ul>
@@ -27,7 +27,7 @@
         <br>
         <form  name="register" action="/registration2" method="post" th:object="${user}" >
 
-        <fieldset style="width: 100%">
+        <fieldset style="width: 100%" >
             <legend>Create a user</legend>
 
             <br>
@@ -46,10 +46,11 @@
                     <br>
                     <button type="submit" class="button">Create account</button>
 
-            <form name="cancel" action="/logout" method=get>
-                <button class="button" type="submit" >cancel</button>
-            </form>
+
             </fieldset>
+        </form>
+        <form name="cancel" action="/logout" method=get>
+            <button class="button" type="submit" >cancel</button>
         </form>
     </div>
 </body>
