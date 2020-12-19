@@ -14,7 +14,7 @@
         </div>
     </header>
     <ul>
-        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/dashboard2">Dashboard</a></li>
         <li><a href="/logout">Log out</a></li>
         <li><a href="mailto:contact@fff.dk">Contact</a></li>
         <li><a href="mailto:support@fff.dk">Support</a></li>
@@ -27,7 +27,7 @@
             <legend>Add a task</legend>
             <form method="post" action="/add_task" th:object="${task}">
                 <label>Task number:</label>&nbsp;
-                <input type="number" min="1" step="0.01" th:field="*{taskNo}"  />
+                <input type="number" min="1" step="1" th:field="*{taskNo}"  />
                 <br><br>
                 <label>Task name:</label>&nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="text" required th:field="*{name}" maxlength="45" />
@@ -67,7 +67,7 @@
 
                         <br><br>
                         <label>Subtask no:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="number" required th:field="*{taskNo}"  />
+                        <input type="number" step="1" required th:field="*{taskNo}"  />
                         <br>
                         <br>
 

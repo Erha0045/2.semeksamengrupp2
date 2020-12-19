@@ -28,7 +28,7 @@
 
         <form th:action="@{/edit_task}" method="post">
             <label>Edit task number:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="text"  name="textFieldSubtaskNo" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="number" step="0.01" required name="textFieldSubtaskNo" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <button class="button" type="submit">Get task/subtask</button>
         </form>
         <!--TaskEditLine textfields og TaskExampeLine text-->

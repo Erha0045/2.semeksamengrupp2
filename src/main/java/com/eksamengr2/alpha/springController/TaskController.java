@@ -146,13 +146,13 @@ public class TaskController {
         tasksForProjectId.clear();
         tasksForProjectId = taskHandler.viewForEditProject(projectId);
 
-        //Round off...SKAL NED I MAPPER TODO eller??
+        //Round off...SKAL NED I MAPPER
         for (int i=0; i<tasksForProjectId.size(); i++ ) {
             tasksForProjectId.get(i).setTaskNo(Math.round(tasksForProjectId.get(i).getTaskNo()*100)/100d);
         }
 
         //Transfers task-data to table
-        model.addAttribute("tasks", tasksForProjectId); //TODO noget galt med TaskNo er den gamle data der indsættes
+        model.addAttribute("tasks", tasksForProjectId); //TODO noget galt med TaskNo er den delvis gamle data der indsættes
 
         if (transferTaskNo==0.0){
             taskLine = taskHandler.ExampelForTaskLine();

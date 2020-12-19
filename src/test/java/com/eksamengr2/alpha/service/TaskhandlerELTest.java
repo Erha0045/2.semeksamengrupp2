@@ -29,13 +29,10 @@ class TaskhandlerTest {
 
         assertTrue(svar0);
     }
-    @Test
-    @DisplayName( "Test 1 -  Tester hvis task.startDate.isBefore(project.getStartDate)")
-    void createTaskInputChecksIfTaskDatesAreWithinProjectDates1() {
-//        TaskhandlerEL taskhandlerEL = new TaskhandlerEL();
-//        Task task = new Task();
-//        Project project = new Project();
 
+    @Test
+    @DisplayName("Test 1 -  Tester hvis task.startDate.isBefore(project.getStartDate)")
+    void createTaskInputChecksIfTaskDatesAreWithinProjectDates1() {
         task.setStartDate(LocalDate.of(2019, 1, 1));
         task.setFinishDate(LocalDate.of(2020, 2, 1));
         project.setStartDate(LocalDate.of(2020, 1, 1));
@@ -45,14 +42,10 @@ class TaskhandlerTest {
 
         assertFalse(svar);
     }
+
     @Test
     @DisplayName("Test 2 -Tester hvis task.startDate.isBefore(project.getStartDate)")
     void createTaskInputChecksIfTaskDatesAreWithinProjectDates2() {
-//        TaskhandlerEL taskhandlerEL = new TaskhandlerEL();
-//        Task task = new Task();
-//        Project project = new Project();
-//        //test 2
-        // tester hvis : task.startDate.isAfter(project.deadlineDate)
         task.setStartDate(LocalDate.of(2021, 1, 1));
         task.setFinishDate(LocalDate.of(2020, 2, 1));
         project.setStartDate(LocalDate.of(2020, 1, 1));
@@ -62,13 +55,10 @@ class TaskhandlerTest {
 
         assertFalse(svar2);
     }
+
     @Test
     @DisplayName("test 3 - tester hvis : task.finishDate.isBefore(project.getStartDate)")
     void createTaskInputChecksIfTaskDatesAreWithinProjectDates3() {
-//        TaskhandlerEL taskhandlerEL = new TaskhandlerEL();
-//        Task task = new Task();
-//        Project project = new Project();
-
         task.setStartDate(LocalDate.of(2020, 1, 1));
         task.setFinishDate(LocalDate.of(2019, 2, 1));
         project.setStartDate(LocalDate.of(2020, 1, 1));
@@ -78,13 +68,10 @@ class TaskhandlerTest {
 
         assertFalse(svar3);
     }
+
     @Test
     @DisplayName("Test 4 -  tester, hvis task.finishDate.isAfter(project.deadlineDate)")
     void createTaskInputChecksIfTaskDatesAreWithinProjectDates4() {
-//        TaskhandlerEL taskhandlerEL = new TaskhandlerEL();
-//        Task task = new Task();
-//        Project project = new Project();
-
         task.setStartDate(LocalDate.of(2020, 1, 1));
         task.setFinishDate(LocalDate.of(2020, 3, 1));
         project.setStartDate(LocalDate.of(2020, 1, 1));
@@ -95,11 +82,7 @@ class TaskhandlerTest {
     }
 
     @Test
-    void createTaskInputDateCheck(){
-        //test1
-        // tester hvis : task.FinishDate.isBefore(task.startDate)
-//        Taskhandler taskhandler = new Taskhandler();
-
+    void createTaskInputDateCheck() {
         Task task = new Task();
         task.setStartDate(LocalDate.of(2020, 1, 1));
         task.setFinishDate(LocalDate.of(2019, 1, 1));
@@ -107,79 +90,43 @@ class TaskhandlerTest {
     }
 
     @Test
-
-    void CreateTaskInputChecksIfDurationIsOverFinishDateMinusStartdate(){
-
+    void CreateTaskInputChecksIfDurationIsOverFinishDateMinusStartdate() {
         Task task = new Task();
 
         task.setDuration(3);
-        task.setStartDate(LocalDate.of(2020,1,1));
-        task.setFinishDate(LocalDate.of(2020,1,2));
+        task.setStartDate(LocalDate.of(2020, 1, 1));
+        task.setFinishDate(LocalDate.of(2020, 1, 2));
 
         assertFalse(taskhandler.durationIsOverFinishDateMinusStartdateCheck(task));
-        //assertTrue(taskhandlerEL.CreateTaskInputChecksIfDurationIsOverFinishDateMinusStartdate(task));
-
     }
-//todo husk at teste
-//
-//    @Test
-//    @DisplayName("check for null value if all three variable are 0")
-//    void checkForNullValue() {
-//        //arrange
-//        TaskhandlerEL taskhandlerEL = new TaskhandlerEL();
-//        Task task = new Task();
-//        task.setDuration(0);
-//        task.setNoOfPersons(0);
-//        task.setWorkingHoursDay(0);
-//
-//        //act
-//        String fejl = taskhandlerEL.checkForNullValue(task);
-//
-//        //assert
-//        assertEquals("MINDST TO VARIABLE SKAL INDTASTES ",fejl);
-//    }
-//    @Test
-//    @DisplayName("check for null value if two variables are 0")
-//    void checkForNullValue1() {
-//        //arrange
-//        TaskhandlerEL taskhandlerEL = new TaskhandlerEL();
-//        Task task = new Task();
-//        task.setDuration(1);
-//        task.setNoOfPersons(0);
-//        task.setWorkingHoursDay(0);
-//
-//        //act
-//        String fejl = taskhandlerEL.checkForNullValue(task);
-//
-//        //assert
-//        assertEquals("FEJL I INDTASTNING",fejl);
-//    }
+
 
     @Test
     @DisplayName("check if name exists on projectId")
     void checkTaskName() throws SQLException {
-            //arrange
+        //arrange
 
         Task task = new Task();
         task.setName("blah");
         task.setProjectId(34);
-            //act
+        //act
         boolean actual = taskhandler.checkTaskName(task);
-            //assert
+        //assert
         assertTrue(actual);
 
     }
+
     @Test
     @DisplayName("check if taskno exists on projectId")
     void checkTaskNo() throws SQLException {
-            //arrange
+        //arrange
 
         Task task = new Task();
         task.setTaskNo(1);
         task.setProjectId(34);
-            //act
+        //act
         boolean actual = taskhandler.checkTaskNo(task);
-            //assert
+        //assert
         assertTrue(actual);
 
     }
