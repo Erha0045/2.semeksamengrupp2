@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TaskhandlerTest {
+class TaskHandlerTest1 {
     TaskHandler taskhandler = new TaskHandler();
     Task task = new Task();
     Project project = new Project();
@@ -107,8 +107,8 @@ class TaskhandlerTest {
         //arrange
 
         Task task = new Task();
-        task.setName("blah");
-        task.setProjectId(34);
+        task.setName("HAVE");
+        task.setProjectId(1);
         //act
         boolean actual = taskhandler.checkTaskName(task);
         //assert
@@ -123,11 +123,12 @@ class TaskhandlerTest {
 
         Task task = new Task();
         task.setTaskNo(1);
-        task.setProjectId(34);
+        task.setProjectId(1);
         //act
         boolean actual = taskhandler.checkTaskNo(task);
         //assert
-        assertTrue(actual);
+        assertFalse(actual);
 
     }
+
 }
