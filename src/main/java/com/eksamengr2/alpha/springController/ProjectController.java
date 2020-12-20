@@ -26,6 +26,7 @@ public class ProjectController {
     private List<Project> projectsList = new ArrayList<>();
     private DashboardMapper dashboardMapper = new DashboardMapper();
     private String errorString;
+    private ProjectHandler projectHandler = new ProjectHandler();
     Facade facade = new Facade();
 
 
@@ -53,7 +54,7 @@ public class ProjectController {
         ProjectMapper pm = new ProjectMapper();
         Project project1 = new Project(projectname, user.getUserName(), startdate, deadlinedate);
 
-        ProjectHandler projectHandler = new ProjectHandler();
+
 //        errorString = projectHandler.errorMessageCreateProject(project1, user); //no facade
         errorString = facade.errorMessageCreateProject(project1, user);
         model.addAttribute("errorString", errorString);

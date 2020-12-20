@@ -722,6 +722,7 @@ public class TaskHandler {
         if (!subTaskDatesWithInTaskDates(task, overTask)) {
             error += "\n - SubTaskDates need to be within Task scope";
         }
+
         return error;
 
         //else if (!createTaskTotalWorkTCalculation(task)) {

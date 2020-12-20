@@ -3,6 +3,7 @@ package com.eksamengr2.alpha.data;
 import com.eksamengr2.alpha.model.Project;
 import com.eksamengr2.alpha.model.Task;
 import com.eksamengr2.alpha.model.User;
+import com.eksamengr2.alpha.service.ProjectHandler;
 import com.eksamengr2.alpha.service.TaskHandler;
 
 import java.sql.SQLException;
@@ -14,30 +15,35 @@ public class Facade{          //implements FacadeTest {
     private EditProjectMapper editProjectMapper = new EditProjectMapper();
     private TaskHandler taskHandler = new TaskHandler();
     private Project project = new Project();
+    private DashboardMapper dashboardMapper = new DashboardMapper();
+    private ProjectHandler projectHandler = new ProjectHandler();
+    private TaskHandler taskController = new TaskHandler();
+    private TaskMapper taskMapper = new TaskMapper();
+    private ProjectMapper projectMapper = new ProjectMapper();
 
-    public  List<Project> getProjectByUser(String userName){
-        return getProjectByUser(userName);
+    public  List<Project> getProjectByUser(String userName) throws Exception {
+        return dashboardMapper.getProjectByUser(userName);
     }
 
-    public String errorMessageCreateProject(Project project1, User user){
-        return errorMessageCreateProject(project1, user);
+    public String errorMessageCreateProject(Project project1, User user) throws SQLException {
+        return projectHandler.errorMessageCreateProject(project1, user);
     }
 
-    public Task AddTaskToDB(Task task){
-        return AddTaskToDB(task);
+    public Task AddTaskToDB(Task task) throws SQLException {
+        return taskController.AddTaskToDB(task);
     }
 
-    public Task getTask(double overTaskNo, int projectId){
-        return getTask(overTaskNo, projectId);
+    public Task getTask(double overTaskNo, int projectId) throws SQLException {
+        return taskMapper.getTask(overTaskNo, projectId);
     }
 
 
     public Project getProjectFromId(int projectId){
-        return getProjectFromId(projectId);
+        return projectMapper.getProjectFromId(projectId);
     }
 
-    public ArrayList<Project> hoursPerDayCalculation(int projectId){
-        return hoursPerDayCalculation(projectId);
+    public ArrayList<Project> hoursPerDayCalculation(int projectId) throws SQLException {
+        return taskHandler.hoursPerDayCalculation(projectId);
     }
 
     public List<Task> getTasksForAddTaskDropbox(int projectId) throws SQLException {

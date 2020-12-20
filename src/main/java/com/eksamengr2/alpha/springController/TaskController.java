@@ -37,7 +37,9 @@ public class TaskController {
     private  DeleteTaskMapper deleteTaskMapper = new DeleteTaskMapper();
     Project project = new Project();
     TaskMapper taskMapper = new TaskMapper();
+    ArrayList<Project> ss;
     Facade facade = new Facade();
+
 
 
     @GetMapping("view_hours_per_day")
@@ -48,7 +50,7 @@ public class TaskController {
 
        //Gets data from DB
 //        ArrayList<Project> ss = taskHandler.hoursPerDayCalculation(projectId);  //no facade
-        ArrayList<Project> ss = facade.hoursPerDayCalculation(projectId);
+        ss = facade.hoursPerDayCalculation(projectId);
 
         model.addAttribute("hours", ss);
 
