@@ -2,6 +2,7 @@ package com.eksamengr2.alpha.springController;
 
 import com.eksamengr2.alpha.data.DashboardMapper;
 import com.eksamengr2.alpha.data.DeleteProjectMapper;
+import com.eksamengr2.alpha.data.Facade;
 import com.eksamengr2.alpha.data.ProjectMapper;
 import com.eksamengr2.alpha.model.Project;
 import com.eksamengr2.alpha.model.User;
@@ -25,6 +26,7 @@ public class ProjectController {
     private List<Project> projectsList = new ArrayList<>();
     private DashboardMapper dashboardMapper = new DashboardMapper();
     private String errorString;
+    Facade facade = new Facade();
 
 
     @GetMapping("/create_project")
@@ -52,13 +54,15 @@ public class ProjectController {
         Project project1 = new Project(projectname, user.getUserName(), startdate, deadlinedate);
 
         ProjectHandler projectHandler = new ProjectHandler();
-        errorString = projectHandler.errorMessageCreateProject(project1, user);
+//        errorString = projectHandler.errorMessageCreateProject(project1, user); //no facade
+        errorString = facade.errorMessageCreateProject(project1, user);
         model.addAttribute("errorString", errorString);
         if (!errorString.equals("")) return user.getUserType() + "/create_project2";
 
 
             pm.createProject(project1);
-            List<Project> projectsList = new DashboardMapper().getProjectByUser(user.getUserName());
+//            List<Project> projectsList = new DashboardMapper().getProjectByUser(user.getUserName()); //no facade
+            List<Project> projectsList = facade.getProjectByUser(user.getUserName());
             model.addAttribute("projects", projectsList);
             return user.getUserType() + "/dashboard2";
         }
@@ -67,7 +71,7 @@ public class ProjectController {
     @GetMapping("/delete_project")
     public String delete_taskView(WebRequest request) {
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
-        //todo fix return
+
         return user.getUserType() + "/delete_project1";
     }
 

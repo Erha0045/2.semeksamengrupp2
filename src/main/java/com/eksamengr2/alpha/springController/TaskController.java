@@ -37,6 +37,7 @@ public class TaskController {
     private  DeleteTaskMapper deleteTaskMapper = new DeleteTaskMapper();
     Project project = new Project();
     TaskMapper taskMapper = new TaskMapper();
+    Facade facade = new Facade();
 
 
     @GetMapping("view_hours_per_day")
@@ -46,7 +47,9 @@ public class TaskController {
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
 
        //Gets data from DB
-        ArrayList<Project> ss = taskHandler.hoursPerDayCalculation(projectId);
+//        ArrayList<Project> ss = taskHandler.hoursPerDayCalculation(projectId);  //no facade
+        ArrayList<Project> ss = facade.hoursPerDayCalculation(projectId);
+
         model.addAttribute("hours", ss);
 
         return user.getUserType() + "/view_hours_per_day";
@@ -74,7 +77,8 @@ public class TaskController {
         model.addAttribute("taskLine", taskLine);
 
         //Get tasks-data from DB as ArrayList
-        tasksForProjectId = taskHandler.viewForEditProject(projectId);
+//        tasksForProjectId = taskHandler.viewForEditProject(projectId);  //no facade
+        tasksForProjectId = facade.viewForEditProject(projectId);
 
         //Round off
         for (int i=0; i<tasksForProjectId.size(); i++ ) {
@@ -101,7 +105,8 @@ public class TaskController {
         model.addAttribute("task", POJO_Task);
 
         //Gets taskLine-data from DB when user push Button "Get task/subtask"
-        objTaskLine = editProjectMapper.getTaskLine(projectId, Math.round(taskOrSubTaskNo*100.00)/100.00d);
+//        objTaskLine = editProjectMapper.getTaskLine(projectId, Math.round(taskOrSubTaskNo*100.00)/100.00d); //No facade
+        objTaskLine = facade.getTaskLine(projectId,Math.round(taskOrSubTaskNo*100.00)/100.00d);
         arrTaskLine.clear();
         arrTaskLine.add(objTaskLine);
 
@@ -109,7 +114,8 @@ public class TaskController {
         model.addAttribute("taskLine", arrTaskLine);
 
         //Get tasks-data from DB as ArrayList
-        tasksForProjectId = taskHandler.viewForEditProject(projectId);
+//        tasksForProjectId = taskHandler.viewForEditProject(projectId); //no facade
+        tasksForProjectId = facade.viewForEditProject(projectId);
 
         //Round off...SKAL NED I MAPPER TODO eller??
         for (int i=0; i<tasksForProjectId.size(); i++ ) {
@@ -120,7 +126,7 @@ public class TaskController {
         model.addAttribute("tasks", tasksForProjectId);
 
         //Transfers taskNo from input to class attribute for sharing between @PostMappings
-        transferTaskNo = Math.round(taskOrSubTaskNo*100.00)/100.00d; //TODO ÆNDRET HER IKKE TESTET
+        transferTaskNo = Math.round(taskOrSubTaskNo*100.00)/100.00d;
 
        return user.getUserType() + "/edit_task";
     }
@@ -134,7 +140,8 @@ public class TaskController {
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
 
         //Get the previus data for selected taskno/subTaskNo
-        Task oldTaskdata = editProjectMapper.getTaskLine(projectId,transferTaskNo); //TODO kan bare hente oldTaskData?? uden for scope
+        //Task oldTaskdata = editProjectMapper.getTaskLine(projectId,transferTaskNo);  //No facade
+        Task oldTaskdata = facade.getTaskLine(projectId, transferTaskNo);
 
         //resets transferTaskNo
         transferTaskNo=0;
@@ -144,7 +151,8 @@ public class TaskController {
 
         //Get tasks-data from DB as ArrayList
         tasksForProjectId.clear();
-        tasksForProjectId = taskHandler.viewForEditProject(projectId);
+        //tasksForProjectId = taskHandler.viewForEditProject(projectId);  //Uden facade
+        tasksForProjectId = facade.viewForEditProject(projectId);
 
         //Round off...SKAL NED I MAPPER
         for (int i=0; i<tasksForProjectId.size(); i++ ) {
@@ -177,7 +185,8 @@ public class TaskController {
         model.addAttribute("errorMsg", errorString);
 
         //Gets names for tasks under projectId
-        listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId);
+        //listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId);  //no facade
+        listTitler = facade.getTasksForAddTaskDropbox(projectId);
 
         //transfer Pojo to html
         model.addAttribute("task", POJO_Task);
@@ -186,7 +195,8 @@ public class TaskController {
         model.addAttribute("listTitler", listTitler);
 
         //Get tasks-data from DB as ArrayList
-        tasksForProjectId = taskHandler.viewForEditProject(projectId);
+//        tasksForProjectId = taskHandler.viewForEditProject(projectId);  //No facade
+        tasksForProjectId = facade.viewForEditProject(projectId);
 
         //Round off...SKAL NED I MAPPER TODO eller??
         for (int i=0; i<tasksForProjectId.size(); i++ ) {
@@ -200,7 +210,6 @@ public class TaskController {
     }
 
 
-    //todo Error page til add tasks/subtasks - addtask + errormessage(s)
     //Button "Save task"
     @RequestMapping(value="/add_task", method= RequestMethod.POST, params="addtask")
     public String saveTask(WebRequest request, @ModelAttribute("task") Task task, Model model) throws SQLException {
@@ -210,7 +219,8 @@ public class TaskController {
         task.setProjectId(projectId);
 
         //Get project object
-        Project project = projectMapper.getProjectFromId(projectId);
+//        Project project = projectMapper.getProjectFromId(projectId);  //no facade
+        Project project = facade.getProjectFromId(projectId);
 
 
         //Handles errors for user input
@@ -224,7 +234,8 @@ public class TaskController {
         }
 
         //Gets names for tasks under projectId
-        listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId);
+//        listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId);  //facade
+        listTitler = facade.getTasksForAddTaskDropbox(projectId);
 
         //transfer Pojo to html
         model.addAttribute("task", POJO_Task);
@@ -233,7 +244,8 @@ public class TaskController {
         model.addAttribute("listTitler", listTitler);
 
         //Get tasks-data from DB as ArrayList
-        tasksForProjectId = taskHandler.viewForEditProject(projectId);
+//        tasksForProjectId = taskHandler.viewForEditProject(projectId); //no facade
+        tasksForProjectId = facade.viewForEditProject(projectId);
 
         //Round off...SKAL NED I MAPPER
         for (int i=0; i<tasksForProjectId.size(); i++ ) {
@@ -258,11 +270,13 @@ public class TaskController {
         task.setProjectId(projectId);
 
         //testing insertet data
-        Project project = projectMapper.getProjectFromId(projectId);
+//        Project project = projectMapper.getProjectFromId(projectId);  //no facade
+        Project project = facade.getProjectFromId(projectId);
 
 
         double overTaskNo = editProjectMapper.getTaskNo(projectId, task.getSubTaskToName()); //TODO HVORFOR VAR DEN HER
-        Task overTask = taskMapper.getTask(overTaskNo, projectId);
+//        Task overTask = taskMapper.getTask(overTaskNo, projectId);  //no overtask
+        Task overTask = facade.getTask(overTaskNo, projectId);
 
         if (taskHandler.errorMessageSubtask(task,project, overTask).equals("")) {
             taskController.AddTaskToDB(task); //New task inserted to DB
@@ -273,7 +287,8 @@ public class TaskController {
         }
 
         //Gets names for tasks under projectId for view
-        listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId);
+//        listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId); //no facade
+        listTitler = facade.getTasksForAddTaskDropbox(projectId);
 
         //transfer Pojo to html
         model.addAttribute("task", POJO_Task);
@@ -282,7 +297,8 @@ public class TaskController {
         model.addAttribute("listTitler", listTitler);
 
         //Get tasks-data from DB as ArrayList
-        tasksForProjectId = taskHandler.viewForEditProject(projectId);
+//        tasksForProjectId = taskHandler.viewForEditProject(projectId); //no facade
+        tasksForProjectId = facade.viewForEditProject(projectId);
 
         //Round off...SKAL NED I MAPPER TODO eller??
         for (int i=0; i<tasksForProjectId.size(); i++ ) {
@@ -301,10 +317,12 @@ public class TaskController {
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
 
         //Opdates DB with new subTask
-        taskController.AddTaskToDB(task);
+//        taskController.AddTaskToDB(task); // no facade
+        facade.AddTaskToDB(task);
 
         //Gets names for tasks under projectId for view
-        listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId);
+//        listTitler = editProjectMapper.getTasksForAddTaskDropbox(projectId); //no facade
+        listTitler = facade.getTasksForAddTaskDropbox(projectId);
 
         //transfer Pojo to html
         model.addAttribute("task", POJO_Task);
@@ -313,7 +331,8 @@ public class TaskController {
         model.addAttribute("listTitler", listTitler);
 
         //Get tasks-data from DB as ArrayList
-        tasksForProjectId = taskHandler.viewForEditProject(projectId);
+//        tasksForProjectId = taskHandler.viewForEditProject(projectId); //no facade
+        tasksForProjectId = facade.viewForEditProject(projectId);
 
         //Round off...SKAL NED I MAPPER TODO eller??
         for (int i=0; i<tasksForProjectId.size(); i++ ) {
@@ -326,7 +345,7 @@ public class TaskController {
         return  user.getUserType() + "/edit_project";
     }
 
-    //Facade facade = new Facade();
+
 
     @GetMapping("edit_project")
     public String editProject(WebRequest request ,Model model, @RequestParam("projectId") int urlProjectId) throws SQLException {
@@ -337,10 +356,11 @@ public class TaskController {
         //Overføre værdi fra url
         projectId =urlProjectId;
 
-       // tasksForProjectId = facade.getTaskForEditProject(projectId);
 
-        FacadeTest facadeTest = new Facade();
-        tasksForProjectId = taskHandler.viewForEditProject(projectId);
+
+        //FacadeTest facadeTest = new Facade();
+//        tasksForProjectId = taskHandler.viewForEditProject(projectId);  //no facade
+        tasksForProjectId = facade.getTaskForEditProject(projectId);
 
         // ArrayList<Task> taskNoRounded = new ArrayList<>();
         model.addAttribute("projectID", projectId);
@@ -363,7 +383,8 @@ public class TaskController {
 
         project.setProjectId(projectId);
 
-        tasksForProjectId = taskHandler.viewForEditProject(projectId);
+//        tasksForProjectId = taskHandler.viewForEditProject(projectId); //facade
+        tasksForProjectId = facade.viewForEditProject(projectId);
 
         //Transfer data to html
         model.addAttribute("tasks", tasksForProjectId);
