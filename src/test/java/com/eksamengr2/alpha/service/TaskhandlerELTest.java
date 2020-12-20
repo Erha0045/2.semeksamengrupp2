@@ -30,6 +30,7 @@ class TaskhandlerTest {
         assertTrue(svar0);
     }
 
+
     @Test
     @DisplayName("Test 1 -  Tester hvis task.startDate.isBefore(project.getStartDate)")
     void createTaskInputChecksIfTaskDatesAreWithinProjectDates1() {
@@ -42,6 +43,7 @@ class TaskhandlerTest {
 
         assertFalse(svar);
     }
+
 
     @Test
     @DisplayName("Test 2 -Tester hvis task.startDate.isBefore(project.getStartDate)")
@@ -56,6 +58,7 @@ class TaskhandlerTest {
         assertFalse(svar2);
     }
 
+
     @Test
     @DisplayName("test 3 - tester hvis : task.finishDate.isBefore(project.getStartDate)")
     void createTaskInputChecksIfTaskDatesAreWithinProjectDates3() {
@@ -69,6 +72,7 @@ class TaskhandlerTest {
         assertFalse(svar3);
     }
 
+
     @Test
     @DisplayName("Test 4 -  tester, hvis task.finishDate.isAfter(project.deadlineDate)")
     void createTaskInputChecksIfTaskDatesAreWithinProjectDates4() {
@@ -81,6 +85,7 @@ class TaskhandlerTest {
         assertFalse(svar4);
     }
 
+
     @Test
     void createTaskInputDateCheck() {
         Task task = new Task();
@@ -88,6 +93,7 @@ class TaskhandlerTest {
         task.setFinishDate(LocalDate.of(2019, 1, 1));
         assertFalse(taskhandler.taskStartDateBeforeFinishCheck(task));
     }
+
 
     @Test
     void CreateTaskInputChecksIfDurationIsOverFinishDateMinusStartdate() {
@@ -115,6 +121,7 @@ class TaskhandlerTest {
         assertTrue(actual);
 
     }
+
 
     @Test
     @DisplayName("check if taskno exists on projectId")

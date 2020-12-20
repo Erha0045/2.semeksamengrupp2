@@ -18,7 +18,7 @@ public class UserHandler {
         return pass1.equals(pass2);
     }
 
-    public String CreateUserError(String username, String pass1, String pass2) throws SQLException {
+    public String createUserError(String username, String pass1, String pass2) throws SQLException {
         String error="";
 
         if(checkIfUsernameAlreadyExists(username)){

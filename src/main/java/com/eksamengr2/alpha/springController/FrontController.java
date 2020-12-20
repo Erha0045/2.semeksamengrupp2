@@ -23,6 +23,7 @@ public class FrontController {
     private LoginController loginController = new LoginController(new Facade());
     private UserHandler userHandler = new UserHandler();
     private String errorMsg;
+    private Facade facade = new Facade();
 
     @GetMapping("/login")
     public String home() {
@@ -79,7 +80,8 @@ public class FrontController {
         String password2 = request.getParameter("password2");
         String userName = request.getParameter("username");
 
-        errorMsg=userHandler.CreateUserError(userName, password1, password2);
+//        errorMsg=userHandler.createUserError(userName, password1, password2); //no facade
+        errorMsg= facade.createUserError(userName, password1, password2);
         model.addAttribute("errorMsg",errorMsg);
         if(!errorMsg.equals("")) {
             return "registration2";

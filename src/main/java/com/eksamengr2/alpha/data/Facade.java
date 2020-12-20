@@ -5,12 +5,13 @@ import com.eksamengr2.alpha.model.Task;
 import com.eksamengr2.alpha.model.User;
 import com.eksamengr2.alpha.service.ProjectHandler;
 import com.eksamengr2.alpha.service.TaskHandler;
+import com.eksamengr2.alpha.service.UserHandler;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Facade{          //implements FacadeTest {
+public class Facade{
 
     private EditProjectMapper editProjectMapper = new EditProjectMapper();
     private TaskHandler taskHandler = new TaskHandler();
@@ -21,6 +22,24 @@ public class Facade{          //implements FacadeTest {
     private TaskMapper taskMapper = new TaskMapper();
     private ProjectMapper projectMapper = new ProjectMapper();
     private UserMapper userMapper = new UserMapper();
+    private DeleteProjectMapper deleteProjectMapper = new DeleteProjectMapper();
+    private UserHandler userHandler = new UserHandler();
+
+    public String createUserError(String userName, String password1, String password2) throws SQLException {
+        return userHandler.createUserError(userName, password1, password2);
+    }
+
+    public int deleteProjectFromDB(int projectId) throws Exception {
+        return deleteProjectMapper.deleteProjectFromDB(projectId);
+    }
+
+    public int deleteProjectFromDBNoSubTasks(int projectId) throws SQLException {
+        return deleteProjectMapper.deleteProjectFromDBNoSubTasks(projectId);
+    }
+
+    public int gettaskForProject(int projectId) throws SQLException {
+        return projectMapper.gettaskForProject(projectId);
+    }
 
     public  List<Project> getProjectByUser(String userName) throws Exception {
         return dashboardMapper.getProjectByUser(userName);
@@ -51,9 +70,9 @@ public class Facade{          //implements FacadeTest {
         return editProjectMapper.getTasksForAddTaskDropbox(projectId);
     }
 
-    public List<Task> getTaskForEditProject(int projectId) throws SQLException{
-        return editProjectMapper.getTaskWithCounter(projectId);
-    }
+//    public List<Task> getTaskForEditProject(int projectId) throws SQLException{
+//        return editProjectMapper.getTaskWithCounter(projectId); //TODO IKKE ENS
+//    }
 
     public ArrayList<Task> viewForEditProject(int projectId) throws SQLException {
         return taskHandler.viewForEditProject(projectId);

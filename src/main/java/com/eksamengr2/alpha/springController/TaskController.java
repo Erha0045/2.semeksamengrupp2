@@ -25,22 +25,20 @@ public class TaskController {
     private TaskHandler taskController = new TaskHandler();
     private List<Task> listTitler;
     private ArrayList<Task> taskLine = new ArrayList<>();
-    private static int projectId; //værdi hente fra URL
-    private static double transferTaskNo=0.0;
     private Task POJO_Task = new Task();
     private TaskHandler taskHandler = new TaskHandler();
     private ArrayList<Task> arrTaskLine = new ArrayList<>();
-    Task objTaskLine;
+    private Task objTaskLine;
     private TaskHandler taskhandler = new TaskHandler();
-    public static String errorString;
     private ProjectMapper projectMapper = new ProjectMapper();
     private  DeleteTaskMapper deleteTaskMapper = new DeleteTaskMapper();
     Project project = new Project();
-    TaskMapper taskMapper = new TaskMapper();
     ArrayList<Project> ss;
     Facade facade = new Facade();
-
-
+    //Variable
+    public static String errorString;
+    private static int projectId; //værdi hente fra URL
+    private static double transferTaskNo=0.0;
 
     @GetMapping("view_hours_per_day")
     public String hoursPerDay(Model model, WebRequest request) throws SQLException {
@@ -80,6 +78,7 @@ public class TaskController {
 
         //Get tasks-data from DB as ArrayList
 //        tasksForProjectId = taskHandler.viewForEditProject(projectId);  //no facade
+        System.out.println("Var i edit task");
         tasksForProjectId = facade.viewForEditProject(projectId);
 
         //Round off
@@ -276,7 +275,7 @@ public class TaskController {
         Project project = facade.getProjectFromId(projectId);
 
 
-        double overTaskNo = editProjectMapper.getTaskNo(projectId, task.getSubTaskToName()); //TODO HVORFOR VAR DEN HER
+        double overTaskNo = editProjectMapper.getTaskNo(projectId, task.getSubTaskToName());
 //        Task overTask = taskMapper.getTask(overTaskNo, projectId);  //no facade
         Task overTask = facade.getTask(overTaskNo, projectId);
 
@@ -348,10 +347,9 @@ public class TaskController {
     }
 
 
-
     @GetMapping("edit_project")
     public String editProject(WebRequest request ,Model model, @RequestParam("projectId") int urlProjectId) throws SQLException {
-
+        System.out.println("var i edit projekt");
         //get usertype for login session
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
 
@@ -362,10 +360,10 @@ public class TaskController {
 
         //FacadeTest facadeTest = new Facade();
 //        tasksForProjectId = taskHandler.viewForEditProject(projectId);  //no facade
-        tasksForProjectId = facade.getTaskForEditProject(projectId);
+        tasksForProjectId = facade.viewForEditProject(projectId);
 
-        // ArrayList<Task> taskNoRounded = new ArrayList<>();
-        model.addAttribute("projectID", projectId);
+
+       // model.addAttribute("projectID", projectId);
 
         //Afrunder double SKAL NED I MAPPER TODO eller??
         for (int i=0; i<tasksForProjectId.size(); i++ ) {
@@ -431,5 +429,4 @@ public class TaskController {
 
         return  user.getUserType() + "/edit_project";
     }
-
 }

@@ -285,7 +285,7 @@ public class TaskHandler {
         //SubtaskNo value is set, only for subTask...task i allready given
         if (task.getIsSubTask().equals("yes")){ //task
             preTaskNo= editProjectMapper.getTaskNo(task.getProjectId(),task.getSubTaskToName());
-            task.setTaskNo(preTaskNo + (task.getTaskNo()/100.00));
+            task.setTaskNo(preTaskNo + (task.getTaskNo()/100.00)); //FEJL runder op når 100 her
         }
 
         //finishDate is set, presuming duration is filled
@@ -436,15 +436,12 @@ public class TaskHandler {
     }
 
 
-    //unused og nok ligegyldig.
     public boolean durationIsOverFinishDateMinusStartdateCheck(Task task) {
 
         return task.getDuration() == ChronoUnit.DAYS.between(task.getStartDate(), task.getFinishDate()) + 1;
     }
 
     public ArrayList<Task> viewForEditProject(int projectId) throws SQLException {
-
-//        ArrayList<Task> viewList = new ArrayList<>();
 
         ArrayList<Task> bigList = (ArrayList<Task>) editProjectMapper.getTaskWithCounter(projectId);
         List<Task> smallList = getTaskNoAndSumOfTimeConsumptionPerTask(projectId);
@@ -461,9 +458,19 @@ public class TaskHandler {
         return bigList;
     }
 
+
+
+
+    //***************************************************************************
+    //***************************************************************************
+    //***                   TIME CALCULATION                                  ***
+    //***************************************************************************
+    //***************************************************************************
+
     public ArrayList<Task> getTaskNoAndSumOfTimeConsumptionPerTask(int projetcId) throws SQLException {
         TaskMapper taskMapper = new TaskMapper();
         ArrayList<Task> list = new ArrayList<>();
+        System.out.println("Var i getTaskNoAndSumOfTimeConsumptionPerTask");
         Task taskSum = new Task(); //Constructor Task[(SumTaskTimeConsumption, taskNo)]
 
         ArrayList<Task> taskNoList = taskMapper.getAllTaskNoForProject(projetcId);
@@ -478,13 +485,6 @@ public class TaskHandler {
         }
         return list;
     }
-
-
-    //***************************************************************************
-    //***************************************************************************
-    //***                   TIME CALCULATION                                  ***
-    //***************************************************************************
-    //***************************************************************************
 
     /**
      *
@@ -522,7 +522,6 @@ public class TaskHandler {
      * @return
      */
     public ArrayList<Project> createFullMasterList(Project project) {
-        //System.out.println("FULL MASTERLIST");
         ArrayList<Project> masterList = new ArrayList<>();
         LocalDate startDate = project.getStartDate();
         LocalDate finishdate = project.getDeadlineDate();
@@ -531,7 +530,6 @@ public class TaskHandler {
         for (LocalDate tempDate = startDate; tempDate.isBefore(finishdate.plusDays(1)); tempDate = startDate.plusDays(i) ){
 
             masterList.add(new Project(tempDate,null,0.0));
-//            System.out.println("tempDate" + tempDate + " time: " + project.getTimeProject() );
             i++;
         }
 
@@ -574,8 +572,7 @@ public class TaskHandler {
      */
     public ArrayList<Project> joinArrayListValues(ArrayList<Project> masterList, ArrayList<Task> subTaskList) {
             ArrayList<Project> returnList = masterList;
-//        System.out.println("subTaskList: " + subTaskList);
-            //int index=0;
+
         int g=0;
         for (Project tempMaster: masterList) {
 
@@ -586,7 +583,6 @@ public class TaskHandler {
                     tempMaster.setTimeProject(tempMaster.getTimeProject()+tempSub.getWorkingHoursDay());
                     returnList.get(g).setTimeProject(tempMaster.getTimeProject());
                 }
-
             }
             g++;
         }
@@ -616,7 +612,6 @@ public class TaskHandler {
         if (task.getFinishDate() == null && task.getDuration() == 0) {
             return false;
         }
-
         return true;
     }
 
@@ -694,10 +689,6 @@ public class TaskHandler {
             }
 
         }
-
-
-
-
 
         return error;
     }

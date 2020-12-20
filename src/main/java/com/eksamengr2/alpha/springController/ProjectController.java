@@ -99,15 +99,17 @@ public class ProjectController {
         Project project = (Project) request.getAttribute("project", 1);
 
         try {
-            int i = projectMapper.gettaskForProject(project.getProjectId());
-            System.out.println(i);
+//            int i = projectMapper.gettaskForProject(project.getProjectId()); //no facade
+            int i = facade.gettaskForProject(project.getProjectId());
             if (i == 0) {
-                int status1 = deleteProjectMapper.deleteProjectFromDBNoSubTasks(project.getProjectId());
+//                int status1 = deleteProjectMapper.deleteProjectFromDBNoSubTasks(project.getProjectId()); //no facade
+                int status1 = facade.deleteProjectFromDBNoSubTasks(project.getProjectId());
                 if (status1 == 0) {
                     return "delete_project_error_2";
                 }
             } else {
-                int status2 = deleteProjectMapper.deleteProjectFromDB(project.getProjectId());
+//                int status2 = deleteProjectMapper.deleteProjectFromDB(project.getProjectId()); //no facade
+                int status2 = facade.deleteProjectFromDB(project.getProjectId());
                 System.out.println(status2);
                 if (status2 == 0) {
                     return "delete_project_error_2";
@@ -124,9 +126,9 @@ public class ProjectController {
     public String projectoverview(WebRequest request, Model model) throws Exception {
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
 
-        projectsList = dashboardMapper.getProjectByUser(user.getUserName());
-
-        model.addAttribute("projects", projectsList);
+//        projectsList = dashboardMapper.getProjectByUser(user.getUserName()); // no facade
+        projectsList = facade.getProjectByUser(user.getUserName());
+                model.addAttribute("projects", projectsList);
 
         return user.getUserType() + "/dashboard2";
     }
@@ -136,7 +138,8 @@ public class ProjectController {
     public String refreshList(WebRequest request, Model model) throws Exception {
         User user = (User) request.getAttribute("user", WebRequest.SCOPE_SESSION);
 
-        projectsList = dashboardMapper.getProjectByUser(user.getUserName());
+//        projectsList = dashboardMapper.getProjectByUser(user.getUserName()); //no facade
+        projectsList =facade.getProjectByUser(user.getUserName());
 
         model.addAttribute("projects", projectsList);
 

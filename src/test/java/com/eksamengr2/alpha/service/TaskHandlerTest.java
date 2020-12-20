@@ -172,7 +172,7 @@ class TaskHandlerTest {
 
     @ParameterizedTest
     @CsvSource({
-            "14, 14, 10.0, no,BEGIN WORK; START TRANSACTION; UPDATE alfasolutionsdb.task SET taskno =10.0 WHERE idtask=54;UPDATE alfasolutionsdb.task SET taskno =10.2 WHERE idtask=55; COMMIT;"
+            "1, 9, 10.0, no,BEGIN WORK; START TRANSACTION; UPDATE alfasolutionsdb.task SET taskno =10.0 WHERE idtask=1; UPDATE alfasolutionsdb.task SET taskno =10.2 WHERE idtask=2; UPDATE alfasolutionsdb.task SET taskno =10.1 WHERE idtask=3; UPDATE alfasolutionsdb.task SET taskno =10.20 WHERE idtask=4; UPDATE alfasolutionsdb.task SET taskno =10.17 WHERE idtask=5;COMMIT;"
 //            "14, 2.6, 1.2, yes, BEGIN WORK; START TRANSACTION; UPDATE alfasolutionsdb.task SET taskno =1.2 WHERE idtask=26; COMMIT;",
 //            "14, 2.0, 2.2, yes, BEGIN WORK; START TRANSACTION; UPDATE alfasolutionsdb.task SET taskno =2.2 WHERE idtask=32; COMMIT;"
     })
@@ -712,7 +712,7 @@ class TaskHandlerTest {
     //** JUnit Time calculation
     //*********************************************
 
-    @Test //TODO expected er ikke sat færdig op
+    @Test
     void joinArrayListValues() {
         TaskHandler taskHandler = new TaskHandler();
 
