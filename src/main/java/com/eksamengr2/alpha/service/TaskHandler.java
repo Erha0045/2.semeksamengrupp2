@@ -405,7 +405,7 @@ public class TaskHandler {
 
 
     public boolean subTaskDatesWithInTaskDates(Task task, Task overTask) {
-        if (task.getFinishDate() != null) {
+        if (task.getFinishDate() != null && !Objects.isNull(overTask.getFinishDate()) && !Objects.isNull(overTask.getStartDate())) {
             if (task.getStartDate().isBefore(overTask.getStartDate())) {
                 return false;
             } else if (task.getStartDate().isAfter(overTask.getFinishDate())) {
@@ -684,11 +684,20 @@ public class TaskHandler {
 
         if (checkSubTaskChooseTaskName(task)){
             error += "\n - Taskname need to be choosen";
+
+
         }
 
-        if (!subTaskDatesWithInTaskDates(task, overTask)) {
-            error += "\n - SubTaskDates need to be within Task scope";
+        if (!checkSubTaskChooseTaskName(task)){
+            if (!subTaskDatesWithInTaskDates(task, overTask) && checkSubTaskChooseTaskName(task)) {
+                error += "\n - SubTaskDates need to be within Task scope";
+            }
+
         }
+
+
+
+
 
         return error;
     }

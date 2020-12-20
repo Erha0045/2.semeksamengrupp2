@@ -59,7 +59,7 @@ public class ProjectMapper {
          * @return
          * @throws SQLException
          */
-        public Project getProjectFromId(int projectid)  {
+        public Project getProjectFromId(int projectid) throws SQLException {
             Project project = null;
             try {
                 Connection con = DatabaseConnector.getConnection();

@@ -39,7 +39,7 @@ public class Facade{          //implements FacadeTest {
     }
 
 
-    public Project getProjectFromId(int projectId){
+    public Project getProjectFromId(int projectId) throws  SQLException{
         return projectMapper.getProjectFromId(projectId);
     }
 
