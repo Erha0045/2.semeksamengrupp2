@@ -1,15 +1,17 @@
 package com.eksamengr2.alpha.model;
 
+import com.eksamengr2.alpha.data.Facade;
+
 public class LoginController {
 
     // facade to datasource layer
-    private DataFacade facade = null;
+    private Facade facade = null;
 
-    public LoginController(DataFacade facade) {
+    public LoginController(Facade facade) {
         this.facade = facade;
     }
 
-    public User login(String userName, String password) throws LoginSampleException {
+    public User login(String userName, String password) throws Throwable {
         return facade.login(userName, password);
     }
 

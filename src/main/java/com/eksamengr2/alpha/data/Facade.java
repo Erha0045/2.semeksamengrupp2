@@ -20,6 +20,7 @@ public class Facade{          //implements FacadeTest {
     private TaskHandler taskController = new TaskHandler();
     private TaskMapper taskMapper = new TaskMapper();
     private ProjectMapper projectMapper = new ProjectMapper();
+    private UserMapper userMapper = new UserMapper();
 
     public  List<Project> getProjectByUser(String userName) throws Exception {
         return dashboardMapper.getProjectByUser(userName);
@@ -60,5 +61,9 @@ public class Facade{          //implements FacadeTest {
 
     public Task getTaskLine(int projectId,double transferTaskNo) throws SQLException {
         return editProjectMapper.getTaskLine(projectId, transferTaskNo);
+    }
+
+    public User login(String username, String password) throws Throwable {
+        return userMapper.login(username, password);
     }
 }

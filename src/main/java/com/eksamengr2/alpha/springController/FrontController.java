@@ -1,7 +1,7 @@
 package com.eksamengr2.alpha.springController;
 
 import com.eksamengr2.alpha.data.DashboardMapper;
-import com.eksamengr2.alpha.data.DataFacadeImpl;
+import com.eksamengr2.alpha.data.Facade;
 import com.eksamengr2.alpha.data.RegistrationsMapper;
 import com.eksamengr2.alpha.model.LoginController;
 import com.eksamengr2.alpha.model.Project;
@@ -20,7 +20,7 @@ import java.util.List;
 @Controller
 public class FrontController {
 
-    private LoginController loginController = new LoginController(new DataFacadeImpl());
+    private LoginController loginController = new LoginController(new Facade());
     private UserHandler userHandler = new UserHandler();
     private String errorMsg;
 
@@ -30,14 +30,14 @@ public class FrontController {
     }
 
     @PostMapping("/login")
-    public String login(WebRequest request, Model model) throws Exception {
+    public String login(WebRequest request, Model model) throws Throwable {
         //henter userName og password fra loginpage textfelter
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
         //delegate work + data to login controller
         User user = loginController.login(username, password);
-        System.out.println(user.getUserName());
+
       if(user.getUserName()==null){
           errorMsg="no user exists with that name and that password";
           model.addAttribute("errorMsg",errorMsg);
@@ -60,8 +60,7 @@ public class FrontController {
     }
 
     private void setSessionInfo(WebRequest request, User user) {
-        //sætter user og dater til være "in scope" for hele session, det vil sige, at vi kan hente dem i hele
-        // sessionen - skal lige se om "user" kan undværes her? :S
+
         request.setAttribute("user", user, WebRequest.SCOPE_SESSION);
 
     }
@@ -83,7 +82,6 @@ public class FrontController {
         errorMsg=userHandler.CreateUserError(userName, password1, password2);
         model.addAttribute("errorMsg",errorMsg);
         if(!errorMsg.equals("")) {
-            System.out.println(errorMsg);
             return "registration2";
         }
 

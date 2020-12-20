@@ -1,9 +1,6 @@
 package com.eksamengr2.alpha.data;
 
-import com.eksamengr2.alpha.model.LoginSampleException;
 import com.eksamengr2.alpha.model.Project;
-import com.eksamengr2.alpha.model.Task;
-import com.eksamengr2.alpha.model.User;
 
 import java.sql.*;
 import java.util.ArrayList;
