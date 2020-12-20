@@ -277,7 +277,7 @@ public class TaskController {
 
 
         double overTaskNo = editProjectMapper.getTaskNo(projectId, task.getSubTaskToName()); //TODO HVORFOR VAR DEN HER
-//        Task overTask = taskMapper.getTask(overTaskNo, projectId);  //no overtask
+//        Task overTask = taskMapper.getTask(overTaskNo, projectId);  //no facade
         Task overTask = facade.getTask(overTaskNo, projectId);
 
         if (taskHandler.errorMessageSubtask(task,project, overTask).equals("")) {

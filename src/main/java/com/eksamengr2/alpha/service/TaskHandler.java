@@ -5,6 +5,7 @@ import com.eksamengr2.alpha.data.ProjectMapper;
 import com.eksamengr2.alpha.data.TaskMapper;
 import com.eksamengr2.alpha.model.Project;
 import com.eksamengr2.alpha.model.Task;
+import com.eksamengr2.alpha.springController.TaskController;
 
 import java.sql.SQLException;
 import java.time.temporal.ChronoUnit;
@@ -538,13 +539,18 @@ public class TaskHandler {
     }
 
 
-    /**
+    /**Filles arrayList between two input dates
+     *   [01, 04]
+     *   [01,  value]
+     *   [02, value]
+     *   [03, value]
+     *   [04, value]
+     *
      *
      * @param subTaskList
      * @return
      */
     public ArrayList<Task> createFullSubTaskList(ArrayList<Task> subTaskList) {
-//        System.out.println("FULL SUBLIST");
         ArrayList<Task> subFullList = new ArrayList<>();
 
         for (int y = 0; y < subTaskList.size(); y++) {
@@ -553,7 +559,6 @@ public class TaskHandler {
             for (LocalDate tempDate = subTaskList.get(y).getStartDate(); tempDate.isBefore(subTaskList.get(y).getFinishDate().plusDays(1)); tempDate = subTaskList.get(y).getStartDate().plusDays(i)) {
 
                 subFullList.add(new Task(tempDate, null, subTaskList.get(y).getWorkingHoursDay()));
-//                System.out.println("tempDate" + tempDate + " time: " + subTaskList.get(y).getWorkingHoursDay());
                 i++;
             }
         }
@@ -561,7 +566,7 @@ public class TaskHandler {
     }
 
 
-    /**
+    /**Add the values from one arraylist to another where they have same dates
      *
      * @param masterList
      * @param subTaskList
@@ -577,37 +582,15 @@ public class TaskHandler {
             for (Task tempSub : subTaskList ) {
                 //adds the workingHours from subs to masterList
                 //Hvis sub har samme
-                //System.out.println("tempMasterStart: "+tempMaster.getStartDate()+" tempSub "+tempSub.getStartDate());
-
                 if (tempMaster.getStartDate().isEqual(tempSub.getStartDate())){
-                    //System.out.println("IN IF");
                     tempMaster.setTimeProject(tempMaster.getTimeProject()+tempSub.getWorkingHoursDay());
-                    //fanger index hvor = "tempmaster.date"  og sætter værdi til
-                    //index = masterList.indexOf(tempMaster.getStartDate()); //TODO kan teste med den
-                    //index = getIndexByAttribute(tempMaster.getStartDate(),masterList);
-
-                    //System.out.println("index:" + index);
-//                    System.out.println("returnList.get(g).getTimeProject():" + returnList.get(g).getTimeProject());
-//                    System.out.println("tempSub.getWorkingHoursDay():" + tempSub.getWorkingHoursDay());
-
-                    //double timeProject = returnList.get(g).getTimeProject() + tempSub.getWorkingHoursDay();
                     returnList.get(g).setTimeProject(tempMaster.getTimeProject());
                 }
 
             }
             g++;
         }
-//        System.out.println("EXIT Join");
         return returnList;
-    }
-
-    private int getIndexByAttribute(LocalDate startDate, ArrayList<Project> masterList) {
-        for (int i = 0; i < masterList.size(); i++) {
-            if (masterList.get(i).getStartDate() !=null && masterList.get(i).getStartDate().isEqual(startDate)) {
-                return i;
-            }
-        }
-        return -1;// not there is list
     }
 
     //***************************************************************************
@@ -615,30 +598,6 @@ public class TaskHandler {
     //***               INPUT CHECK                                           ***
     //***************************************************************************
     //***************************************************************************
-
-    //TODO muligvis dobbeltgænger?? possible 4 på krav listen?
-    public Task createTaskTimeConsumption(Task task) {
-        //
-        if (task.getWorkingHoursDay() == 0) {
-
-            task.setWorkingHoursDay((double) task.getTaskTimeconsumption() / task.getNoOfPersons() / task.getDuration());
-        }
-        if (task.getNoOfPersons() == 0) {
-
-            double noOfPerson = (double) task.getTaskTimeconsumption() / task.getDuration() / task.getWorkingHoursDay();
-            int noOfPersonInt = (int) Math.round(noOfPerson);
-            task.setNoOfPersons(noOfPersonInt);
-        }
-        if (task.getDuration() == 0) {
-
-            double duration = (double) task.getTaskTimeconsumption() / task.getNoOfPersons() / task.getWorkingHoursDay();
-            int durationInt = (int) Math.round(duration);
-            task.setDuration(durationInt);
-
-        }
-        return task;
-
-    }
 
     //     Duration       Persons     WorkHours
     public boolean checkForNullValue(Task task) {
@@ -677,6 +636,12 @@ public class TaskHandler {
         return taskMapper.checkSubTaskNoExistsInDB(task, overTaskNo);
     }
 
+    //Checks if overTask is choosen before create new subtask
+    public boolean checkSubTaskChooseTaskName(Task task){
+        return task.getSubTaskToName().equals("No overtask");
+    }
+
+    //Add task error handling
     public String errorMessageTask(Task task, Project project) throws SQLException {
         String error = "";
         if (checkTaskName(task)) {
@@ -697,80 +662,34 @@ public class TaskHandler {
         return error;
     }
 
+    //Add subtask error handling
     public String errorMessageSubtask(Task task, Project project, Task overTask) throws SQLException {
 
         String error = "";
         if (checkTaskName(task)) {
-//            System.out.println("the chosen name is already in use!");
             error += " - the chosen name is already in use!";
         }
         if (checkSubTaskNoExistsInDB(task, overTask.getTaskNo())) {
-//            System.out.println("the chosen number is already in use!");
             error += " \n -  the chosen number is already in use!";
         }
         if (!checkForNullValueFinishDateDuration(task)) {
             error += " \n - You need to enter either a finish date or a Duration! ";
         }
         if (!taskStartDateBeforeFinishCheck(task)) {
-//            System.out.println("finishdate is before startdate!");
             error += "\n - finishdate is before startdate!";
         }
         if (!taskDatesAreWithinProjectDatesCheck(task, project)) {
-//            System.out.println("taskdate needs to be within project scope!");
             error += "\n -  taskdate needs to be within project scope!";
         }
+
+        if (checkSubTaskChooseTaskName(task)){
+            error += "\n - Taskname need to be choosen";
+        }
+
         if (!subTaskDatesWithInTaskDates(task, overTask)) {
             error += "\n - SubTaskDates need to be within Task scope";
         }
 
         return error;
-
-        //else if (!createTaskTotalWorkTCalculation(task)) {
-        // System.out.println("working hours total is less than task time consumption");
-        //return "working hours total is less than task time consumption";
     }
-
-//luff erhan test ?
-//        DeleteTaskMapper deleteTaskMapper = new DeleteTaskMapper();
-//        Task task = new Task();
-//        task.setTaskNo(8.04);
-//        task.setProjectId(1);
-//        boolean svar = deleteTaskMapper.checkIfTaskNoExistsAddTask(task);
-//
-//        System.out.println("svar på testen :" +svar);
-
-    //luff erhan test 2
-//      TaskhandlerEL taskhandlerEL = new TaskhandlerEL();
-//       Task task = new Task();
-//        task.setDuration(10);
-//        task.setNoOfPersons(2);
-//        task.setTaskTimeconsumption(100);
-//        Task task1 = taskhandlerEL.createTaskTimeConsumption(task);
-//
-//        System.out.println(task1);
-
-
-    // consumptionSumTest både til project og task.
-//        TaskhandlerEL taskhandlerEL = new TaskhandlerEL();
-//        Project project = new Project();
-////        project.setProjectId(1);
-//        Task task = new Task();
-//        task.setProjectId(1);
-//        task.setTaskNo(1);
-//        int answer =  taskhandlerEL.taskTimeConsumptionSum(task);
-//        int answer1 =  taskhandlerEL.projectTimeConsumptionSum(project);
-//        System.out.println(answer);
-
-
-    //   100*         10       2        ?
-    //   100          10        ?       5
-    //  100            ?        2       5
-// timeConsumption,Duration,Persons,HoursPerDay
-//    public boolean createTaskInputCheckIfTaskNoExists(Task task) throws SQLException {
-//
-//        deleteTaskMapper.checkIfTaskNoExistsBeforeDelete(task);
-//
-//        return deleteTaskMapper.checkIfTaskNoExistsBeforeDelete(task);
-//    }
-
 }
