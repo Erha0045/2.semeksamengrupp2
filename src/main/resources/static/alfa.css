@@ -16,17 +16,17 @@ body {
 /*    font-size: 18px;*/
 /*}*/
 
-.header{
-    padding-bottom: 50px;
-    padding-top: 50px;
+header{
+    padding-bottom: 40px;
+    padding-top: 40px;
     text-align: center;
     color: white;
     /*pictures settings*/
     width: 100%;
-    height: 10%;
+    height: 15%;
     background-color:#66757F;
     border-bottom: 2px solid red;
-    /*position: sticky;*/
+    position: sticky;
 }
 #confirmation{
     background-color: #F2D7D5;

@@ -27,18 +27,18 @@
             <legend>Add a task</legend>
             <form method="post" action="/add_task" th:object="${task}">
                 <label>Task number post fix:</label>&nbsp;
-                <input type="number" min="1" step="1" th:field="*{taskNo}"  />
+                <input type="number" min="1" step="0.01" th:field="*{taskNo}"  />
                 <br><br>
-                <label>Task name:</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                <label>Task name:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="text" required th:field="*{name}" maxlength="45" />
                 <br><br>
-                <label>Start date:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label>Start date:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="date" required th:field="*{startDate}" />
                 <br><br>
-                <label>Finish date:</label>&nbsp;&nbsp;&nbsp;
+                <label>Finish date:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="date" th:field="*{finishDate}" />
                 <br><br>
-                <label>Duration:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label>Duration:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="number" value="0" th:field="*{duration}" />
                 <br><br>
 
@@ -57,7 +57,7 @@
             <legend>Add a subtask</legend>
             <form method="post" action="/add_task" th:object="${task}">
             <div class="row">
-                <div class="column" style="width: 30% ">
+                <div class="column" style="width: 40% ">
 
                         <!--    dropdown-->
                         <select th:field="*{subTaskToName} ">
@@ -67,26 +67,26 @@
 
                         <br><br>
                         <label>Subtask no prefix:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="number" step="1" required th:field="*{taskNo}"  />
+                        <input type="number" required th:field="*{taskNo}"  />
                         <br>
                         <br>
 
-                        <label>Subtask name:</label>&nbsp;
+                        <label>Subtask name:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <input type="text" required th:field="*{name}" maxlength="45" />
                         <br>
                         <br>
-                        <label>Start date:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label>Start date:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <input type="date" required th:field="*{startDate}" />
                         <br>
                         <br>
-                        <label>Finish date:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label>Finish date:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <input type="date" th:field="*{finishDate}" /><br><br>
                     <button class="button" type="submit" name="addsubtask" >Save subtask</button>
                 </div>
 
                 <br><br>
 
-                <div class="column" style="width: 30% ">
+                <div class="column" style="width: 60% ">
                     <label>Time consumption(h):</label>&nbsp;
                     <input type="number"  required min="1" step="1"  th:field="*{taskTimeconsumption}" />
                     <!--                <br><br><br><br>-->

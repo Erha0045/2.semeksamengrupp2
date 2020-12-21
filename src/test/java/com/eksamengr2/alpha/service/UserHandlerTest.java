@@ -34,7 +34,7 @@ class UserHandlerTest {
         String pass1 = "hej";
         String pass2 = "hej";
 
-       String error = userHandler.CreateUserError(navn,pass1,pass2);
+       String error = userHandler.createUserError(navn,pass1,pass2);
         System.out.println(error);
 
        assertEquals(error,"the chosen user name already exists, please try another");

@@ -26,11 +26,11 @@
             <legend>Create a project</legend>
             <br>
 
-            <span  style="color: red" th:text="${errorString != null} ? ${errorString} "></span>
+            <span style="color: red" th:text="${errorString != null} ? ${errorString} "></span>
             <form method="post" action="/create_project" th:object="${pojotransfer}">
 
                 <label>Type a projectname:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input  class="inputwhite" type="text" required th:field="*{projectName}" placeholder="projectname"/>
+                <input class="inputwhite" type="text" required th:field="*{projectName}" placeholder="projectname"/>
                 <br>
                 <br>
                 <!--    textfield Date type-->
@@ -40,22 +40,20 @@
                 <br>
 
                 <!--    textfield Date type-->
-                <label>Type in a finishdate:</label>&nbsp;
+                <label>Type in a finishdate:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="date" th:field="*{deadlineDate}" required placeholder="yyyy-MM-dd"/>
                 <br>
                 <br>
                 <br>
                 <br>
                 <!--    Button-->
-                <button class="button" type="submit" >Create project</button>&nbsp;
-
+                <button class="button" type="submit">Create project</button>&nbsp;
             </form>
-
+<br>
             <form name="cancel" action="/dashboard" method=get>
-                <button class="button" type="submit" >cancel</button>
+                <button class="button" type="submit">cancel</button>
             </form>
             <br>
-
 
 
             <br>

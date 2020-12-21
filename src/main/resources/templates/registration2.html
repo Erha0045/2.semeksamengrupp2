@@ -25,11 +25,11 @@
     <div class="container">
         <span  style="color: red" th:text="${errorMsg != null} ? ${errorMsg} "></span>
         <br>
-        <form  name="register" action="/registration2" method="post" th:object="${user}" >
 
-        <fieldset style="width: 100%" >
+
+        <fieldset style="width: 100%; height: 350px" >
             <legend>Create a user</legend>
-
+            <form  name="register" action="/registration2" method="post" th:object="${user}" >
             <br>
             <br>
                     Type your username:<br>
@@ -45,13 +45,14 @@
                     <br>
                     <br>
                     <button type="submit" class="button">Create account</button>
+            </form>
+<br>
+            <br>
 
-
-            </fieldset>
-        </form>
         <form name="cancel" action="/logout" method=get>
             <button class="button" type="submit" >cancel</button>
         </form>
+        </fieldset>
     </div>
 </body>
 </div>
