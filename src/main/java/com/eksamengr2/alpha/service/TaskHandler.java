@@ -31,11 +31,10 @@ public class TaskHandler {//(TL, TM, EB, )
         Task newTask = oldTask;
         String sqlString;
 
-//        System.out.println("mod: " + modifiedTask);
-//        System.out.println("old: " + oldTask);
 
 
-        System.out.println("Old isSubTask: " + oldTask.getIsSubTask());
+
+
 
         //************************************************************************
         //Using local variables to make the code more readable and to have to sets
@@ -74,7 +73,7 @@ public class TaskHandler {//(TL, TM, EB, )
 
         //1) startDate is edited
         if( startMod !=null){
-            System.out.println("Var i 1");
+
             durationNew = (int) ChronoUnit.DAYS.between(startMod,finishOld) +1;
             startNew = startMod;
             finishNew = finishOld;
@@ -88,7 +87,7 @@ public class TaskHandler {//(TL, TM, EB, )
 
         //3) FinishDate is edited
         if( finishMod!=null){
-            System.out.println("Var i 3");
+
             durationNew = (int) ChronoUnit.DAYS.between(startOld,finishMod) +1;
             startNew = startOld;
             finishNew = finishMod;
@@ -101,7 +100,7 @@ public class TaskHandler {//(TL, TM, EB, )
 
         //4) Duration is edited->
         if(durationMod!=0){
-            System.out.println("Var i 4");
+
             durationNew = durationMod;
             startNew = startOld;
             finishNew = startOld.plusDays(durationMod -1);
@@ -117,7 +116,7 @@ public class TaskHandler {//(TL, TM, EB, )
 
             //2 TimeConsumption is edited
             if (timeconsumptionMod != 0) {
-                System.out.println("Var i 2");
+
                 durationNew = durationOld;
                 startNew = startOld;
                 finishNew = finishOld;
@@ -130,7 +129,7 @@ public class TaskHandler {//(TL, TM, EB, )
 
             //5) PersonsOnTask is edited->
             if (personsOnTaskMod != 0) {
-                System.out.println("Var i 5");
+
                 durationNew = (int) Math.ceil(timeconsumptionOld / (personsOnTaskMod * workingHoursDayOld));
                 finishNew = startOld.plusDays(durationNew - 1);
                 workingHoursDayNew = Math.round(timeconsumptionOld /
@@ -142,7 +141,7 @@ public class TaskHandler {//(TL, TM, EB, )
 
             //6) WorkingHoursDay is edited->
             if (workingHoursDayMod != 0.0) {
-                System.out.println("Var i 6");
+
                 startNew = startOld;
                 workingHoursDayNew = workingHoursDayMod;
                 timeconsumptionNew = timeconsumptionOld;
@@ -153,7 +152,7 @@ public class TaskHandler {//(TL, TM, EB, )
 
             //6) none is changed
             if (startMod == null && timeconsumptionMod == 0 && finishMod == null && durationMod == 0 && personsOnTaskMod == 0 && workingHoursDayMod == 0.0 ) {
-                System.out.println("Var i 6");
+
                 startNew = startOld;
                 workingHoursDayNew = workingHoursDayOld;
                 timeconsumptionNew = timeconsumptionOld;
@@ -165,7 +164,7 @@ public class TaskHandler {//(TL, TM, EB, )
 
         //7) name is changed
         if (!modifiedTask.getName().equals("")){
-            System.out.println("Var i 7");
+
             newTask.setName(modifiedTask.getName());
         }
         else {
@@ -313,14 +312,14 @@ public class TaskHandler {//(TL, TM, EB, )
 
             //1) FinishDate or Duration entered
             if ((finishDate != null || duration != 0) && personsOnTask == 0 && workingHoursDay == 0.0) {
-                System.out.println("Var i 1");
+
                 task.setNoOfPersons(((int) (timeConsumption / (task.getDuration() * DEFAULT_WORKING_HOURS_DAY))) + 1);
                 task.setWorkingHoursDay(DEFAULT_WORKING_HOURS_DAY);
             }
 
             //2 workingHoursDay entered
             if (finishDate == null && duration == 0 && personsOnTask != 0 && workingHoursDay == 0.0d) {
-                System.out.println("Var i 2");
+
                 task.setWorkingHoursDay(DEFAULT_WORKING_HOURS_DAY);
                 task.setDuration((int) Math.ceil(timeConsumption / (task.getNoOfPersons() * DEFAULT_WORKING_HOURS_DAY)));
                 task.setFinishDate(startDate.plusDays(task.getDuration() - 1));
@@ -328,7 +327,7 @@ public class TaskHandler {//(TL, TM, EB, )
 
             //3) workingHoursDay entered
             if (finishDate == null && duration == 0 && personsOnTask == 0 && workingHoursDay != 0.0d) {
-                System.out.println("Var i 3");
+
                 task.setNoOfPersons((int) DEFAULT_PERSONS_ON_TASK);
                 task.setDuration((int) Math.ceil((double) timeConsumption / (DEFAULT_PERSONS_ON_TASK * workingHoursDay)));
                 task.setFinishDate(startDate.plusDays(task.getDuration() - 1));
@@ -336,26 +335,26 @@ public class TaskHandler {//(TL, TM, EB, )
 
             //4) FinishDate or Duration and personsOnTask entered
             if ((finishDate != null || duration != 0) && personsOnTask != 0 && workingHoursDay == 0.0d) {
-                System.out.println("Var i 4");
+
                 task.setWorkingHoursDay(Math.round(100.00 * timeConsumption / (task.getDuration() * (double) personsOnTask)) / 100.00);
             }
 
             //5) FinishDate or Duration and workingHoursDay entered
             if ((finishDate != null || duration != 0) && personsOnTask == 0 && workingHoursDay != 0.0d) {
-                System.out.println("Var i 5");
+
                 task.setNoOfPersons((int) Math.ceil(timeConsumption / (duration * workingHoursDay)));
             }
 
             //6)workingHoursDay and personsOnTask
             if (finishDate == null && duration == 0 && personsOnTask != 0 && workingHoursDay != 0.0d) {
-                System.out.println("Var i 6");
+
                 task.setDuration((int) Math.ceil(timeConsumption / (personsOnTask * workingHoursDay)));
                 task.setFinishDate(startDate.plusDays(task.getDuration() - 1));
             }
 
             //7)All entered
             if ((finishDate != null || duration != 0) && personsOnTask != 0 && workingHoursDay != 0.0d) {
-                System.out.println("Var i 7");
+
                 task.setDuration((int) Math.ceil(timeConsumption / (personsOnTask * workingHoursDay)));
                 task.setFinishDate(startDate.plusDays(task.getDuration() - 1));
             }
@@ -363,7 +362,7 @@ public class TaskHandler {//(TL, TM, EB, )
 
             //8)None entered
             if (finishDate == null && duration == 0 && personsOnTask == 0 && workingHoursDay == 0.0d) {
-                System.out.println("Var i 8");
+
                 task.setWorkingHoursDay(DEFAULT_WORKING_HOURS_DAY);
                 task.setDuration((int) Math.ceil(timeConsumption / (DEFAULT_PERSONS_ON_TASK * DEFAULT_WORKING_HOURS_DAY)));
                 task.setFinishDate(startDate.plusDays(task.getDuration()));
@@ -371,7 +370,7 @@ public class TaskHandler {//(TL, TM, EB, )
             }
 
         }
-        System.out.println("finishdate efter:" + task.getFinishDate());
+
         //Inserts prepared data from dialogbox to DB
         editProjectMapper.createNewTask(task);
 
@@ -470,7 +469,7 @@ public class TaskHandler {//(TL, TM, EB, )
     public ArrayList<Task> getTaskNoAndSumOfTimeConsumptionPerTask(int projetcId) throws SQLException {
         TaskMapper taskMapper = new TaskMapper();
         ArrayList<Task> list = new ArrayList<>();
-        System.out.println("Var i getTaskNoAndSumOfTimeConsumptionPerTask");
+
         Task taskSum = new Task(); //Constructor Task[(SumTaskTimeConsumption, taskNo)]
 
         ArrayList<Task> taskNoList = taskMapper.getAllTaskNoForProject(projetcId);

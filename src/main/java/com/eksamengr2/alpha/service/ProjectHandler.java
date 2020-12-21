@@ -25,8 +25,7 @@ public class ProjectHandler { //(TL, EB)
         while (resultSet.next()) {
             String pname = resultSet.getString("projectname");
             if (project.getProjectName().equals(pname)) {
-//                System.out.println("handlerprojectname " + project.getProjectName());
-//                System.out.println("handler pname " + pname);
+
                 return 0;
             }
         }

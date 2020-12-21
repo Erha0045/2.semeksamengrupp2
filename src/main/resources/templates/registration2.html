@@ -32,14 +32,11 @@
             <legend>Create a user</legend>
             <form  name="register" action="/registration2" method="post" th:object="${user}" >
             <br>
-            <br>
                     Type your username:<br>
                     <input class="inputwhite" required type="text" name="username" value="">
                     <br>
-                    <br>
                     Choose a password:<br>
                     <input class="inputwhite" required type="password" name="password1" value="">
-                    <br>
                     <br>
                     Confirm your password:<br>
                     <input class="inputwhite" required type="password" name="password2" value="">
@@ -47,7 +44,7 @@
                     <br>
                     <button type="submit" class="button">Create account</button>
             </form>
-<br>
+
             <br>
 
         <form name="cancel" action="/logout" method=get>
