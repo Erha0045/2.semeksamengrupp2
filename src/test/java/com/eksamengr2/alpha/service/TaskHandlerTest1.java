@@ -129,7 +129,7 @@ class TaskHandlerTest1 {
         //arrange
 
         Task task = new Task();
-        task.setTaskNo(1);
+        task.setTaskNo(7);
         task.setProjectId(1);
         //act
         boolean actual = taskhandler.checkTaskNo(task);
