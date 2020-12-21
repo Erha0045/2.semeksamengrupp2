@@ -78,7 +78,6 @@ public class TaskController {
 
         //Get tasks-data from DB as ArrayList
 //        tasksForProjectId = taskHandler.viewForEditProject(projectId);  //no facade
-        System.out.println("Var i edit task");
         tasksForProjectId = facade.viewForEditProject(projectId);
 
         //Round off
