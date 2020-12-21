@@ -1,5 +1,6 @@
 package com.eksamengr2.alpha.service;
 
+import com.eksamengr2.alpha.data.Facade;
 import com.eksamengr2.alpha.model.User;
 import org.junit.jupiter.api.Test;
 
@@ -7,9 +8,10 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserHandlerTest {
+class UserHandlerTest {//(TL)
 
     UserHandler userHandler = new UserHandler();
+    Facade facade = new Facade();
 
     @Test
     void checkIfUsernameAlreadyExists() throws SQLException {
@@ -34,7 +36,8 @@ class UserHandlerTest {
         String pass1 = "hej";
         String pass2 = "hej";
 
-       String error = userHandler.createUserError(navn,pass1,pass2);
+//       String error = userHandler.CreateUserError(navn,pass1,pass2);
+        String error = facade.createUserError(navn,pass1,pass2);
         System.out.println(error);
 
        assertEquals(error,"the chosen user name already exists, please try another");

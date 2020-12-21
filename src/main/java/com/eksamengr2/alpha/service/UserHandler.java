@@ -6,7 +6,7 @@ import com.eksamengr2.alpha.model.User;
 
 import java.sql.SQLException;
 
-public class UserHandler {
+public class UserHandler { //(TL)
     private RegistrationsMapper registrationsMapper = new RegistrationsMapper();
 
 

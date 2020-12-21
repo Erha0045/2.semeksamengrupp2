@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class UserMapper {
+public class UserMapper {//(EB)
 
     /**Gets user from if username and password is correct
      *

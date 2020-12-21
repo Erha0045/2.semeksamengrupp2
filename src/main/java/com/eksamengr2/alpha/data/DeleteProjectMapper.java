@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DeleteProjectMapper {
+public class DeleteProjectMapper {//(TL)
 
     /**Deletes project from DB
      *

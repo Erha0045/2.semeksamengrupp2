@@ -4,7 +4,7 @@ import com.eksamengr2.alpha.model.User;
 
 import java.sql.*;
 
-public class RegistrationsMapper {
+public class RegistrationsMapper {//(EB, TL)
 
 
     public void registerUser(User user) throws Exception {

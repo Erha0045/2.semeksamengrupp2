@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
-public class FrontController {
+public class FrontController { //(MS, EB)
 
     private LoginController loginController = new LoginController(new Facade());
     private UserHandler userHandler = new UserHandler();

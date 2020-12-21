@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class ProjectController {
+public class ProjectController { //(MS, EB, TL)
 
     private DeleteProjectMapper deleteProjectMapper = new DeleteProjectMapper();
     private ProjectMapper projectMapper = new ProjectMapper();

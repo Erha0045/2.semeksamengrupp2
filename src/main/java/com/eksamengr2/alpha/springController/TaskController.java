@@ -17,7 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@Controller //(TM, TL)
 public class TaskController {
 
     private List<Task> tasksForProjectId = new ArrayList(); //Holds all tasks in a projectId
@@ -360,7 +360,7 @@ public class TaskController {
 
         //FacadeTest facadeTest = new Facade();
 //        tasksForProjectId = taskHandler.viewForEditProject(projectId);  //no facade
-        tasksForProjectId = facade.viewForEditProject(projectId);
+        tasksForProjectId = facade.viewForEditProject(projectId); //TODO VIRKER
 
 
        // model.addAttribute("projectID", projectId);

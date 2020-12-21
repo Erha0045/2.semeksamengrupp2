@@ -4,7 +4,7 @@ import com.eksamengr2.alpha.model.Project;
 import com.eksamengr2.alpha.model.User;
 import java.sql.*;
 
-public class ProjectMapper {
+public class ProjectMapper {//(EB, TL)
 
         /**Data inserted for new project
          *

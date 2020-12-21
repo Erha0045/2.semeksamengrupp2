@@ -4,7 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
-public class Project {
+public class Project { //(TL, EB, MS, TM)
 
     private int projectId ;
     private String projectName;

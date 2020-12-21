@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class TaskHandler {
+public class TaskHandler {//(TL, TM, EB, )
+
     EditProjectMapper editProjectMapper = new EditProjectMapper();
     public static final double DEFAULT_WORKING_HOURS_DAY = 7.5;
     public static final double DEFAULT_PERSONS_ON_TASK = 1;
@@ -441,6 +442,7 @@ public class TaskHandler {
         return task.getDuration() == ChronoUnit.DAYS.between(task.getStartDate(), task.getFinishDate()) + 1;
     }
 
+
     public ArrayList<Task> viewForEditProject(int projectId) throws SQLException {
 
         ArrayList<Task> bigList = (ArrayList<Task>) editProjectMapper.getTaskWithCounter(projectId);
@@ -457,8 +459,6 @@ public class TaskHandler {
         }
         return bigList;
     }
-
-
 
 
     //***************************************************************************
@@ -595,17 +595,6 @@ public class TaskHandler {
     //***************************************************************************
     //***************************************************************************
 
-    //     Duration       Persons     WorkHours
-    public boolean checkForNullValue(Task task) {
-        if (task.getDuration() == 0 && task.getNoOfPersons() == 0 && task.getWorkingHoursDay() == 0) {
-            return false;
-        } else if ((task.getDuration() == 0 && task.getNoOfPersons() == 0) ||
-                (task.getDuration() == 0 && task.getWorkingHoursDay() == 0) ||
-                (task.getWorkingHoursDay() == 0 && task.getNoOfPersons() == 0)) {
-            return false;
-        }
-        return true;
-    }
 
     public boolean checkForNullValueFinishDateDuration(Task task) {
 

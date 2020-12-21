@@ -2,7 +2,7 @@ package com.eksamengr2.alpha.model;
 
 import com.eksamengr2.alpha.data.Facade;
 
-public class LoginController {
+public class LoginController {//(EB)
 
     // facade to datasource layer
     private Facade facade = null;

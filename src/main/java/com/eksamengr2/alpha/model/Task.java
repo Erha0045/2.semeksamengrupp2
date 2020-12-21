@@ -4,7 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
-public class Task {
+public class Task {//(TL, EB, MS, TM)
     private String name; //taskname
     @DateTimeFormat(pattern = "yyyy-MM-dd") //for at matche formattering fra bruger flade
     private LocalDate startDate;

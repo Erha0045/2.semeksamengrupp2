@@ -10,7 +10,7 @@ public class User {
         this.userName = userName;
     }
 
-    public User() {
+    public User() {//(TL, EB, MS)
     }
 
     public User(String password, String userName, String userType) {

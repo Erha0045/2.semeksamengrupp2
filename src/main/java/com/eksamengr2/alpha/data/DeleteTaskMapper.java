@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 //luff
-public class DeleteTaskMapper {
+public class DeleteTaskMapper {//(TL)
 
     /**Deletes task from DB
      *

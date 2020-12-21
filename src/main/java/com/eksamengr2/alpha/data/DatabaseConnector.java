@@ -8,7 +8,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class DatabaseConnector {
+public class DatabaseConnector { //(EB)
     private static String user;
     private static String password;
     private static String url;

@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class TaskMapper {
+public class TaskMapper {//(TL, TM)
 
     /** Return StartDate, FinishDate and workingHoursDay*noOfPersons for all subtasks in a project
      *
@@ -147,28 +147,6 @@ public class TaskMapper {
         return task;
     }
 
-//    public ArrayList<Task> findTasksSubTasks(Task task) throws SQLException {
-//        ArrayList<Task> taskArrayList = new ArrayList<>();
-//
-//        try {
-//            Connection con = DatabaseConnector.getConnection();
-//
-//            String SQL = "select tasktimeconsumption FROM task WHERE taskno >= ? AND taskno < ? and projectid= ?";
-//            PreparedStatement ps = con.prepareStatement(SQL);
-//            ps.setDouble(1, task.getTaskNo());
-//            ps.setDouble(2, task.getTaskNo() + 1);
-//            ps.setInt(3, task.getProjectId());
-//            ResultSet resultSet = ps.executeQuery();
-//            while (resultSet.next()) {
-//                Task task1 = new Task();
-//                task1.setTaskTimeconsumption(resultSet.getInt("tasktimeconsumption"));
-//                taskArrayList.add(task1);
-//            }
-//        }catch (SQLException ex) {
-//            System.out.println("findTasksSubTasks: " + ex);
-//        }
-//        return taskArrayList;
-//    }
 
     public ArrayList<Task> findProjectTasksTimeConsumption(Project project) throws SQLException {
 
