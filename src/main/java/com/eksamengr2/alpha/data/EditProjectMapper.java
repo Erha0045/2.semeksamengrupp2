@@ -297,7 +297,8 @@ public class EditProjectMapper {//(TM)
 
         try {
             // 1) Connect to the database
-            conn = DriverManager.getConnection("jdbc:mysql://den1.mysql3.gear.host/alfasolutionsdb?autoReconnect=true&useSSL=false", "alfasolutionsdb", "Ga9Q_!89hJab");
+//            conn = DriverManager.getConnection("jdbc:mysql://den1.mysql3.gear.host/alfasolutionsdb?autoReconnect=true&useSSL=false", "alfasolutionsdb", "Ga9Q_!89hJab");
+            conn=DatabaseConnector.getConnection();
 
             //2) Create a string that holds the query with ? as user input
             String sqlString =  "SELECT task.name FROM alfasolutionsdb.task\n" +
@@ -332,14 +333,15 @@ public class EditProjectMapper {//(TM)
         catch (Exception e) {
             System.err.println(e.getMessage());
 
-        } finally //kode der skal køres selvom den bugger (lukke connection)
-        {
-            if (preparedStatement != null)
-                preparedStatement.close();
-
-            if (conn != null)
-                conn.close();
         }
+//        finally //kode der skal køres selvom den bugger (lukke connection)
+//        {
+//            if (preparedStatement != null)
+//                preparedStatement.close();
+//
+//            if (conn != null)
+//                conn.close();
+//        }
         return arrDaters;
     }//Method
 
