@@ -8,3 +8,6 @@ Vejledning til at køre programmet
 
 Brug eventuelt MySQL Workbench.
 Vi anbefaler at åbne projektet i IntelliJ IDEA.
+
+Revision notat: Da et password var forkert i koden, blev det ændret efter afleveringstidspunktet efter aftale med Tue/Tine.
+For nemhedens skyld kan det oplyses at man kan logge ind med en oprettet bruger username=a og password=a
